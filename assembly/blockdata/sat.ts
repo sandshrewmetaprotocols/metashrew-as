@@ -14,14 +14,8 @@ export class Sat {
     return this._idx;
   }
 
-  public add(x: u64): Sat;
-  public add(x: Sat): Sat;
   public add(x: u64 | Sat): Sat {
-    if (typeof x == "number") {
-      this._idx += x;
-    } else {
-      this._idx += x.n();
-    }
+    this._idx += x.n();
     return this;
   }
 
