@@ -17,6 +17,7 @@
   "devDependencies": {
     "@assemblyscript/wasi-shim": "^0.1.0",
     "@types/expect": "^24.3.0",
+    "@types/jest": "^29.5.12",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.6",
     "as-wasi": "^0.6.0",
@@ -31,5 +32,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
+    "metashrew-test": "https://github.com/sandshrewmetaprotocols/metashrew-test.git"
   }
 }

@@ -1,6 +1,6 @@
 import { Sat } from "./sat";
 import { Height } from "./height";
-import { SUBSIDY_HALVING_INTERVAL, COIN_VALUE } from "../utils/constants";
+import { SUBSIDY_HALVING_INTERVAL, COIN_VALUE } from "../utils";
 
 export const STARTING_SATS
 export class Epoch {
@@ -83,23 +83,5 @@ export class Epoch {
 
   startingHeight(): Height {
     return new Height(this.idx * SUBSIDY_HALVING_INTERVAL)
-  }
-
-  // overloads
-  @operator(">=") 
-  __ge(other: Epoch | u32): bool {
-    if (nameof(other) == "Epoch") {
-      return this.idx >= other.idx;
-    } else {
-      return this.idx >= other;
-    }
-  }
-  @operator("<=")
-  __le(other: Epoch | u32): bool {
-    if (nameof(other) == "Epoch") {
-      return this.idx <= other.idx;
-    } else {
-      return this.idx <= other;
-    }
   }
 }
