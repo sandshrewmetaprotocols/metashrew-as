@@ -1,4 +1,4 @@
-import { CYCLE_EPOCHS, DIFFCHANGE_INTERVAL } from "../utils/constants";
+import { CYCLE_EPOCHS, DIFFCHANGE_INTERVAL } from "../utils";
 import { Height } from "./height";
 import { Epoch } from "./epoch";
 
