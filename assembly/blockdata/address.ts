@@ -17,16 +17,16 @@ export class Address {
         let bytes: Box = script.data.sliceFrom(3).setLength(20);
         let prefix = new Uint8Array(1);
         prefix[0] = 0x00;
-        return toBase58Check(prefix.buffer, bytes.toArrayBuffer());
+        return Address.toBase58Check(prefix.buffer, bytes.toArrayBuffer());
     } else if (script.is_p2sh()) {
         let bytes: Box = script.data.sliceFrom(2).setLength(20);
         let prefix = new Uint8Array(1);
         prefix[0] = 0x05;
-        return toBase58Check(prefix.buffer, bytes.toArrayBuffer());
+        return Address.toBase58Check(prefix.buffer, bytes.toArrayBuffer());
     } else if (script.is_witness_program()) {
         let bytes = script.data.sliceFrom(2).toArrayBuffer();
         let version = load<u8>(script.witness_version) === 0x00 ? 0x00 : 0x01;
-        return toBech32(String.UTF8.encode("bc"), bytes, <u8>version);
+        return Address.toBech32(String.UTF8.encode("bc"), bytes, <u8>version);
     } else {
         return null 
     }
