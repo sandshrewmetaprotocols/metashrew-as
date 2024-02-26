@@ -1,3 +1,4 @@
+// Yet Another Bitcoin Script Parser
 @external("env", "__log") declare function __log(s: ArrayBuffer): void;
 export function _log(s: string): void {
   console.log(s);

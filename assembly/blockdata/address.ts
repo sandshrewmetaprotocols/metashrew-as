@@ -12,7 +12,7 @@ export class Address {
    * @param {Script} script - The script to extract the address from
    * @returns {ArrayBuffer | null} - The address or null if the script is not a valid address
    */ 
-  static from(script: Script): AddressBuffer | null {
+  static from(script: Script): ArrayBuffer | null {
     if (script.is_p2pkh()) {
         let bytes: Box = script.data.sliceFrom(3).setLength(20);
         let prefix = new Uint8Array(1);
