@@ -20,7 +20,7 @@ yarn add https://github.com/sandshrewmetaprotocols/metashrew-as
 
 The following functions should be used as-is within a metashrew indexer to ensure correct functionality of the indexing process within metashrew, given the constraints of the runtime that the WASM will execute within.
 
-#### `get(key: ArrayBuffer): ArrayBuffer`
+#### get(key: ArrayBuffer): ArrayBuffer
 
 Gets a value from the index by its key. Multiple calls to the same key are cached, and calling the `set` function will update the cache as well, so it is acceptable to write programs that `set` then later `get` the value at the same key within the program run for the block.
 
@@ -34,7 +34,7 @@ export function lookup(): ArrayBuffer {
 }
 ```
 
-#### `set(key: ArrayBuffer, value: ArrayBuffer): void`
+#### set(key: ArrayBuffer, value: ArrayBuffer): void
 
 Caches a value to be flushed to the write batch at the end of the program run. Even though no state changes are saved until the end of the program run, a call to `get` at any key will query the cache to lookup the value before it makes a call to the k/v store in the host environment.
 
@@ -59,12 +59,12 @@ export function _start(): void {
 // can call the metashrew-view JSONRPC with the "lookup" symbol to retrive the value, 
 ```
 
-#### `input(): ArrayBuffer`
+#### input(): ArrayBuffer
 
 Reads the bytevector from the host environment containing a u32 value for the block height, followed by the bytes of the serialized block.
 
 
-#### `_flush(): void`
+#### _flush(): void
 
 It is required to call this function, only once, at the end of your `_start` function. Otherwise, no state changes will be saved to the index. Always put as the last line of your `_start` function.
 
