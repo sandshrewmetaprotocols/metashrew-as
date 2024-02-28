@@ -17,14 +17,12 @@ import { abort } from "./utils/abort";
 import { Block } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
 
+
 export function _start(): void {
   const data = input();
   const box = Box.from(data);
   const height = parsePrimitive<u32>(box);
   const block = new Block(box);
 
-  // block._indexTransactionsById();
-  // block._indexInscriptionsById();
-  // block._indexTransactionsByAddress();
   _flush();
 }

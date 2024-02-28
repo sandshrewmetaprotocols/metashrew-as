@@ -1,6 +1,6 @@
 import { Box } from "../utils/box";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
-import { parsePushOp, decodeTag } from "../utils/utils";
+import { parsePushOp, decodeTag, concat } from "../utils/utils";
 
 export class Field {
   public tag: u32;

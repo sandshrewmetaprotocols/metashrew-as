@@ -9,6 +9,35 @@ import { Pointer, toPointer, nullptr } from "../utils/pointer";
 import { Address } from "./address";
 import { Witness } from "./witness";
 
+// A reference to a transaction output.
+export class OutPoint {
+  public bytes: Box;
+  public txid: Box;
+  public index: u32;
+  constructor(bytes: Box) {
+    this.bytes = nullptr<Box>();
+    this.txid = nullptr<Box>();
+    this.index = 0;
+    if (bytes.len == 36) {
+      this.bytes = bytes;
+      this.txid = bytes.sliceFrom(0).shrinkBack(<usize>(4));
+      this.index = parsePrimitive<u32>(bytes.sliceFrom(32));
+    }
+  }
+
+  isNull(): boolean {
+    return encodeHexFromBuffer(this.txid.toArrayBuffer()) == "0x0000000000000000000000000000000000000000000000000000000000000000"
+  }
+
+  /**
+   * Returns the outpoint as a buffer
+   * @returns {ArrayBuffer} - The outpoint as a buffer
+   */
+  toBuffer(): ArrayBuffer {
+    return this.bytes.toArrayBuffer();
+  }
+}
+
 export class Input {
   public bytes: Box;
   public hash: Box;
@@ -25,6 +54,21 @@ export class Input {
     this.witness = nullptr<Witness>();
     const tail = data.start;
     this.bytes = toPointer(head).toBox(tail - head)
+  }
+
+  /**
+   * Returns the outpoint of the input
+   * @returns {ArrayBuffer} - The outpoint of the input
+   */
+  previousOutput(): OutPoint {
+    let bytes = toPointer(this.hash.start).toBox(<usize>36);
+    return new OutPoint(bytes);
+  }
+
+  inscription(): Inscription | null {
+    let script = this.witness.tapscript();
+    if (script == nullptr<Box>()) return null;
+    return new Inscription(script);
   }
 }
 

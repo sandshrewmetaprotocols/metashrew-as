@@ -16,6 +16,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "rlp": "^3.0.0"
   }
 }
