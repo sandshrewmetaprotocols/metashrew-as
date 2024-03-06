@@ -6,7 +6,7 @@ export class Sat {
   private _idx: u64 = 0;
   static SUPPLY: u64 = 2099999997690000;
 
-  constructor(idx) {
+  constructor(idx: u64) {
     this._idx = idx;
   }
 
@@ -14,8 +14,8 @@ export class Sat {
     return this._idx;
   }
 
-  public add(x: u64 | Sat): Sat {
-    this._idx += x.n();
+  public add(x: u64): Sat {
+    this._idx += x;
     return this;
   }
 
