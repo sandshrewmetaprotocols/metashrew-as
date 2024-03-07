@@ -77,4 +77,17 @@ export class Box {
   static from(data: ArrayBuffer): Box {
     return new Box(changetype<usize>(data), data.byteLength);
   }
+  static copy(data: ArrayBuffer): Box {
+    const ptr = heap.alloc(data.byteLength);
+    memcpy(ptr, changetype<usize>(data), <usize>data.byteLength);
+    return new Box(ptr, <usize>data.byteLength);
+  }
+  static freeCopy(v: Box): void {
+    heap.free(v.start);
+  }
+  static fromTyped<T>(v: T): Box {
+    const buffer = new ArrayBuffer(sizeof<T>(v));
+    store<T>(changetype<usize>(buffer), v);
+    return Box.copy(buffer);
+  }
 }
