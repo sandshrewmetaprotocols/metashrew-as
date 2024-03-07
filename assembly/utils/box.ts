@@ -94,3 +94,18 @@ export class Box {
     return Box.copy(buffer);
   }
 }
+export class RCBox extends Box {
+  public buffer: ArrayBuffer;
+  constructor(v: ArrayBuffer) {
+    this.buffer = v;
+  }
+  static from(v: ArrayBuffer): OwnedBox {
+    
+    return new RCBox(v);
+  }
+  static fromTyped<T>(v: T): Box {
+    const buffer = new ArrayBuffer(sizeof<T>(v));
+    store<T>(changetype<usize>(buffer), v);
+    return RCBox.from(buffer);
+  }
+}

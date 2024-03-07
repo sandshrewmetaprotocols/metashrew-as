@@ -1,5 +1,4 @@
 import { Box } from "./box";
-import { RCBox } from "./rc";
 import { memcpy } from "./memcpy";
 
 export const enum RLPItemType {
