@@ -94,36 +94,18 @@ export class Box {
     return Box.copy(buffer);
   }
 }
-export class Borrow extends Box {
+export class RCBox extends Box {
   public buffer: ArrayBuffer;
   constructor(v: ArrayBuffer) {
     this.buffer = v;
   }
   static from(v: ArrayBuffer): OwnedBox {
     
-    return new Borrow(v);
+    return new RCBox(v);
   }
   static fromTyped<T>(v: T): Box {
     const buffer = new ArrayBuffer(sizeof<T>(v));
     store<T>(changetype<usize>(buffer), v);
-    return Borrow.from(buffer);
-  }
-}
-export class Copy extends Borrow {
-  public buffer: ArrayBuffer;
-  constructor(v: ArrayBuffer) {
-    super(v);
-    const buffer = this.buffer;
-    this.buffer = new ArrayBuffer(this.buffer.byteLength);
-    memcpy(changetype<usize>(this.buffer), changetype<usize>(buffer), <usize>vbuffer.byteLength);
-  }
-  static from(v: ArrayBuffer): OwnedBox {
-    
-    return new Copy(v);
-  }
-  static fromTyped<T>(v: T): Box {
-    const buffer = new ArrayBuffer(sizeof<T>(v));
-    store<T>(changetype<usize>(buffer), v);
-    return Copy.from(buffer);
+    return RCBox.from(buffer);
   }
 }
