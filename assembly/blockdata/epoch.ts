@@ -1,8 +1,7 @@
 import { Sat } from "./sat";
 import { Height } from "./height";
-import { SUBSIDY_HALVING_INTERVAL, COIN_VALUE } from "../utils";
+import { SUBSIDY_HALVING_INTERVAL, COIN_VALUE } from "../utils/constant";
 
-export const STARTING_SATS
 export class Epoch {
   public idx: u32;
 
@@ -43,20 +42,16 @@ export class Epoch {
       new Sat(Sat.SUPPLY),
   ];
   static FIRST_POST_SUBSIDY: Epoch = new Epoch(33);
-  static from(sat: Sat): Epoch;
-  static from(height: Height): Epoch;
-  static from(i: Sat | Height ): Epoch {
-    if (nameof(i) == "Sat") {
-      let idx = 0;
-      while(i.n() > Epoch.STARTING_SATS[idx].n() && idx < 33) {
-        idx++;
-      }
-      return new Epoch(idx);
-    } else if (nameof(i) == "Height") {
-      return new Epoch(i.n() / SUBSIDY_HALVING_INTERVAL);
-    } else {
-      throw new Error("invalid type for Epoch::from");
+  static fromHeight(i: Height): Epoch {
+    return new Epoch(i.n() / SUBSIDY_HALVING_INTERVAL);
+  }
+
+  static fromSat(sat: Sat): Epoch {
+    let idx = 0;
+    while(sat.n() > Epoch.STARTING_SATS[idx].n() && idx < 33) {
+      idx++;
     }
+    return new Epoch(idx);
   }
 
   constructor(idx: u32) {

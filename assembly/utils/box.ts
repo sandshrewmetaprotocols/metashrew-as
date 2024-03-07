@@ -74,6 +74,9 @@ export class Box {
     memcpy(changetype<usize>(result), this.start, this.len);
     return result;
   }
+  isEmpty(): boolean {
+    return this.len == 0;
+  }
   static from(data: ArrayBuffer): Box {
     return new Box(changetype<usize>(data), data.byteLength);
   }

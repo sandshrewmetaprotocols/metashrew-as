@@ -1,4 +1,5 @@
 import { Epoch } from "./epoch";
+import { Sat } from "./sat";
 
 export class Height {
   private _idx: u32;
@@ -9,12 +10,12 @@ export class Height {
     return this._idx;
   }
   public subsidy(): u64 {
-    return Epoch.from(this).subsidy();
+    return Epoch.fromHeight(this).subsidy();
   }
   public startingSat(): Sat {
-    let startingSat = Epoch.from(this).startingSat();
-    let startingHeight = Epoch.from(this).startingHeight();
-    return startingSat.add(<u64>(this.n() - startingHeight.n()) * Epoch.from(this).subsidy());
+    let startingSat = Epoch.fromHeight(this).startingSat();
+    let startingHeight = Epoch.fromHeight(this).startingHeight();
+    return startingSat.add(<u64>(this.n() - startingHeight.n()) * Epoch.fromHeight(this).subsidy());
   }
   public add(x: u32): Height {
     return new Height(this._idx + x);

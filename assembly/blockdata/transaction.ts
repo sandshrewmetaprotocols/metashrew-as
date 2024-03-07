@@ -29,6 +29,14 @@ export class OutPoint {
     return encodeHexFromBuffer(this.txid.toArrayBuffer()) == "0x0000000000000000000000000000000000000000000000000000000000000000"
   }
 
+  from(txid: ArrayBuffer, vout: u32): OutPoint {
+    let txidBox = Box.from(txid);
+    let indexBox = new Box(new ArrayBuffer(4));
+    let indexBytes = new Uint8Array(indexBox.toArrayBuffer());
+    indexBytes[0] = vout;
+    return new OutPoint(Box.concat([txidBox, indexBox]));
+  }
+
   /**
    * Returns the outpoint as a buffer
    * @returns {ArrayBuffer} - The outpoint as a buffer
