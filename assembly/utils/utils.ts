@@ -21,6 +21,12 @@ export function concat(data: Array<ArrayBuffer>): ArrayBuffer {
   );
 }
 
+export function primitiveToBuffer<T>(value: T): ArrayBuffer {
+  const buffer = new ArrayBuffer(sizeof<T>());
+  store<T>(changetype<usize>(buffer), value);
+  return buffer;
+}
+
 export function parsePrimitive<T>(data: Box): T {
   const result = load<T>(data.start);
   data.shrinkFront(sizeof<T>());

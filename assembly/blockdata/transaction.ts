@@ -1,5 +1,5 @@
 import { console } from "../utils/logging";
-import { parsePrimitive, parseVarInt, parseLenThenBytes, parseBytes, isPushOp, decodeTag, concat } from "../utils/utils";
+import { reverse, parsePrimitive, parseVarInt, parseLenThenBytes, parseBytes, isPushOp, decodeTag, concat, primitiveToBuffer } from "../utils/utils";
 import { Box } from "../utils/box";
 import { encodeHex, encodeHexFromBuffer } from "../utils/hex";
 import { sha256d, sha256 } from "../utils/sha256";
@@ -29,12 +29,9 @@ export class OutPoint {
     return encodeHexFromBuffer(this.txid.toArrayBuffer()) == "0x0000000000000000000000000000000000000000000000000000000000000000"
   }
 
-  from(txid: ArrayBuffer, vout: u32): OutPoint {
-    let txidBox = Box.from(txid);
-    let indexBox = new Box(new ArrayBuffer(4));
-    let indexBytes = new Uint8Array(indexBox.toArrayBuffer());
-    indexBytes[0] = vout;
-    return new OutPoint(Box.concat([txidBox, indexBox]));
+  static from(txid: ArrayBuffer, offset: u32): OutPoint {
+    let index = primitiveToBuffer<u32>(offset);
+    return new OutPoint(Box.from(concat([txid, index])));
   }
 
   /**
@@ -69,8 +66,13 @@ export class Input {
    * @returns {ArrayBuffer} - The outpoint of the input
    */
   previousOutput(): OutPoint {
-    let bytes = toPointer(this.hash.start).toBox(<usize>36);
-    return new OutPoint(bytes);
+    let txid = toPointer(this.hash.start).toBox(<usize>32);
+    let vout = toPointer(this.hash.start + 32).toBox(<usize>4);
+    
+    let correctedTxid = reverse(txid.toArrayBuffer());
+    
+    // let bytes = toPointer(this.hash.start).toBox(<usize>36);
+    return OutPoint.from(correctedTxid, parsePrimitive<u32>(vout));
   }
 
   inscription(): Inscription | null {
