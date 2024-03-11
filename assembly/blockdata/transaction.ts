@@ -164,6 +164,9 @@ export class Transaction {
     this.locktime = parsePrimitive<u32>(data);
     let tail = data.start;
     this.bytes = toPointer(head).toBox(tail - head)
+
+    // let testbytes = toPointer(head).toBox((tail - head) + 4)
+    // console.log("\n\n 4 bytes larger then end => " + encodeHexFromBuffer( testbytes.toArrayBuffer() ));
   }
 
   legacyBytes(): Array<Box> {

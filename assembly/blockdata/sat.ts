@@ -1,6 +1,7 @@
-import { CYCLE_EPOCHS, DIFFCHANGE_INTERVAL } from "../utils";
+import { CYCLE_EPOCHS, DIFFCHANGE_INTERVAL, primitiveToBuffer, concat } from "../utils";
 import { Height } from "./height";
 import { Epoch } from "./epoch";
+import { OutPoint } from "./transaction";
 
 export class Sat {
   private _idx: u64 = 0;
@@ -42,4 +43,18 @@ export class Sat {
     return new Sat(Sat.SUPPLY - 1);
   }
 
+}
+
+export class SatPoint {
+  outpoint: OutPoint;
+  offset: u32;
+  
+  constructor(outpoint: OutPoint, offset: u32) {
+    this.outpoint = outpoint;
+    this.offset = offset;
+  }
+
+  toBuffer(): ArrayBuffer {
+    return concat([this.outpoint.toBuffer(), primitiveToBuffer<u32>(this.offset)]);
+  }
 }
