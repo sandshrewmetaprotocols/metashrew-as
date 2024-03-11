@@ -1,5 +1,5 @@
 import { console } from "../utils/logging";
-import { parsePrimitive, parseVarInt, parseLenThenBytes, parseBytes, isPushOp, decodeTag, concat } from "../utils/utils";
+import { reverse, parsePrimitive, parseVarInt, parseLenThenBytes, parseBytes, isPushOp, decodeTag, concat, primitiveToBuffer } from "../utils/utils";
 import { Box } from "../utils/box";
 import { encodeHex, encodeHexFromBuffer } from "../utils/hex";
 import { sha256d, sha256 } from "../utils/sha256";
@@ -27,6 +27,11 @@ export class OutPoint {
 
   isNull(): boolean {
     return encodeHexFromBuffer(this.txid.toArrayBuffer()) == "0x0000000000000000000000000000000000000000000000000000000000000000"
+  }
+
+  static from(txid: ArrayBuffer, offset: u32): OutPoint {
+    let index = primitiveToBuffer<u32>(offset);
+    return new OutPoint(Box.from(concat([txid, index])));
   }
 
   /**
@@ -61,8 +66,13 @@ export class Input {
    * @returns {ArrayBuffer} - The outpoint of the input
    */
   previousOutput(): OutPoint {
-    let bytes = toPointer(this.hash.start).toBox(<usize>36);
-    return new OutPoint(bytes);
+    let txid = toPointer(this.hash.start).toBox(<usize>32);
+    let vout = toPointer(this.hash.start + 32).toBox(<usize>4);
+    
+    let correctedTxid = reverse(txid.toArrayBuffer());
+    
+    // let bytes = toPointer(this.hash.start).toBox(<usize>36);
+    return OutPoint.from(correctedTxid, parsePrimitive<u32>(vout));
   }
 
   inscription(): Inscription | null {
@@ -154,6 +164,9 @@ export class Transaction {
     this.locktime = parsePrimitive<u32>(data);
     let tail = data.start;
     this.bytes = toPointer(head).toBox(tail - head)
+
+    // let testbytes = toPointer(head).toBox((tail - head) + 4)
+    // console.log("\n\n 4 bytes larger then end => " + encodeHexFromBuffer( testbytes.toArrayBuffer() ));
   }
 
   legacyBytes(): Array<Box> {

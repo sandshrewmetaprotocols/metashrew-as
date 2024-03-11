@@ -74,6 +74,9 @@ export class Box {
     memcpy(changetype<usize>(result), this.start, this.len);
     return result;
   }
+  isEmpty(): boolean {
+    return this.len == 0;
+  }
   static from(data: ArrayBuffer): Box {
     return new Box(changetype<usize>(data), data.byteLength);
   }
@@ -86,8 +89,26 @@ export class Box {
     heap.free(v.start);
   }
   static fromTyped<T>(v: T): Box {
-    const buffer = new ArrayBuffer(sizeof<T>(v));
+    // const buffer = new ArrayBuffer(sizeof<T>(v));
+    const buffer = new ArrayBuffer(offsetof<T>());
     store<T>(changetype<usize>(buffer), v);
     return Box.copy(buffer);
+  }
+}
+export class RCBox extends Box {
+  public buffer: ArrayBuffer;
+  constructor(v: ArrayBuffer) {
+    super(changetype<usize>(v), <usize>v.byteLength);
+    this.buffer = v;
+  }
+  static from(v: ArrayBuffer): RCBox {
+    
+    return new RCBox(v);
+  }
+  static fromTyped<T>(v: T): RCBox {
+    // const buffer = new ArrayBuffer(sizeof<T>(v));
+    const buffer = new ArrayBuffer(offsetof<T>());
+    store<T>(changetype<usize>(buffer), v);
+    return RCBox.from(buffer);
   }
 }

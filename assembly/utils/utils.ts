@@ -21,6 +21,12 @@ export function concat(data: Array<ArrayBuffer>): ArrayBuffer {
   );
 }
 
+export function primitiveToBuffer<T>(value: T): ArrayBuffer {
+  const buffer = new ArrayBuffer(sizeof<T>());
+  store<T>(changetype<usize>(buffer), value);
+  return buffer;
+}
+
 export function parsePrimitive<T>(data: Box): T {
   const result = load<T>(data.start);
   data.shrinkFront(sizeof<T>());
@@ -104,6 +110,16 @@ export function subsidy(height: u64): u64 {
   return 50 * 100000000 >> (height / 210000);
 }
 
+// population
+export function population(ordinal: u64): u64 {
+  let population = 0;
+  for (let i = 0; i < ordinal; i++) {
+    population += ordinal & 1;
+    ordinal >>= 1;
+  }
+  return population;
+}
+
 // first ordinal of subsidy of block @ given height
 export function firstOrdinal(height: u64): number {
   let start: u64 = 0;
@@ -113,11 +129,3 @@ export function firstOrdinal(height: u64): number {
   return start;
 }
 
-// assign ordinals in given block
-// export function assignOrdinals() {
-//   let first = firstOrdinal(height);
-//   let last = frist + subsidy(height);
-//   let coinbaseOrdinals = new Array<u32>(last - first); 
-  
-  
-// }
