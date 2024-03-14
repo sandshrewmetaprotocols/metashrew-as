@@ -37,8 +37,14 @@ export class Sat {
     return <u32>(this.epochPosition() % this.epoch().subsidy());
   }
   public epoch(): Epoch {
-    return Epoch.from(this);
+    return Epoch.fromSat(this);
   }
+
+  public isCommon(): bool {
+    let epoch = this.epoch();
+    return (this.n() - epoch.startingSat().n()) % epoch.subsidy() != 0
+  }
+
   static LAST(): Sat {
     return new Sat(Sat.SUPPLY - 1);
   }
@@ -47,14 +53,14 @@ export class Sat {
 
 export class SatPoint {
   outpoint: OutPoint;
-  offset: u32;
+  offset: u64;
   
-  constructor(outpoint: OutPoint, offset: u32) {
+  constructor(outpoint: OutPoint, offset: u64) {
     this.outpoint = outpoint;
     this.offset = offset;
   }
 
   toBuffer(): ArrayBuffer {
-    return concat([this.outpoint.toBuffer(), primitiveToBuffer<u32>(this.offset)]);
+    return concat([this.outpoint.toBuffer(), primitiveToBuffer<u64>(this.offset)]);
   }
 }
