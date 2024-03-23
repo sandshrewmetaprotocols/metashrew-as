@@ -18,6 +18,6 @@ export class Height {
     return startingSat.add(<u64>(this.n() - startingHeight.n()) * Epoch.fromHeight(this).subsidy());
   }
   public add(x: u32): Height {
-    return new Height(this._idx + x);
+    return new Height(this.n() + x);
   }
 }
