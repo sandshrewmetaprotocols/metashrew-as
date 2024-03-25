@@ -19,10 +19,7 @@ import { xxh32 } from "../utils/xxh32";
 import { memcpy } from "../utils/memcpy";
 import { Box } from "../utils/box";
 import {
-  TRANSACTION_ID_TO_TRANSACTION,
-  INSCRIPTION_ID_TO_INSCRIPTION,
-  ACCOUNT_TO_INSCRIPTION,
-  HEIGHT_TO_BLOCK_HEADER,
+  IndexPointer
 } from "./tables";
 const _updates = new Map<u32, ArrayBuffer>();
 
@@ -30,6 +27,7 @@ const _updateKeys = new Map<u32, ArrayBuffer>();
 
 const BUFFER_SIZE = <u32>0x100000;
 let _filled: u32 = 0;
+
 
 export function input(): ArrayBuffer {
   const data = new ArrayBuffer(__host_len());
