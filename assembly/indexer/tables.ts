@@ -49,7 +49,7 @@ export class IndexPointer {
     set(Box.from(this.unwrap()).toArrayBuffer(), v);
   }
   get(): ArrayBuffer {
-    return get(this.unwrap());
+    return Box.from(get(this.unwrap())).toArrayBuffer();
   }
   lengthKey(): IndexPointer {
     return this.keyword("/length");
