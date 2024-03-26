@@ -4690,6 +4690,7 @@
   (local $mask i32)
   (local $newMask i32)
   (local $byte i32)
+  (local $isSet i32)
   i32.const 0
   i32.const 8
   call $~lib/arraybuffer/ArrayBuffer#constructor
@@ -4749,6 +4750,7 @@
     i32.div_u
     i32.sub
     i32.add
+    i32.load8_u
     i32.const 1
     local.get $byte
     i32.const 8
@@ -4756,19 +4758,41 @@
     i32.shl
     i32.const 255
     i32.and
-    local.get $newMask
-    i32.const 31
-    local.get $byte
-    i32.const 8
-    i32.div_u
-    i32.sub
-    i32.add
-    i32.load8_u
-    i32.or
-    i32.store8
-    local.get $ptr
-    local.get $newMask
-    call $assembly/indexer/tables/IndexPointer#set
+    i32.and
+    i32.const 0
+    i32.ne
+    local.set $isSet
+    local.get $isSet
+    i32.eqz
+    if
+     local.get $newMask
+     i32.const 31
+     local.get $byte
+     i32.const 8
+     i32.div_u
+     i32.sub
+     i32.add
+     i32.const 1
+     local.get $byte
+     i32.const 8
+     i32.rem_u
+     i32.shl
+     i32.const 255
+     i32.and
+     local.get $newMask
+     i32.const 31
+     local.get $byte
+     i32.const 8
+     i32.div_u
+     i32.sub
+     i32.add
+     i32.load8_u
+     i32.or
+     i32.store8
+     local.get $ptr
+     local.get $newMask
+     call $assembly/indexer/tables/IndexPointer#set
+    end
     local.get $i
     i32.const 1
     i32.add

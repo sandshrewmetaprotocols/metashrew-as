@@ -23,11 +23,11 @@ export class BST<K> {
       const mask = ptr.get();
       const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
       const byte = load<u8>(changetype<usize>(keyBytes) + i + 1);
-//      const isSet = (load<u8>(changetype<usize>(newMask) + (byte / 8)) & (((0x100 as u32) >> (byte % 8)) & 0xff) as u8) !== 0
- //     if (!isSet) {
+      const isSet = (load<u8>(changetype<usize>(newMask) + (31 - (byte / 8))) & (((0x01 as u32) << (byte % 8)) & 0xff) as u8) !== 0
+      if (!isSet) {
         store<u8>(changetype<usize>(newMask) + (31 - <usize>(byte / 8)), (((0x01 as u32) << (byte % 8)) & 0xff) | load<u8>(changetype<usize>(newMask) + (31 - <usize>(byte / 8))))
 	ptr.set(newMask);
-  //    }
+      }
     }
   }
   unmarkPath(key: K): void {

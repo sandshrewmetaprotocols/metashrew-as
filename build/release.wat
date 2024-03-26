@@ -2790,6 +2790,7 @@
   (local $9 i32)
   (local $10 i32)
   (local $11 i32)
+  (local $12 i32)
   i32.const 8
   call $~lib/arraybuffer/ArrayBuffer#constructor
   local.tee $7
@@ -2826,7 +2827,7 @@
   if
    i32.const 8
    call $~lib/arraybuffer/ArrayBuffer#constructor
-   local.tee $5
+   local.tee $9
    local.get $6
    i64.const 16
    i64.shr_u
@@ -2845,13 +2846,13 @@
      local.get $4
      call $~lib/arraybuffer/ArrayBuffer#constructor
      local.tee $3
-     local.get $5
+     local.get $9
      local.get $4
      memory.copy
      local.get $0
      local.get $3
      call $assembly/indexer/bst/BST<u64>#getMaskPointer
-     local.tee $9
+     local.tee $10
      call $assembly/indexer/tables/IndexPointer#get
      local.tee $3
      i32.const 20
@@ -2865,30 +2866,38 @@
      end
      i32.const 31
      local.get $4
-     local.get $5
+     local.get $9
      i32.add
      i32.load8_u offset=1
-     local.tee $10
+     local.tee $11
      i32.const 3
      i32.shr_u
      i32.sub
      local.get $3
      i32.add
-     local.tee $11
-     local.get $11
+     local.tee $12
      i32.load8_u
+     local.tee $5
      i32.const 1
-     local.get $10
+     local.get $11
      i32.const 7
      i32.and
      i32.shl
      i32.const 255
      i32.and
-     i32.or
-     i32.store8
-     local.get $9
-     local.get $3
-     call $assembly/indexer/tables/IndexPointer#set
+     local.tee $11
+     i32.and
+     i32.eqz
+     if
+      local.get $12
+      local.get $5
+      local.get $11
+      i32.or
+      i32.store8
+      local.get $10
+      local.get $3
+      call $assembly/indexer/tables/IndexPointer#set
+     end
      local.get $4
      i32.const 1
      i32.add
