@@ -2967,6 +2967,7 @@
        call $~lib/arraybuffer/ArrayBuffer#constructor
        local.set $3
       end
+      i32.const 31
       local.get $4
       local.get $9
       i32.add
@@ -2974,16 +2975,17 @@
       local.tee $5
       i32.const 3
       i32.shr_u
+      i32.sub
       local.get $3
       i32.add
       local.tee $11
       local.get $11
       i32.load8_u
-      i32.const 256
+      i32.const 1
       local.get $5
       i32.const 7
       i32.and
-      i32.shr_u
+      i32.shl
       i32.const 255
       i32.and
       i32.const -1

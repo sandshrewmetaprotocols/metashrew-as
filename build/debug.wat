@@ -4615,27 +4615,31 @@
      i32.add
      i32.load8_u
      local.set $byte
-     i32.const 256
+     i32.const 1
      local.get $byte
      i32.const 8
      i32.rem_u
-     i32.shr_u
+     i32.shl
      i32.const 255
      i32.and
      i32.const -1
      i32.xor
      local.get $newMask
+     i32.const 31
      local.get $byte
      i32.const 8
      i32.div_u
+     i32.sub
      i32.add
      i32.load8_u
      i32.and
      local.set $newMaskByte
      local.get $newMask
+     i32.const 31
      local.get $byte
      i32.const 8
      i32.div_u
+     i32.sub
      i32.add
      local.get $newMaskByte
      i32.store8
