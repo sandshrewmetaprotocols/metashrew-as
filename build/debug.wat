@@ -20,6 +20,7 @@
  (import "env" "__get_len" (func $assembly/indexer/index/__get_len (param i32) (result i32)))
  (import "env" "__get" (func $assembly/indexer/index/__get (param i32 i32)))
  (import "env" "__flush" (func $assembly/indexer/index/__flush (param i32)))
+ (import "env" "__log" (func $assembly/utils/logging/__log (param i32)))
  (global $assembly/utils/hex/hexLookupTable i32 (i32.const 32))
  (global $~lib/rt/stub/startOffset (mut i32) (i32.const 0))
  (global $~lib/rt/stub/offset (mut i32) (i32.const 0))
@@ -76,6 +77,8 @@
  (global $assembly/utils/b32/ALPHABET i32 (i32.const 1968))
  (global $assembly/utils/b58/ALPHABET i32 (i32.const 2032))
  (global $assembly/utils/b58/LEADER (mut i32) (i32.const 0))
+ (global $~lib/builtins/u64.MAX_VALUE i64 (i64.const -1))
+ (global $~lib/number/U64.MAX_VALUE i64 (i64.const -1))
  (global $~lib/memory/__heap_base i32 (i32.const 2940))
  (memory $0 1 32768)
  (data $0 (i32.const 12) "\1c\02\00\00\00\00\00\00\00\00\00\00\04\00\00\00\00\02\00\00000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff\00\00\00\00\00\00\00\00\00\00\00\00")
@@ -116,6 +119,7 @@
  (table $0 8 8 funcref)
  (elem $0 (i32.const 1) $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|1 $assembly/utils/rlp/toRLP~anonymous|2 $assembly/utils/rlp/toRLP~anonymous|3)
  (export "_start" (func $assembly/index/_start))
+ (export "test_maskLowerThan" (func $assembly/index/test_maskLowerThan))
  (export "memory" (memory $0))
  (start $~start)
  (func $~lib/rt/stub/maybeGrowMemory (param $newOffset i32)
@@ -6104,6 +6108,521 @@
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/bst/BST<u64>#set
   call $assembly/indexer/index/_flush
+ )
+ (func $assembly/indexer/bst/maskLowerThan (param $v i32) (param $position i32)
+  (local $aPtr i32)
+  (local $bPtr i32)
+  (local $cPtr i32)
+  (local $dPtr i32)
+  local.get $v
+  local.set $aPtr
+  local.get $v
+  i32.const 8
+  i32.add
+  local.set $bPtr
+  local.get $v
+  i32.const 2
+  i32.const 8
+  i32.mul
+  i32.add
+  local.set $cPtr
+  local.get $v
+  i32.const 3
+  i32.const 8
+  i32.mul
+  i32.add
+  local.set $dPtr
+  local.get $position
+  i32.const 255
+  i32.and
+  i32.const 8
+  i32.const 3
+  i32.mul
+  i32.const 8
+  i32.mul
+  i32.ge_u
+  if
+   local.get $dPtr
+   i64.const 1
+   i64.const 256
+   local.get $position
+   i32.const 255
+   i32.and
+   i64.extend_i32_u
+   i64.sub
+   i64.const 8
+   i64.const 3
+   i64.mul
+   i64.const 8
+   i64.mul
+   i64.sub
+   i64.const 1
+   i64.sub
+   i64.shl
+   local.get $dPtr
+   i64.load
+   i64.and
+   call $~lib/polyfills/bswap<u64>
+   i64.const -1
+   i64.xor
+   i64.store
+   return
+  end
+  local.get $position
+  i32.const 255
+  i32.and
+  i32.const 8
+  i32.const 2
+  i32.mul
+  i32.const 8
+  i32.mul
+  i32.ge_u
+  if
+   local.get $dPtr
+   i64.const 0
+   i64.store
+   local.get $cPtr
+   i64.const 1
+   i64.const 192
+   local.get $position
+   i32.const 255
+   i32.and
+   i64.extend_i32_u
+   i64.sub
+   i64.const 8
+   i64.const 2
+   i64.mul
+   i64.const 8
+   i64.mul
+   i64.sub
+   i64.const 1
+   i64.sub
+   i64.shl
+   local.get $cPtr
+   i64.load
+   i64.and
+   call $~lib/polyfills/bswap<u64>
+   i64.const -1
+   i64.xor
+   i64.store
+   return
+  end
+  local.get $position
+  i32.const 255
+  i32.and
+  i32.const 8
+  i32.const 8
+  i32.mul
+  i32.ge_u
+  if
+   local.get $dPtr
+   i64.const 0
+   i64.store
+   local.get $cPtr
+   i64.const 0
+   i64.store
+   local.get $bPtr
+   i64.const 1
+   i64.const 128
+   local.get $position
+   i32.const 255
+   i32.and
+   i64.extend_i32_u
+   i64.sub
+   i64.const 8
+   i64.const 8
+   i64.mul
+   i64.sub
+   i64.shl
+   i64.const 1
+   i64.sub
+   local.get $bPtr
+   i64.load
+   i64.and
+   call $~lib/polyfills/bswap<u64>
+   i64.const -1
+   i64.xor
+   i64.store
+   return
+  end
+  local.get $dPtr
+  i64.const 0
+  i64.store
+  local.get $cPtr
+  i64.const 0
+  i64.store
+  local.get $bPtr
+  i64.const 0
+  i64.store
+  local.get $aPtr
+  i64.const 1
+  i64.const 64
+  local.get $position
+  i32.const 255
+  i32.and
+  i64.extend_i32_u
+  i64.sub
+  i64.shl
+  i64.const 1
+  i64.sub
+  local.get $aPtr
+  i64.load
+  i64.and
+  call $~lib/polyfills/bswap<u64>
+  i64.const -1
+  i64.xor
+  i64.store
+ )
+ (func $assembly/utils/hex/encodeHexUTF8 (param $start i32) (param $len i32) (result i32)
+  (local $result i32)
+  (local $i i32)
+  i32.const 0
+  i32.const 2
+  local.get $len
+  i32.const 2
+  i32.mul
+  i32.add
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.set $result
+  local.get $result
+  i32.const 30768
+  i32.store16
+  i32.const 0
+  local.set $i
+  loop $for-loop|0
+   local.get $i
+   local.get $len
+   i32.lt_u
+   if
+    i32.const 2
+    local.get $result
+    i32.add
+    local.get $i
+    i32.const 2
+    i32.mul
+    i32.add
+    global.get $assembly/utils/hex/hexLookupTable
+    i32.const 2
+    local.get $start
+    local.get $i
+    i32.add
+    i32.load8_u
+    i32.mul
+    i32.add
+    i32.load16_u
+    i32.store16
+    local.get $i
+    i32.const 1
+    i32.add
+    local.set $i
+    br $for-loop|0
+   end
+  end
+  local.get $result
+  return
+ )
+ (func $~lib/string/String.UTF8.decodeUnsafe (param $buf i32) (param $len i32) (param $nullTerminated i32) (result i32)
+  (local $bufOff i32)
+  (local $bufEnd i32)
+  (local $str i32)
+  (local $strOff i32)
+  (local $u0 i32)
+  (local $u1 i32)
+  (local $u2 i32)
+  (local $lo i32)
+  (local $hi i32)
+  local.get $buf
+  local.set $bufOff
+  local.get $buf
+  local.get $len
+  i32.add
+  local.set $bufEnd
+  local.get $bufEnd
+  local.get $bufOff
+  i32.ge_u
+  i32.eqz
+  if
+   i32.const 0
+   i32.const 1632
+   i32.const 770
+   i32.const 7
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $len
+  i32.const 1
+  i32.shl
+  i32.const 2
+  call $~lib/rt/stub/__new
+  local.set $str
+  local.get $str
+  local.set $strOff
+  block $while-break|0
+   loop $while-continue|0
+    local.get $bufOff
+    local.get $bufEnd
+    i32.lt_u
+    if
+     local.get $bufOff
+     i32.load8_u
+     local.set $u0
+     local.get $bufOff
+     i32.const 1
+     i32.add
+     local.set $bufOff
+     local.get $u0
+     i32.const 128
+     i32.and
+     i32.eqz
+     if
+      local.get $nullTerminated
+      local.get $u0
+      i32.eqz
+      i32.and
+      if
+       br $while-break|0
+      end
+      local.get $strOff
+      local.get $u0
+      i32.store16
+     else
+      local.get $bufEnd
+      local.get $bufOff
+      i32.eq
+      if
+       br $while-break|0
+      end
+      local.get $bufOff
+      i32.load8_u
+      i32.const 63
+      i32.and
+      local.set $u1
+      local.get $bufOff
+      i32.const 1
+      i32.add
+      local.set $bufOff
+      local.get $u0
+      i32.const 224
+      i32.and
+      i32.const 192
+      i32.eq
+      if
+       local.get $strOff
+       local.get $u0
+       i32.const 31
+       i32.and
+       i32.const 6
+       i32.shl
+       local.get $u1
+       i32.or
+       i32.store16
+      else
+       local.get $bufEnd
+       local.get $bufOff
+       i32.eq
+       if
+        br $while-break|0
+       end
+       local.get $bufOff
+       i32.load8_u
+       i32.const 63
+       i32.and
+       local.set $u2
+       local.get $bufOff
+       i32.const 1
+       i32.add
+       local.set $bufOff
+       local.get $u0
+       i32.const 240
+       i32.and
+       i32.const 224
+       i32.eq
+       if
+        local.get $u0
+        i32.const 15
+        i32.and
+        i32.const 12
+        i32.shl
+        local.get $u1
+        i32.const 6
+        i32.shl
+        i32.or
+        local.get $u2
+        i32.or
+        local.set $u0
+       else
+        local.get $bufEnd
+        local.get $bufOff
+        i32.eq
+        if
+         br $while-break|0
+        end
+        local.get $u0
+        i32.const 7
+        i32.and
+        i32.const 18
+        i32.shl
+        local.get $u1
+        i32.const 12
+        i32.shl
+        i32.or
+        local.get $u2
+        i32.const 6
+        i32.shl
+        i32.or
+        local.get $bufOff
+        i32.load8_u
+        i32.const 63
+        i32.and
+        i32.or
+        local.set $u0
+        local.get $bufOff
+        i32.const 1
+        i32.add
+        local.set $bufOff
+       end
+       local.get $u0
+       i32.const 65536
+       i32.lt_u
+       if
+        local.get $strOff
+        local.get $u0
+        i32.store16
+       else
+        local.get $u0
+        i32.const 65536
+        i32.sub
+        local.set $u0
+        local.get $u0
+        i32.const 10
+        i32.shr_u
+        i32.const 55296
+        i32.or
+        local.set $lo
+        local.get $u0
+        i32.const 1023
+        i32.and
+        i32.const 56320
+        i32.or
+        local.set $hi
+        local.get $strOff
+        local.get $lo
+        local.get $hi
+        i32.const 16
+        i32.shl
+        i32.or
+        i32.store
+        local.get $strOff
+        i32.const 2
+        i32.add
+        local.set $strOff
+       end
+      end
+     end
+     local.get $strOff
+     i32.const 2
+     i32.add
+     local.set $strOff
+     br $while-continue|0
+    end
+   end
+  end
+  local.get $str
+  local.get $strOff
+  local.get $str
+  i32.sub
+  call $~lib/rt/stub/__renew
+  return
+ )
+ (func $~lib/string/String.UTF8.decode (param $buf i32) (param $nullTerminated i32) (result i32)
+  local.get $buf
+  local.get $buf
+  call $~lib/arraybuffer/ArrayBuffer#get:byteLength
+  local.get $nullTerminated
+  call $~lib/string/String.UTF8.decodeUnsafe
+  return
+ )
+ (func $assembly/utils/hex/encodeHex (param $start i32) (param $len i32) (result i32)
+  local.get $start
+  local.get $len
+  call $assembly/utils/hex/encodeHexUTF8
+  i32.const 0
+  call $~lib/string/String.UTF8.decode
+  return
+ )
+ (func $assembly/utils/box/Box#toHexString (param $this i32) (result i32)
+  local.get $this
+  call $assembly/utils/box/Box#get:start
+  local.get $this
+  call $assembly/utils/box/Box#get:len
+  call $assembly/utils/hex/encodeHex
+  return
+ )
+ (func $assembly/utils/logging/Console#log (param $this i32) (param $v i32)
+  local.get $v
+  i32.const 1
+  i32.const 2
+  global.set $~argumentsLength
+  i32.const 0
+  call $~lib/string/String.UTF8.encode@varargs
+  call $assembly/utils/logging/__log
+ )
+ (func $assembly/index/test_maskLowerThan
+  (local $data i32)
+  i32.const 0
+  i32.const 32
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.set $data
+  local.get $data
+  global.get $~lib/number/U64.MAX_VALUE
+  i64.store
+  local.get $data
+  i32.const 8
+  i32.add
+  global.get $~lib/number/U64.MAX_VALUE
+  i64.store
+  local.get $data
+  i32.const 16
+  i32.add
+  global.get $~lib/number/U64.MAX_VALUE
+  i64.store
+  local.get $data
+  i32.const 24
+  i32.add
+  global.get $~lib/number/U64.MAX_VALUE
+  i64.store
+  local.get $data
+  i32.const 255
+  call $assembly/indexer/bst/maskLowerThan
+  global.get $assembly/utils/logging/console
+  local.get $data
+  call $assembly/utils/box/Box.from
+  call $assembly/utils/box/Box#toHexString
+  call $assembly/utils/logging/Console#log
+  local.get $data
+  i32.const 190
+  call $assembly/indexer/bst/maskLowerThan
+  global.get $assembly/utils/logging/console
+  local.get $data
+  call $assembly/utils/box/Box.from
+  call $assembly/utils/box/Box#toHexString
+  call $assembly/utils/logging/Console#log
+  local.get $data
+  i32.const 100
+  call $assembly/indexer/bst/maskLowerThan
+  global.get $assembly/utils/logging/console
+  local.get $data
+  call $assembly/utils/box/Box.from
+  call $assembly/utils/box/Box#toHexString
+  call $assembly/utils/logging/Console#log
+  local.get $data
+  i32.const 32
+  call $assembly/indexer/bst/maskLowerThan
+  global.get $assembly/utils/logging/console
+  local.get $data
+  call $assembly/utils/box/Box.from
+  call $assembly/utils/box/Box#toHexString
+  call $assembly/utils/logging/Console#log
  )
  (func $~start
   call $start:assembly/index

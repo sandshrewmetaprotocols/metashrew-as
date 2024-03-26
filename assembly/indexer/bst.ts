@@ -3,30 +3,30 @@ import { memcpy } from "../utils/memcpy";
 import { console } from "../utils/logging";
 import { Box } from "../utils/box";
 
-export function maskLowerThan(v: ArrayBuffer, position: uint8): void {
+export function maskLowerThan(v: ArrayBuffer, position: u8): void {
   const aPtr: usize = changetype<usize>(v);
   const bPtr: usize = changetype<usize>(v) + sizeof<u64>();
   const cPtr: usize = changetype<usize>(v) + 2*sizeof<u64>();
   const dPtr: usize = changetype<usize>(v) + 3*sizeof<u64>();
   if (position >= sizeof<u64>()*3*8) {
-    store<u64>(dPtr, bswap<u64>((<u64>0x1 << ((256 - position) - sizeof<u64>()*3*8)) & load<u64>(dPtr)));
+    store<u64>(dPtr, ~bswap<u64>((<u64>0x1 << ((256 - position) - sizeof<u64>()*3*8) - 1) & load<u64>(dPtr)));
     return;
   } 
   if (position >= sizeof<u64>()*2*8) {
     store<u64>(dPtr, <u64>0);
-    store<u64>(cPtr, bswap<u64>((<u64>0x1 << ((192 - position) - sizeof<u64>()*2*8)) & load<u64>(cPtr)));
+    store<u64>(cPtr, ~bswap<u64>((<u64>0x1 << ((192 - position) - sizeof<u64>()*2*8) - 1) & load<u64>(cPtr)));
     return;
   }
   if (position >= sizeof<u64>()*8) {
     store<u64>(dPtr, <u64>0);
     store<u64>(cPtr, <u64>0);
-    store<u64>(bPtr, bswap<u64>((<u64>0x1 << ((128 - position) - sizeof<u64>()*8)) & load<u64>(bPtr)));
+    store<u64>(bPtr, ~bswap<u64>(((<u64>0x1 << ((128 - position) - sizeof<u64>()*8)) - 1) & load<u64>(bPtr)));
     return;
   }
   store<u64>(dPtr, <u64>0);
   store<u64>(cPtr, <u64>0);
   store<u64>(bPtr, <u64>0);
-  store<u64>(aPtr, bswap<u64>((<u64>0x1 << ((64 - position))) & load<u64>(aPtr)));
+  store<u64>(aPtr, ~bswap<u64>(((<u64>0x1 << ((64 - position))) - 1) & load<u64>(aPtr)));
 }
 
 export function binarySearchU256(v: ArrayBuffer, forHighest: bool): i32 {

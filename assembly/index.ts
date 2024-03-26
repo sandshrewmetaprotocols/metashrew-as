@@ -16,7 +16,7 @@ import { console } from "./utils/logging";
 import { abort } from "./utils/abort";
 import { Block } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
-import { BST } from "./indexer/bst";
+import { BST, maskLowerThan } from "./indexer/bst";
 import { IndexPointer } from "./indexer/tables";
 
 
@@ -31,4 +31,22 @@ export function _start(): void {
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
   _flush();
+}
+
+export function test_maskLowerThan(): void {
+  const data = new ArrayBuffer(32);
+  store<u64>(changetype<usize>(data), U64.MAX_VALUE);
+  store<u64>(changetype<usize>(data) + 8, U64.MAX_VALUE);
+  store<u64>(changetype<usize>(data) + 16, U64.MAX_VALUE);
+  store<u64>(changetype<usize>(data) + 24, U64.MAX_VALUE);
+  maskLowerThan(data, <u8>255);
+  console.log(Box.from(data).toHexString());
+  maskLowerThan(data, <u8>190);
+  console.log(Box.from(data).toHexString());
+  maskLowerThan(data, <u8>100);
+  console.log(Box.from(data).toHexString());
+  maskLowerThan(data, <u8>32);
+  console.log(Box.from(data).toHexString());
+
+
 }
