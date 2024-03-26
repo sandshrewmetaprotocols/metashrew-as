@@ -43,10 +43,10 @@ export class IndexPointer {
   setValue<T>(v: T): void {
     const value = new ArrayBuffer(sizeof<T>());
     store<T>(changetype<usize>(value), v);
-    set(this.unwrap(), value);
+    this.set(value);
   }
   set(v: ArrayBuffer): void {
-    set(this.unwrap(), v);
+    set(Box.from(this.unwrap()).toArrayBuffer(), v);
   }
   get(): ArrayBuffer {
     return get(this.unwrap());

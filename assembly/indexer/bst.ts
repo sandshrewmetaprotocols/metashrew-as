@@ -16,7 +16,7 @@ export class BST<K> {
   markPath(key: K): void {
     const keyBytes = new ArrayBuffer(sizeof<K>());
     store<K>(changetype<usize>(keyBytes), bswap<K>(key));
-    for (let i = 0; i < sizeof<K>(); i++) {
+    for (let i = 0; i < sizeof<K>() - 1; i++) {
       const partialKey = new ArrayBuffer(i);
       memcpy(changetype<usize>(partialKey), changetype<usize>(keyBytes), i);
       const ptr = this.getMaskPointer(partialKey);
@@ -26,7 +26,6 @@ export class BST<K> {
 //      const isSet = (load<u8>(changetype<usize>(newMask) + (byte / 8)) & (((0x100 as u32) >> (byte % 8)) & 0xff) as u8) !== 0
  //     if (!isSet) {
         store<u8>(changetype<usize>(newMask) + (31 - <usize>(byte / 8)), (((0x01 as u32) << (byte % 8)) & 0xff) | load<u8>(changetype<usize>(newMask) + (31 - <usize>(byte / 8))))
-        console.log(Box.from(newMask).toHexString());
 	ptr.set(newMask);
   //    }
     }
