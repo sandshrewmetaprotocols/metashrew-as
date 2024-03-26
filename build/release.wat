@@ -81,17 +81,19 @@
  (data $27 (i32.const 3692) ",")
  (data $27.1 (i32.const 3704) "\02\00\00\00\16\00\00\00~\00l\00i\00b\00/\00m\00a\00p\00.\00t\00s")
  (data $28 (i32.const 3740) "\1c")
- (data $28.1 (i32.const 3752) "\02\00\00\00\n\00\00\00t\00e\00s\00t\002")
+ (data $28.1 (i32.const 3752) "\02\00\00\00\n\00\00\00t\00e\00s\00t\003")
  (data $29 (i32.const 3772) "\1c")
- (data $29.1 (i32.const 3784) "\1d\00\00\00\08\00\00\00\03")
+ (data $29.1 (i32.const 3784) "\02\00\00\00\n\00\00\00t\00e\00s\00t\002")
  (data $30 (i32.const 3804) "\1c")
- (data $30.1 (i32.const 3816) "\1f\00\00\00\08\00\00\00\04")
+ (data $30.1 (i32.const 3816) "\1d\00\00\00\08\00\00\00\03")
  (data $31 (i32.const 3836) "\1c")
- (data $31.1 (i32.const 3848) " \00\00\00\08\00\00\00\05")
+ (data $31.1 (i32.const 3848) "\1f\00\00\00\08\00\00\00\04")
  (data $32 (i32.const 3868) "\1c")
- (data $32.1 (i32.const 3880) "!\00\00\00\08\00\00\00\06")
+ (data $32.1 (i32.const 3880) " \00\00\00\08\00\00\00\05")
  (data $33 (i32.const 3900) "\1c")
- (data $33.1 (i32.const 3912) "!\00\00\00\08\00\00\00\07")
+ (data $33.1 (i32.const 3912) "!\00\00\00\08\00\00\00\06")
+ (data $34 (i32.const 3932) "\1c")
+ (data $34.1 (i32.const 3944) "!\00\00\00\08\00\00\00\07")
  (table $0 8 8 funcref)
  (elem $0 (i32.const 1) $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|1 $assembly/utils/rlp/toRLP~anonymous|2 $assembly/utils/rlp/toRLP~anonymous|2)
  (export "_start" (func $assembly/index/_start))
@@ -3147,7 +3149,7 @@
      local.get $9
      local.get $2
      local.get $5
-     i32.const 3824
+     i32.const 3856
      i32.load
      call_indirect (type $8)
      i32.store
@@ -3187,7 +3189,7 @@
      local.get $2
      local.get $3
      local.get $6
-     i32.const 3856
+     i32.const 3888
      i32.load
      call_indirect (type $0)
      local.set $1
@@ -3244,7 +3246,7 @@
       local.get $3
       local.get $4
       local.get $6
-      i32.const 3888
+      i32.const 3920
       i32.load
       call_indirect (type $0)
       local.set $1
@@ -3400,7 +3402,7 @@
       local.get $3
       local.get $4
       local.get $6
-      i32.const 3920
+      i32.const 3952
       i32.load
       call_indirect (type $0)
       local.set $1
@@ -3815,7 +3817,7 @@
     local.get $5
     local.get $1
     local.get $3
-    i32.const 3792
+    i32.const 3824
     i32.load
     call_indirect (type $0)
     local.set $0
@@ -3906,15 +3908,22 @@
   i32.const 1
   global.set $~argumentsLength
   local.get $1
-  i64.const 216172782113783808
+  i64.const 196608
   i32.const 3760
+  call $~lib/string/String.UTF8.encode@varargs
+  call $assembly/indexer/bst/BST<u64>#set
+  i32.const 1
+  global.set $~argumentsLength
+  local.get $1
+  i64.const 216172782113783808
+  i32.const 3792
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/bst/BST<u64>#set
   call $assembly/indexer/index/_flush
  )
  (func $~start
   (local $0 i32)
-  i32.const 3932
+  i32.const 3964
   global.set $~lib/rt/stub/offset
   i32.const 0
   i32.const 5

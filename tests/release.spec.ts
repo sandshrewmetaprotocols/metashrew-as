@@ -4,7 +4,7 @@ import fs from "fs-extra";
 import { EventEmitter } from "events";
 
 describe("metashrew index", () => {
-  it("should run __start against ordinal-gensis block", async () => {
+  it("should run __start against ordinal-genesis block", async () => {
     const wasmHex = path.join(__dirname, "..", "build", "release.wasm");
 
     const indexer = new IndexerProgram(

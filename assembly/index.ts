@@ -28,6 +28,7 @@ export function _start(): void {
   const ptr = IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint");
   const bst = BST.at<u64>(IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"));
   bst.set(3, String.UTF8.encode("test"));
+  bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
   _flush();
 }
