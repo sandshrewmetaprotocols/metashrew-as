@@ -1,5 +1,7 @@
 import { Box } from "./box";
 import { memcpy } from "./memcpy";
+import { console } from "./logging";
+import { nullptr } from "./pointer";
 
 export const enum RLPItemType {
   NONE,
@@ -168,13 +170,20 @@ export function toRLP(item: RLPItem): ArrayBuffer {
       },
       0,
     );
+    let result = nullptr<ArrayBuffer>();
     if (length <= 55) {
-      const result = new ArrayBuffer(length + 1);
+      result = new ArrayBuffer(length + 1);
       store<u8>(changetype<usize>(result), <u8>0xc0 + <u8>length);
-      return result;
+      list.reduce<usize>(
+        (r: usize, v: ArrayBuffer, i: i32, ary: Array<ArrayBuffer>) => {
+          memcpy(r, changetype<usize>(v), v.byteLength);
+          return r + <usize>v.byteLength;
+        },
+        changetype<usize>(result) + <usize>1,
+      );
     } else {
       const byteLength = byteLengthForLength(length);
-      const result = new ArrayBuffer(<i32>length + <i32>byteLength + <i32>1);
+      result = new ArrayBuffer(<i32>length + <i32>byteLength + <i32>1);
       store<u8>(changetype<usize>(result), <u8>0xf7 + <u8>byteLength);
       if (byteLength === 1) {
         store<u8>(changetype<usize>(result) + 0x01, length);
@@ -216,8 +225,8 @@ export function toRLP(item: RLPItem): ArrayBuffer {
         },
         changetype<usize>(result) + <usize>1 + <usize>byteLength,
       );
-      return result;
     }
+    return result;
   } else {
     let start: usize = 0;
     let len: i32 = 0;

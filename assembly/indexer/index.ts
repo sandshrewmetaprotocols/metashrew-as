@@ -18,6 +18,7 @@ import { toRLP, RLPItem } from "../utils/rlp";
 import { xxh32 } from "../utils/xxh32";
 import { memcpy } from "../utils/memcpy";
 import { Box } from "../utils/box";
+import { console } from "../utils/logging";
 import {
   IndexPointer
 } from "./tables";
@@ -59,7 +60,6 @@ export function _flush(): void {
 
   }, rlpInput);
   const buffer = toRLP(RLPItem.fromList(rlpInput));
-  //const buffer = new ArrayBuffer(0);
   __flush(buffer);
 }
 

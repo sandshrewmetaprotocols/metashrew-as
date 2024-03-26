@@ -16,6 +16,7 @@ describe("metashrew index", () => {
         ),
       ).buffer,
     );
+    indexer.on('log', (v) => console.log(v));
 
     indexer.setBlock(
       await fs.readFile(path.join(__dirname, "ordinal-genesis.hex"), "utf8")
@@ -23,6 +24,7 @@ describe("metashrew index", () => {
 
     indexer.setBlockHeight(767430);
     const result = await indexer.run("_start");
+    console.log(indexer.kv);
   });
 
 });
