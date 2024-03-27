@@ -5029,30 +5029,35 @@
  )
  (func $assembly/indexer/bst/binarySearchU2 (param $word i32) (param $forHighest i32) (result i32)
   (local $high i32)
+  (local $low i32)
   local.get $word
   i32.const 255
-  i32.and
-  i32.const 0
-  i32.eq
-  if
-   i32.const -1
-   return
-  end
-  local.get $word
-  i32.const 2
   i32.and
   i32.const 1
   i32.const 7
   i32.and
   i32.shr_u
+  i32.const 1
+  i32.and
   local.set $high
+  local.get $word
+  i32.const 1
+  i32.and
+  local.set $low
   local.get $forHighest
   if (result i32)
+   i32.const 1
+  else
    local.get $high
    i32.const 0
    i32.ne
-  else
-   i32.const 0
+   if (result i32)
+    local.get $low
+    i32.const 0
+    i32.eq
+   else
+    i32.const 0
+   end
   end
   if (result i32)
    i32.const 0
@@ -5067,19 +5072,12 @@
   local.get $word
   i32.const 255
   i32.and
-  i32.const 0
-  i32.eq
-  if
-   i32.const -1
-   return
-  end
-  local.get $word
-  i32.const 12
-  i32.and
-  i32.const 4
+  i32.const 2
   i32.const 7
   i32.and
   i32.shr_u
+  i32.const 3
+  i32.and
   local.set $high
   local.get $word
   i32.const 3
@@ -5087,11 +5085,18 @@
   local.set $low
   local.get $forHighest
   if (result i32)
-   local.get $high
-   i32.const 0
-   i32.ne
+   i32.const 1
   else
+   local.get $low
    i32.const 0
+   i32.eq
+   if (result i32)
+    local.get $high
+    i32.const 0
+    i32.ne
+   else
+    i32.const 0
+   end
   end
   if
    local.get $high
@@ -5112,19 +5117,12 @@
   local.get $word
   i32.const 255
   i32.and
-  i32.const 0
-  i32.eq
-  if
-   i32.const -1
-   return
-  end
-  local.get $word
-  i32.const 240
-  i32.and
   i32.const 4
   i32.const 7
   i32.and
   i32.shr_u
+  i32.const 15
+  i32.and
   local.set $high
   local.get $word
   i32.const 15
@@ -5132,11 +5130,18 @@
   local.set $low
   local.get $forHighest
   if (result i32)
-   local.get $high
-   i32.const 0
-   i32.ne
+   i32.const 1
   else
+   local.get $low
    i32.const 0
+   i32.eq
+   if (result i32)
+    local.get $high
+    i32.const 0
+    i32.ne
+   else
+    i32.const 0
+   end
   end
   if
    local.get $high
@@ -5155,15 +5160,6 @@
   (local $low i32)
   (local $high i32)
   local.get $word
-  i32.const 65535
-  i32.and
-  i32.const 0
-  i32.eq
-  if
-   i32.const -1
-   return
-  end
-  local.get $word
   global.get $~lib/number/U8.MAX_VALUE
   i32.and
   local.set $low
@@ -5181,11 +5177,18 @@
   local.set $high
   local.get $forHighest
   if (result i32)
-   local.get $high
-   i32.const 0
-   i32.ne
+   i32.const 1
   else
+   local.get $low
    i32.const 0
+   i32.eq
+   if (result i32)
+    local.get $high
+    i32.const 0
+    i32.ne
+   else
+    i32.const 0
+   end
   end
   if
    local.get $high
@@ -5228,11 +5231,18 @@
   local.set $high
   local.get $forHighest
   if (result i32)
-   local.get $high
-   i32.const 0
-   i32.ne
+   i32.const 1
   else
+   local.get $low
    i32.const 0
+   i32.eq
+   if (result i32)
+    local.get $high
+    i32.const 0
+    i32.ne
+   else
+    i32.const 0
+   end
   end
   if
    local.get $high
@@ -5279,11 +5289,18 @@
   local.set $high
   local.get $forHighest
   if (result i32)
-   local.get $high
-   i32.const 0
-   i32.ne
+   i32.const 1
   else
+   local.get $low
    i32.const 0
+   i32.eq
+   if (result i32)
+    local.get $high
+    i32.const 0
+    i32.ne
+   else
+    i32.const 0
+   end
   end
   if
    local.get $high
@@ -5318,13 +5335,19 @@
    return
   end
   local.get $forHighest
-  i32.eqz
   if (result i32)
    i32.const 1
   else
    local.get $low
    i64.const 0
    i64.eq
+   if (result i32)
+    local.get $high
+    i64.const 0
+    i64.ne
+   else
+    i32.const 0
+   end
   end
   if
    local.get $high
@@ -5393,13 +5416,19 @@
    return
   end
   local.get $forHighest
-  i32.eqz
   if (result i32)
    i32.const 1
   else
-   local.get $right
+   local.get $left
    i64.const 0
-   i64.eq
+   i64.ne
+   if (result i32)
+    local.get $right
+    i64.const 0
+    i64.eq
+   else
+    i32.const 0
+   end
   end
   if
    local.get $leftHigh
@@ -8118,16 +8147,16 @@
  )
  (func $assembly/index/test_binarySearch
   global.get $assembly/utils/logging/console
-  i32.const 32768
+  i32.const -2147221504
   i32.const 0
-  call $assembly/indexer/bst/binarySearchU16
+  call $assembly/indexer/bst/binarySearchU32
   i32.const 10
   call $~lib/number/I32#toString
   call $assembly/utils/logging/Console#log
   global.get $assembly/utils/logging/console
-  i32.const 32768
+  i32.const -2147221504
   i32.const 1
-  call $assembly/indexer/bst/binarySearchU16
+  call $assembly/indexer/bst/binarySearchU32
   i32.const 10
   call $~lib/number/I32#toString
   call $assembly/utils/logging/Console#log

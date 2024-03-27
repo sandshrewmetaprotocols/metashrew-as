@@ -16,7 +16,7 @@ import { console } from "./utils/logging";
 import { abort } from "./utils/abort";
 import { Block } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
-import { BST, binarySearchU64, binarySearchU16, binarySearchU256, maskLowerThan } from "./indexer/bst";
+import { BST, binarySearchU64, binarySearchU32, binarySearchU16, binarySearchU8, binarySearchU256, maskLowerThan } from "./indexer/bst";
 import { IndexPointer } from "./indexer/tables";
 
 
@@ -55,6 +55,6 @@ export function test_maskLowerThan(): void {
 export function test_binarySearch(): void {
 //  const data = new ArrayBuffer(32);
 //  store<u8>(changetype<usize>(data) + , 0x01);
-  console.log(binarySearchU16(<u16>0x8000, false).toString(10));
-  console.log(binarySearchU16(<u16>0x8000, true).toString(10));
+  console.log(binarySearchU32(<u32>0x80040000, false).toString(10));
+  console.log(binarySearchU32(<u32>0x80040000, true).toString(10));
 }
