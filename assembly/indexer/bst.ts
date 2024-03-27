@@ -20,6 +20,23 @@ export function maskLowerThan(v: ArrayBuffer, position: u8): void {
   }
 }
 
+export function maskGreaterThan(v: ArrayBuffer, position: u8): void {
+  const ary = new Array<u64>(4);
+  ary[0] = bswap<u64>(load<u64>(changetype<usize>(v)));
+  ary[1] = bswap<u64>(load<u64>(changetype<usize>(v) + sizeof<u64>()));
+  ary[2] = bswap<u64>(load<u64>(changetype<usize>(v) + 2*sizeof<u64>()));
+  ary[3] = bswap<u64>(load<u64>(changetype<usize>(v) + 3*sizeof<u64>()));
+  const byteSelected = position / 64;
+  const bitSelected = position % 64;
+  ary[byteSelected] = ary[byteSelected] & ~<u64>(((1 << (bitSelected)) - 1) << (64 - bitSelected));
+  for (let i: u8 = 0; i < byteSelected; i++) {
+    ary[i] = 0;
+  }
+  for (let i = 0; i < 4; i++) {
+    store<u64>(changetype<usize>(v) + i*sizeof<u64>(), bswap<u64>(ary[i]));
+  }
+}
+
 export function binarySearchU256(v: ArrayBuffer, forHighest: bool): i32 {
   const leftHigh = bswap<u64>(load<u64>(changetype<usize>(v)));
   const leftLow = bswap<u64>(load<u64>(changetype<usize>(v) + sizeof<u64>()));
@@ -217,6 +234,50 @@ export class BST<K> {
       }
     }
     return ~(0 as K);
+  }
+  seekGreater(start: K): K {
+    const keyBytes = new ArrayBuffer(sizeof<K>());
+    store<K>(changetype<usize>(keyBytes), bswap<K>(start));
+    let partialKey = keyBytes;
+    let symbol: i32 = -1;
+    let i: i32 = sizeof<K>() - 1;
+    let shift: boolean = true;
+    for (; i >= 0; i--) {
+      partialKey = new ArrayBuffer(i);
+      memcpy(
+        changetype<usize>(partialKey),
+        changetype<usize>(keyBytes),
+        sizeof<K>() - 1,
+      );
+      const ptr = this.getMaskPointer(partialKey);
+      const mask = ptr.get();
+      if (mask.byteLength === 0) { continue; }
+      const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
+      if (shift && binarySearchU256(newMask, true) !== 255) {
+        shift = false;
+        const thisByte = load<u8>(changetype<usize>(keyBytes) + <usize>i);
+        maskGreaterThan(newMask, thisByte);
+
+      }
+      symbol = binarySearchU256(newMask, true);
+      if (symbol < 0) break;
+    }
+    if (symbol === -1) return (0 as K);
+    let extendKey = partialKey;
+    i++;
+    for (; i < sizeof<K>(); i++) {
+      let thisKey = new ArrayBuffer(i + 1);
+      memcpy(changetype<usize>(thisKey), changetype<usize>(extendKey), i);
+      store<u8>(changetype<usize>(thisKey) + i, <u8>symbol);
+      extendKey = thisKey;
+      const mask = this.getMaskPointer(thisKey).get();
+      if (mask.byteLength === 0) {
+        return load<K>(changetype<usize>(thisKey));
+      } else {
+        symbol = binarySearchU256(mask, true);
+      }
+    }
+    return (0 as K);
   }
   set(k: K, v: ArrayBuffer): void {
     const key = bswap<K>(k);

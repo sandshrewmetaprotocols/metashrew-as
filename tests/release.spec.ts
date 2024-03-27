@@ -30,9 +30,17 @@ describe("metashrew index", () => {
     const indexer = makeIndexer();
     const result = await indexer.run("test_seekLower");
   });
+  it("test_seekGreater", async () => {
+    const indexer = makeIndexer();
+    const result = await indexer.run("test_seekGreater");
+  });
   it("test_maskLowerThan", async () => {
     const indexer = makeIndexer();
     const result = await indexer.run("test_maskLowerThan");
+  });
+  it("test_maskGreaterThan", async () => {
+    const indexer = makeIndexer();
+    const result = await indexer.run("test_maskGreaterThan");
   });
   it("test_maskLowerThan2", async () => {
     const indexer = makeIndexer();

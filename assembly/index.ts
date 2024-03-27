@@ -16,7 +16,7 @@ import { console } from "./utils/logging";
 import { abort } from "./utils/abort";
 import { Block } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
-import { BST, setBitU256, binarySearchU64, binarySearchU32, binarySearchU16, binarySearchU8, binarySearchU256, maskLowerThan } from "./indexer/bst";
+import { BST, setBitU256, binarySearchU64, binarySearchU32, binarySearchU16, binarySearchU8, binarySearchU256, maskGreaterThan,maskLowerThan } from "./indexer/bst";
 import { IndexPointer } from "./indexer/tables";
 
 
@@ -46,6 +46,19 @@ export function test_seekLower(): void {
   _flush();
 }
 
+export function test_seekGreater(): void {
+  const ptr = IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint");
+  const bst = BST.at<u64>(IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"));
+  bst.set(3, String.UTF8.encode("test"));
+  bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
+  bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
+  console.log("bst.seekGreater(0xffffffffffffffff))");
+  logK<u64>(bst.seekGreater(0xffffffffffffffff));
+  console.log("bst.seekGreater(0x0200000000000000)");
+  logK<u64>(bst.seekGreater(0x0200000000000000));
+  _flush();
+}
+
 export function test_maskLowerThan(): void {
   const data = new ArrayBuffer(32);
   store<u64>(changetype<usize>(data), U64.MAX_VALUE);
@@ -60,22 +73,39 @@ export function test_maskLowerThan(): void {
 
 }
 
+export function test_maskGreaterThan(): void {
+  const data = new ArrayBuffer(32);
+  setBitU256(data, 0);
+  setBitU256(data, 3);
+  console.log("maskGreaterThan((bytes), 3)");
+  console.log(Box.from(data).toHexString());
+  maskGreaterThan(data, 3);
+  console.log(Box.from(data).toHexString());
+
+
+}
+
 export function test_maskLowerThan2(): void {
   const data = new ArrayBuffer(32);
   setBitU256(data, 3);
   setBitU256(data, 0);
   maskLowerThan(data, <u8>4);
-  console.log("maskLowerThan(3)");
-  console.log(Box.from(data).toHexString());
+//  console.log("maskLowerThan(3)");
+//  console.log(Box.from(data).toHexString());
 }
 
 export function test_binarySearch(): void {
   const data = new ArrayBuffer(32);
   store<u8>(changetype<usize>(data) + 9, 0x01);
 }
+
 export function test_binarySearch2(): void {
   const data = new ArrayBuffer(32);
   setBitU256(data, 0);
+  setBitU256(data, 3);
+  //console.log("binarySearch(data, true)");
+  //console.log(Box.from(data).toHexString());
+  //console.log(binarySearchU256(data, false).toString(10));;
 }
 export function test_binarySearch3(): void {
   const data = new ArrayBuffer(32);
