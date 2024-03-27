@@ -34,7 +34,9 @@ export class OutPoint {
       this.index = parsePrimitive<u32>(bytes.sliceFrom(32));
     }
   }
-
+  toArrayBuffer(): ArrayBuffer {
+    return this.bytes;
+  }
   isNull(): boolean {
     return (
       encodeHexFromBuffer(this.txid.toArrayBuffer()) ==

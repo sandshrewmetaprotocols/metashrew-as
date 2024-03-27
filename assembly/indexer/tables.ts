@@ -56,6 +56,21 @@ export class IndexPointer {
   lengthKey(): IndexPointer {
     return this.keyword("/length");
   }
+  length(): u32 {
+    return this.lengthKey().getValue<u32>();
+  }
+  getList(): Array<ArrayBuffer> {
+    const result = new Array<ArrayBuffer>(<i32>this.length());
+    for (let i: i32 = 0; i < result.length; i++) {
+      result[i] = this.selectIndex(i).get();
+    }
+  }
+  getListValues<T>(): Array<T> {
+    const result = new Array<T>(<i32>this.length());
+    for (let i: i32 = 0; i < result.length; i++) {
+      result[i] = this.selectIndex(i).getValue<T>();
+    }
+  }
   extend(): IndexPointer {
     const lengthKey = this.lengthKey();
     const length = lengthKey.getValue<u32>();
