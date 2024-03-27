@@ -1,4 +1,9 @@
-import { CYCLE_EPOCHS, DIFFCHANGE_INTERVAL, primitiveToBuffer, concat } from "../utils";
+import {
+  CYCLE_EPOCHS,
+  DIFFCHANGE_INTERVAL,
+  primitiveToBuffer,
+  concat,
+} from "../utils";
 import { Height } from "./height";
 import { Epoch } from "./epoch";
 import { OutPoint } from "./transaction";
@@ -21,8 +26,9 @@ export class Sat {
   }
 
   public height(): Height {
-    return this.epoch().startingHeight()
-      .add(<u32>(this.epochPosition() / this.epoch().subsidy()))
+    return this.epoch()
+      .startingHeight()
+      .add(<u32>(this.epochPosition() / this.epoch().subsidy()));
   }
   public cycle(): u32 {
     return <u32>(this.epoch().n() / CYCLE_EPOCHS);
@@ -41,25 +47,27 @@ export class Sat {
   }
   public isCommon(): bool {
     let epoch = this.epoch();
-    return (this.n() - epoch.startingSat().n()) % epoch.subsidy() != 0
+    return (this.n() - epoch.startingSat().n()) % epoch.subsidy() != 0;
   }
 
   static LAST(): Sat {
     return new Sat(Sat.SUPPLY - 1);
   }
-
 }
 
 export class SatPoint {
   outpoint: OutPoint;
   offset: u64;
-  
+
   constructor(outpoint: OutPoint, offset: u64) {
     this.outpoint = outpoint;
     this.offset = offset;
   }
 
   toBuffer(): ArrayBuffer {
-    return concat([this.outpoint.toBuffer(), primitiveToBuffer<u64>(this.offset)]);
+    return concat([
+      this.outpoint.toBuffer(),
+      primitiveToBuffer<u64>(this.offset),
+    ]);
   }
 }

@@ -9,4 +9,3 @@ const OP_ENDIF = 0x68;
 const OP_VERIFY = 0x69;
 const OP_RETURN = 0x6a;
 const OP_1 = 0x51;
-

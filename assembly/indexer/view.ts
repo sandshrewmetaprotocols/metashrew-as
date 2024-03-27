@@ -5,4 +5,3 @@ import { input } from "./input";
 export function blockbyheight(): ArrayBuffer {
   return get(Index.keyFor(HEIGHT_TO_BLOCK_HEADER, input()));
 }
-

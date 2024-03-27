@@ -16,15 +16,18 @@ import { console } from "./utils/logging";
 import { abort } from "./utils/abort";
 import { Block } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
-import { BST, binarySearchU64, binarySearchU32, binarySearchU16, binarySearchU8, binarySearchU256, maskLowerThan } from "./indexer/bst";
+import { BST, setBitU256, binarySearchU64, binarySearchU32, binarySearchU16, binarySearchU8, binarySearchU256, maskLowerThan } from "./indexer/bst";
 import { IndexPointer } from "./indexer/tables";
 
 
-export function _start(): void {
+export function test_parseBlock(): void {
   const data = input();
   const box = Box.from(data);
   const height = parsePrimitive<u32>(box);
   const block = new Block(box);
+}
+
+export function test_seekLower(): void {
   const ptr = IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint");
   const bst = BST.at<u64>(IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"));
   bst.set(3, String.UTF8.encode("test"));
@@ -52,9 +55,14 @@ export function test_maskLowerThan(): void {
 
 }
 
+export function test_maskLowerThan2(): void {
+  const data = new ArrayBuffer(32);
+  setBitU256(data, 3);
+  maskLowerThan(data, <u8>4);
+  console.log(Box.from(data).toHexString());
+}
+
 export function test_binarySearch(): void {
   const data = new ArrayBuffer(32);
   store<u8>(changetype<usize>(data) + 9, 0x01);
-  console.log(binarySearchU256(data, false).toString(10));
-  console.log(binarySearchU256(data, true).toString(10));
 }

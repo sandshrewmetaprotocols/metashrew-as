@@ -28,7 +28,9 @@ export class IndexPointer {
     return changetype<ArrayBuffer>(this);
   }
   select(key: ArrayBuffer): IndexPointer {
-    return IndexPointer.wrap(Box.concat([ Box.from(this.unwrap()), Box.from(key) ]));
+    return IndexPointer.wrap(
+      Box.concat([Box.from(this.unwrap()), Box.from(key)]),
+    );
   }
   keyword(key: string): IndexPointer {
     return this.select(String.UTF8.encode(key));

@@ -30,7 +30,7 @@ export class Box {
 
   shift(): Box {
     if (this.len == 0) {
-      return nullptr<Box>(); 
+      return nullptr<Box>();
     }
     this.start = this.start + 1;
     this.len = this.len - 1;
@@ -102,7 +102,6 @@ export class RCBox extends Box {
     this.buffer = v;
   }
   static from(v: ArrayBuffer): RCBox {
-    
     return new RCBox(v);
   }
   static fromTyped<T>(v: T): RCBox {

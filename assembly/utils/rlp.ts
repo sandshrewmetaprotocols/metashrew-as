@@ -161,10 +161,9 @@ export function toRLP(item: RLPItem): ArrayBuffer {
       .asList()
       .map<ArrayBuffer>(
         (v: RLPItem, i: i32, ary: Array<RLPItem>): ArrayBuffer => {
-
           const item = toRLP(v);
 
-	  return item;
+          return item;
         },
       );
     const length = list.reduce<i32>(

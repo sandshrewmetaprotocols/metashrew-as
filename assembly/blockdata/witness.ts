@@ -6,7 +6,7 @@ export class WitnessPart {
   public bytes: Box;
   public firstByte: u8;
   public isScript: boolean;
-  public taprootAnnex: boolean
+  public taprootAnnex: boolean;
 
   constructor(data: Box) {
     this.bytes = parseLenThenBytes(data);
@@ -23,7 +23,7 @@ export class WitnessPart {
         this.isScript = false;
         this.taprootAnnex = false;
         break;
-      default: 
+      default:
         this.taprootAnnex = false;
         this.isScript = true;
     }
@@ -47,27 +47,27 @@ export class Witness {
       this.parts[i] = new WitnessPart(data);
     }
     const tail: usize = data.start;
-    this.bytes = toPointer(head).toBox(tail - head)
+    this.bytes = toPointer(head).toBox(tail - head);
   }
 
-  taprootAnnex(): boolean { 
+  taprootAnnex(): boolean {
     if (this.parts.length >= 2) {
       return this.parts[this.parts.length - 1].taprootAnnex;
     }
     return false;
   }
 
-  // get tapscript following rules in BIP341 
+  // get tapscript following rules in BIP341
   // [ref](https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki)
   tapscript(): Box {
     var len = this.parts.length;
     var script: Box = nullptr<Box>();
-    // fail if witness stack is empty 
+    // fail if witness stack is empty
     if (len == 0) {
-      return nullptr<Box>(); 
+      return nullptr<Box>();
     }
 
-    if (len >= 2 ) {
+    if (len >= 2) {
       let m: Array<WitnessPart>;
       // check for taproot annex
       if (this.parts[len - 1].taprootAnnex) {

@@ -11,7 +11,6 @@ export class Field {
   }
 }
 
-
 export class Inscription {
   bytes: Box;
   public fields: Array<Field>;
@@ -25,7 +24,7 @@ export class Inscription {
     let tail = view.start + len;
 
     // find the inscription
-    while (head < (tail - 1)) {
+    while (head < tail - 1) {
       if (load<u8>(head) == 0x00 && load<u8>(head + 1) == 0x63) {
         head += 2;
         len -= 2;
@@ -46,14 +45,19 @@ export class Inscription {
     if (String.UTF8.decode(ordTag.toArrayBuffer()) !== "ord") {
       return this;
     }
-    
 
     let tag: usize;
     let content = new Array<ArrayBuffer>();
-    for (let i = parsePushOp(inscBox); inscBox.len > 0; i = parsePushOp(inscBox)) {
+    for (
+      let i = parsePushOp(inscBox);
+      inscBox.len > 0;
+      i = parsePushOp(inscBox)
+    ) {
       if (decodeTag(i) >= 0x01 && decodeTag(i) <= 0x0b) {
-          tag = decodeTag(i);
-          this.fields.push(new Field(<u32>tag, parsePushOp(inscBox).toArrayBuffer()));
+        tag = decodeTag(i);
+        this.fields.push(
+          new Field(<u32>tag, parsePushOp(inscBox).toArrayBuffer()),
+        );
       } else if (decodeTag(i) == 0x00) {
         break;
       }
@@ -67,12 +71,13 @@ export class Inscription {
     // fill out content body
     let contentBody: ArrayBuffer = concat(content);
     this.fields.push(new Field(<u32>0x00, contentBody));
-
-
   }
   toArrayBuffer(): ArrayBuffer {
-    return this.fields.reduce((r: ArrayBuffer, v: Field, i: i32, ary: Array<Field>) => {
-      return Box.concat([Box.from(r), Box.from(v.data)])
-    }, new ArrayBuffer(0))
+    return this.fields.reduce(
+      (r: ArrayBuffer, v: Field, i: i32, ary: Array<Field>) => {
+        return Box.concat([Box.from(r), Box.from(v.data)]);
+      },
+      new ArrayBuffer(0),
+    );
   }
 }

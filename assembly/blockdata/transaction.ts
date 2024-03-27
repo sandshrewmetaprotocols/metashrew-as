@@ -1,5 +1,15 @@
 import { console } from "../utils/logging";
-import { reverse, parsePrimitive, parseVarInt, parseLenThenBytes, parseBytes, isPushOp, decodeTag, concat, primitiveToBuffer } from "../utils/utils";
+import {
+  reverse,
+  parsePrimitive,
+  parseVarInt,
+  parseLenThenBytes,
+  parseBytes,
+  isPushOp,
+  decodeTag,
+  concat,
+  primitiveToBuffer,
+} from "../utils/utils";
 import { Box } from "../utils/box";
 import { encodeHex, encodeHexFromBuffer } from "../utils/hex";
 import { sha256d, sha256 } from "../utils/sha256";
@@ -20,13 +30,16 @@ export class OutPoint {
     this.index = 0;
     if (bytes.len == 36) {
       this.bytes = bytes;
-      this.txid = bytes.sliceFrom(0).shrinkBack(<usize>(4));
+      this.txid = bytes.sliceFrom(0).shrinkBack(<usize>4);
       this.index = parsePrimitive<u32>(bytes.sliceFrom(32));
     }
   }
 
   isNull(): boolean {
-    return encodeHexFromBuffer(this.txid.toArrayBuffer()) == "0x0000000000000000000000000000000000000000000000000000000000000000"
+    return (
+      encodeHexFromBuffer(this.txid.toArrayBuffer()) ==
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+    );
   }
 
   static from(txid: ArrayBuffer, offset: u32): OutPoint {
@@ -58,7 +71,7 @@ export class Input {
     this.sequence = parsePrimitive<u32>(data);
     this.witness = nullptr<Witness>();
     const tail = data.start;
-    this.bytes = toPointer(head).toBox(tail - head)
+    this.bytes = toPointer(head).toBox(tail - head);
   }
 
   /**
@@ -68,9 +81,9 @@ export class Input {
   previousOutput(): OutPoint {
     let txid = toPointer(this.hash.start).toBox(<usize>32);
     let vout = toPointer(this.hash.start + 32).toBox(<usize>4);
-    
+
     let correctedTxid = reverse(txid.toArrayBuffer());
-    
+
     // let bytes = toPointer(this.hash.start).toBox(<usize>36);
     return OutPoint.from(correctedTxid, parsePrimitive<u32>(vout));
   }
@@ -92,7 +105,7 @@ export class Output {
     this.value = parsePrimitive<u64>(data);
     this.script = parseLenThenBytes(data);
     const tail = data.start;
-    this.bytes = toPointer(head).toBox(tail - head)
+    this.bytes = toPointer(head).toBox(tail - head);
     this.segwit = segwit;
   }
 
@@ -100,11 +113,10 @@ export class Output {
    * Returns the address of the output, returns null if the output is not a known or valid address
    * @returns {ArrayBuffer | null} - The address of the output or null if the output is not a known or valid address
    */
-  intoAddress(): ArrayBuffer | null { 
+  intoAddress(): ArrayBuffer | null {
     let scr = Script.from(this.script);
     return Address.from(scr);
   }
-  
 }
 
 export class Transaction {
@@ -141,7 +153,7 @@ export class Transaction {
     let inputLegacyHead = data.start;
     const vinLen = <i32>parseVarInt(data);
     for (let i = 0; i < vinLen; i++) {
-      this.ins[i] = (new Input(data));
+      this.ins[i] = new Input(data);
     }
 
     const voutLen = <i32>parseVarInt(data);
@@ -150,7 +162,9 @@ export class Transaction {
       else this.outs.push(new Output(data));
     }
     let outputLegacyTail = data.start;
-    this.legacyInputOutputBytes = toPointer(inputLegacyHead).toBox(outputLegacyTail - inputLegacyHead);
+    this.legacyInputOutputBytes = toPointer(inputLegacyHead).toBox(
+      outputLegacyTail - inputLegacyHead,
+    );
 
     if (this.flag) {
       let witnessHead = data.start;
@@ -158,12 +172,14 @@ export class Transaction {
         this.ins[i].witness = instantiate<Witness>(data);
       }
       let witnessTail = data.start;
-      this.witnessDataBytes = toPointer(witnessHead).toBox(witnessTail - witnessHead);
+      this.witnessDataBytes = toPointer(witnessHead).toBox(
+        witnessTail - witnessHead,
+      );
     }
 
     this.locktime = parsePrimitive<u32>(data);
     let tail = data.start;
-    this.bytes = toPointer(head).toBox(tail - head)
+    this.bytes = toPointer(head).toBox(tail - head);
 
     // let testbytes = toPointer(head).toBox((tail - head) + 4)
     // console.log("\n\n 4 bytes larger then end => " + encodeHexFromBuffer( testbytes.toArrayBuffer() ));
@@ -172,11 +188,11 @@ export class Transaction {
   legacyBytes(): Array<Box> {
     if (this.flag) {
       let version = toPointer(this.bytes.start).toBox(4);
-      let locktime = toPointer((this.bytes.start + this.bytes.len) - 4).toBox(4);
+      let locktime = toPointer(this.bytes.start + this.bytes.len - 4).toBox(4);
       let result = new Array<Box>();
       result.push(version);
-      result.push(this.legacyInputOutputBytes)
-      result.push(locktime)
+      result.push(this.legacyInputOutputBytes);
+      result.push(locktime);
       return result;
     } else {
       let result = new Array<Box>();
@@ -197,7 +213,7 @@ export class Transaction {
     return Transaction.parseInscriptionsFromTransaction(this);
   }
 
-  static parseInscriptionsFromTransaction (tx: Transaction): Array<Inscription> {
+  static parseInscriptionsFromTransaction(tx: Transaction): Array<Inscription> {
     let insc = new Array<Inscription>();
     let vins = tx.ins;
     let vinLen = tx.ins.length;
@@ -205,17 +221,17 @@ export class Transaction {
     for (let j = 0; j < vinLen; j++) {
       let script = vins[j].witness.tapscript();
       if (script == nullptr<Box>()) continue;
-      let inscription = new Inscription(script)
+      let inscription = new Inscription(script);
       insc.push(inscription);
     }
 
     return insc;
-  };
+  }
 
   static parseTransactionsFromBlock(data: Box): Array<Transaction> {
     const txsLen = parseVarInt(data);
     let result = new Array<Transaction>(<i32>txsLen);
-    for ( let i = 0; i < <i32>txsLen; i++) {
+    for (let i = 0; i < <i32>txsLen; i++) {
       result[i] = new Transaction(data);
     }
     return result;
