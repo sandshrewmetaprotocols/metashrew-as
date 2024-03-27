@@ -34,7 +34,7 @@ export class IndexPointer {
     return this.select(String.UTF8.encode(key));
   }
   getValue<T>(): T {
-    const value = get(this.unwrap());
+    const value = this.get();
     if (value.byteLength === 0) return <T>0;
     const container = new ArrayBuffer(sizeof<T>());
     memcpy(changetype<usize>(container), value, value.byteLength);

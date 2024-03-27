@@ -30,7 +30,7 @@ export function _start(): void {
   bst.set(3, String.UTF8.encode("test"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
-  console.log(bst.seekLower(0x10000000).toString(10));
+  console.log(bst.seekLower(4).toString(10));
   _flush();
 }
 
@@ -53,8 +53,8 @@ export function test_maskLowerThan(): void {
 }
 
 export function test_binarySearch(): void {
-//  const data = new ArrayBuffer(32);
-//  store<u8>(changetype<usize>(data) + , 0x01);
-  console.log(binarySearchU32(<u32>0x80040000, false).toString(10));
-  console.log(binarySearchU32(<u32>0x80040000, true).toString(10));
+  const data = new ArrayBuffer(32);
+  store<u8>(changetype<usize>(data) + 9, 0x01);
+  console.log(binarySearchU256(data, false).toString(10));
+  console.log(binarySearchU256(data, true).toString(10));
 }

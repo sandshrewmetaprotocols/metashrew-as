@@ -30,23 +30,22 @@ export function maskLowerThan(v: ArrayBuffer, position: u8): void {
 }
 
 export function binarySearchU256(v: ArrayBuffer, forHighest: bool): i32 {
-  const leftHigh = bswap<u64>(load<u64>(changetype<usize>(v)))
+  const leftHigh = bswap<u64>(load<u64>(changetype<usize>(v)));
   const leftLow = bswap<u64>(load<u64>(changetype<usize>(v) + sizeof<u64>()));
   const rightHigh = bswap<u64>(load<u64>(changetype<usize>(v) + 16));
   const rightLow = bswap<u64>(load<u64>(changetype<usize>(v) + 24));
   const left = leftHigh | leftLow;
   const right = rightHigh | rightLow;
-  if (left | right === 0) return -1;
-  if (forHighest || (left !== 0 && right === 0)) {
+  if ((left | right) === 0) return -1;
+  if ((forHighest || right === 0) && left !== 0) {
     return binarySearchU128(leftHigh, leftLow, forHighest);
   } else {
-    return sizeof<u64>()*16 + binarySearchU128(rightHigh, rightLow, forHighest);
+    return sizeof<u64>()*2*8 + binarySearchU128(rightHigh, rightLow, forHighest);
   }
 }
 
 export function binarySearchU128(high: u64, low: u64, forHighest: bool): i32 {
-  if (low | high === 0) return -1;
-  if (forHighest || (low === 0 && high !== 0)) {
+  if ((forHighest || low === 0) && high !== 0) {
     return binarySearchU64(high, forHighest);
   } else {
     return sizeof<u64>()*8 + binarySearchU64(low, forHighest);
@@ -54,18 +53,16 @@ export function binarySearchU128(high: u64, low: u64, forHighest: bool): i32 {
 }
 
 export function binarySearchU64(word: u64, forHighest: bool): i32 {
-  if (word === 0) return -1;
   const low = <u32>(word & U32.MAX_VALUE);
   const high = <u32>((word >> (<u64>sizeof<u32>()*8)) & U32.MAX_VALUE);
-  if (forHighest || (low === 0 && high !== 0)) return binarySearchU32(high, forHighest);
-  return sizeof<u32>()*8 +  sizeof<u32>()*8 + binarySearchU32(low, forHighest);
+  if ((forHighest || low === 0) && high !== 0) return binarySearchU32(high, forHighest);
+  return sizeof<u32>()*8 + binarySearchU32(low, forHighest);
 }
 
 export function binarySearchU32(word: u32, forHighest: bool): i32 {
-  if (word === 0) return -1;
   const low: u16 = <u16>(word & U16.MAX_VALUE);
   const high: u16 = <u16>((word >> (<u32>sizeof<u16>()*8)) & U16.MAX_VALUE);
-  if (forHighest || (low === 0 && high !== 0)) {
+  if ((forHighest || low === 0) && high !== 0) {
     return binarySearchU16(high, forHighest);
   } else {
     return sizeof<u16>()*8 + binarySearchU16(low, forHighest);
@@ -75,7 +72,7 @@ export function binarySearchU32(word: u32, forHighest: bool): i32 {
 export function binarySearchU16(word: u16, forHighest: bool): i32 {
   const low: u8 = <u8>(word & U8.MAX_VALUE);
   const high: u8 = <u8>((word >> (<u16>sizeof<u8>()*8)) & U8.MAX_VALUE);
-  if (forHighest || (low === 0 && high !== 0)) {
+  if ((forHighest || low === 0) && high !== 0) {
     return binarySearchU8(high, forHighest);
   } else {
     return sizeof<u8>()*8 + binarySearchU8(low, forHighest);
@@ -85,7 +82,7 @@ export function binarySearchU16(word: u16, forHighest: bool): i32 {
 export function binarySearchU8(word: u8, forHighest: bool): i32 {
   const high = (word >> 4) & 0x0f;
   const low = word & 0x0f;
-  if (forHighest || (low === 0 && high !== 0)) {
+  if ((forHighest || low === 0) && high !== 0) {
     return binarySearchU4(high, forHighest);
   }
   return 4 + binarySearchU4(low, forHighest);
@@ -94,7 +91,7 @@ export function binarySearchU8(word: u8, forHighest: bool): i32 {
 export function binarySearchU4(word: u8, forHighest: bool): i32 {
   const high = (word >> 2) & 0x03;
   const low = word & 0x03;
-  if (forHighest || (low === 0 && high !== 0)) {
+  if ((forHighest || low === 0) && high !== 0) {
     return binarySearchU2(high, forHighest);
   }
   return 2 + binarySearchU2(low, forHighest);
@@ -103,7 +100,7 @@ export function binarySearchU4(word: u8, forHighest: bool): i32 {
 export function binarySearchU2(word: u8, forHighest: bool): i32 {
   const high = (word >> 1) & 0x01;
   const low = word & 0x01;
-  return (forHighest || (high !== 0 && low === 0)) ? 0 : 1;
+  return ((forHighest || low === 0) && high !== 0) ? 0 : 1;
 }
   
 export class BST<K> {
