@@ -35,7 +35,7 @@ export class OutPoint {
     }
   }
   toArrayBuffer(): ArrayBuffer {
-    return this.bytes;
+    return this.bytes.toArrayBuffer();
   }
   isNull(): boolean {
     return (

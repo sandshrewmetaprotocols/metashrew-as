@@ -1,4 +1,5 @@
 import { _flush, input, get, set } from "./index";
+import { memcpy } from "../utils/memcpy";
 import { Box } from "../utils/box";
 
 export class Node {
@@ -39,7 +40,7 @@ export class IndexPointer {
     const value = this.get();
     if (value.byteLength === 0) return <T>0;
     const container = new ArrayBuffer(sizeof<T>());
-    memcpy(changetype<usize>(container), value, value.byteLength);
+    memcpy(changetype<usize>(container), changetype<usize>(value), value.byteLength);
     return load<T>(changetype<usize>(container));
   }
   setValue<T>(v: T): void {
@@ -70,6 +71,7 @@ export class IndexPointer {
     for (let i: i32 = 0; i < result.length; i++) {
       result[i] = this.selectIndex(i).getValue<T>();
     }
+    return result;
   }
   extend(): IndexPointer {
     const lengthKey = this.lengthKey();

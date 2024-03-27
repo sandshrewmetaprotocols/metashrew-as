@@ -61,12 +61,8 @@ export class Block {
   }
 
   // returns the coinbase transaction if there is one
-  coinbase(): Transaction | null {
-    if (this.transactions.length > 0) {
-      return this.transactions[0];
-    } else {
-      return null;
-    }
+  coinbase(): Transaction {
+    return this.transactions[0];
   }
 
   blockhash(): ArrayBuffer {

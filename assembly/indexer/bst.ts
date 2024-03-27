@@ -314,7 +314,7 @@ export class BST<K> {
   }
   nullify(k: K): void {
     const key = bswap<K>(k);
-    const keyBytes = new ArrayBuffer(sizeof<K>());
-    this.ptr.select(keyBytes).set(k, new ArrayBuffer(0));
+    const keyBytes = new ArrayBuffer(sizeof<K>());;
+    this.ptr.select(keyBytes).set(new ArrayBuffer(0));
   }
 }
