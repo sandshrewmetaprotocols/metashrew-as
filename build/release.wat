@@ -2441,7 +2441,7 @@
   i32.add
   i32.load
   local.set $1
-  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$460"
+  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$463"
    loop $while-continue|0
     local.get $1
     if
@@ -2458,7 +2458,7 @@
       local.get $3
       i32.eq
      end
-     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$460"
+     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$463"
      local.get $4
      i32.const -2
      i32.and
@@ -2705,7 +2705,7 @@
   i32.add
   i32.load
   local.set $0
-  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$461"
+  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$464"
    loop $while-continue|0
     local.get $0
     if
@@ -2722,7 +2722,7 @@
       local.get $1
       i32.eq
      end
-     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$461"
+     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$464"
      local.get $2
      i32.const -2
      i32.and
@@ -2793,7 +2793,7 @@
   i32.add
   i32.load
   local.set $0
-  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$457"
+  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$460"
    loop $while-continue|0
     local.get $0
     if
@@ -2810,7 +2810,7 @@
       local.get $2
       i32.eq
      end
-     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$457"
+     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$460"
      local.get $3
      i32.const -2
      i32.and
@@ -2955,10 +2955,14 @@
     if
      local.get $5
      call $~lib/arraybuffer/ArrayBuffer#constructor
-     local.tee $3
-     local.get $6
+     local.set $3
      local.get $5
-     memory.copy
+     if
+      local.get $3
+      local.get $6
+      local.get $5
+      memory.copy
+     end
      local.get $0
      local.get $3
      call $assembly/indexer/bst/BST<u64>#getMaskPointer
@@ -3045,21 +3049,21 @@
    i64.rotr
    i64.store
    i32.const 7
-   local.set $6
+   local.set $5
    loop $for-loop|00
-    local.get $6
+    local.get $5
     i32.const 0
     i32.ge_s
     if
      block $for-break0
-      local.get $6
+      local.get $5
       call $~lib/arraybuffer/ArrayBuffer#constructor
       local.set $3
-      local.get $6
+      local.get $5
       if
        local.get $3
        local.get $8
-       local.get $6
+       local.get $5
        memory.copy
       end
       local.get $0
@@ -3073,72 +3077,83 @@
       i32.load offset=16
       i32.eqz
       if
-       i32.const 8
+       i32.const 32
        call $~lib/arraybuffer/ArrayBuffer#constructor
        local.set $3
       end
-      i32.const 31
-      local.get $6
+      local.get $5
       local.get $8
       i32.add
-      i32.load8_u offset=1
-      local.tee $5
+      i32.load8_u
+      local.tee $6
       i32.const 3
       i32.shr_u
-      i32.sub
       local.get $3
       i32.add
       local.tee $10
-      local.get $10
       i32.load8_u
       i32.const 1
-      local.get $5
+      i32.const 7
+      local.get $6
       i32.const 7
       i32.and
+      i32.sub
+      i32.const 7
+      i32.and
+      local.tee $6
       i32.shl
-      i32.const 255
       i32.and
-      i32.const -1
-      i32.xor
-      i32.and
-      i32.store8
-      i64.const 0
-      local.set $1
-      i32.const 0
-      local.set $5
-      loop $for-loop|1
-       local.get $5
-       i32.const 4
-       i32.lt_s
-       if
-        local.get $1
-        local.get $3
-        local.get $5
-        i32.const 3
-        i32.shl
-        i32.add
-        i64.load
-        i64.or
-        local.set $1
-        local.get $5
-        i32.const 1
-        i32.add
-        local.set $5
-        br $for-loop|1
-       end
+      if
+       local.get $10
+       local.get $10
+       i32.load8_u
+       i32.const -2
+       local.get $6
+       i32.rotl
+       i32.and
+       i32.store8
       end
-      local.get $1
-      i64.const 0
-      i64.ne
-      br_if $for-break0
-      local.get $9
-      i32.const 0
-      call $~lib/arraybuffer/ArrayBuffer#constructor
-      call $assembly/indexer/tables/IndexPointer#set
-      local.get $6
+      block $__inlined_func$assembly/indexer/bst/isZeroU256$254 (result i32)
+       i32.const 0
+       local.set $6
+       loop $for-loop|001
+        local.get $6
+        i32.const 4
+        i32.lt_s
+        if
+         i32.const 0
+         local.get $3
+         i32.const -64
+         i32.sub
+         i64.load
+         i64.const 0
+         i64.ne
+         br_if $__inlined_func$assembly/indexer/bst/isZeroU256$254
+         drop
+         local.get $6
+         i32.const 1
+         i32.add
+         local.set $6
+         br $for-loop|001
+        end
+       end
+       i32.const 1
+      end
+      if
+       local.get $9
+       i32.const 0
+       call $~lib/arraybuffer/ArrayBuffer#constructor
+       call $assembly/indexer/tables/IndexPointer#set
+       br $for-break0
+      else
+       local.get $9
+       local.get $3
+       call $assembly/indexer/tables/IndexPointer#set
+      end
+      local.get $5
       i32.const 1
       i32.sub
-      local.set $6
+      local.set $5
       br $for-loop|00
      end
     end
@@ -4495,24 +4510,24 @@
      end
     end
    else
-    block $__inlined_func$assembly/utils/rlp/byteLengthForLength$326 (result i32)
+    block $__inlined_func$assembly/utils/rlp/byteLengthForLength$329 (result i32)
      i32.const 4
      local.get $1
      i32.const 24
      i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$326
+     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$329
      drop
      i32.const 3
      local.get $1
      i32.const 16
      i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$326
+     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$329
      drop
      i32.const 2
      local.get $1
      i32.const 8
      i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$326
+     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$329
      drop
      i32.const 1
     end
@@ -4724,24 +4739,24 @@
     memory.copy
    else
     local.get $1
-    block $__inlined_func$assembly/utils/rlp/byteLengthForLength$332 (result i32)
+    block $__inlined_func$assembly/utils/rlp/byteLengthForLength$335 (result i32)
      i32.const 4
      local.get $1
      i32.const 24
      i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$332
+     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$335
      drop
      i32.const 3
      local.get $1
      i32.const 16
      i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$332
+     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$335
      drop
      i32.const 2
      local.get $1
      i32.const 8
      i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$332
+     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$335
      drop
      i32.const 1
     end

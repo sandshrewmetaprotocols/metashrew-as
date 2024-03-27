@@ -4563,6 +4563,106 @@
   call $assembly/utils/box/Box#toArrayBuffer
   return
  )
+ (func $assembly/indexer/bst/isSetU256 (param $mask i32) (param $position i32) (result i32)
+  (local $bytePosition i32)
+  (local $bitPosition i32)
+  (local $existingByte i32)
+  (local $bitMask i32)
+  local.get $position
+  i32.const 8
+  i32.div_s
+  local.set $bytePosition
+  local.get $position
+  i32.const 8
+  i32.rem_s
+  local.set $bitPosition
+  local.get $mask
+  local.get $bytePosition
+  i32.add
+  i32.load8_u
+  local.set $existingByte
+  i32.const 1
+  i32.const 7
+  local.get $bitPosition
+  i32.sub
+  i32.const 7
+  i32.and
+  i32.shl
+  local.set $bitMask
+  local.get $bitMask
+  local.get $existingByte
+  i32.and
+  i32.const 0
+  i32.ne
+  return
+ )
+ (func $assembly/indexer/bst/unsetBitU256 (param $mask i32) (param $position i32)
+  (local $bytePosition i32)
+  (local $bitPosition i32)
+  (local $existingByte i32)
+  (local $bitMask i32)
+  local.get $position
+  i32.const 8
+  i32.div_s
+  local.set $bytePosition
+  local.get $position
+  i32.const 8
+  i32.rem_s
+  local.set $bitPosition
+  local.get $mask
+  local.get $bytePosition
+  i32.add
+  i32.load8_u
+  local.set $existingByte
+  i32.const 1
+  i32.const 7
+  local.get $bitPosition
+  i32.sub
+  i32.const 7
+  i32.and
+  i32.shl
+  i32.const -1
+  i32.xor
+  local.set $bitMask
+  local.get $mask
+  local.get $bytePosition
+  i32.add
+  local.get $existingByte
+  local.get $bitMask
+  i32.and
+  i32.store8
+ )
+ (func $assembly/indexer/bst/isZeroU256 (param $mask i32) (result i32)
+  (local $i i32)
+  i32.const 0
+  local.set $i
+  loop $for-loop|0
+   local.get $i
+   i32.const 4
+   i32.lt_s
+   if
+    local.get $mask
+    i32.const 8
+    i32.const 8
+    i32.mul
+    i32.add
+    i64.load
+    i64.const 0
+    i64.ne
+    if
+     i32.const 0
+     return
+    end
+    local.get $i
+    i32.const 1
+    i32.add
+    local.set $i
+    br $for-loop|0
+   end
+  end
+  i32.const 1
+  return
+ )
  (func $assembly/indexer/index/set (param $k i32) (param $v i32)
   (local $h i32)
   local.get $k
@@ -4602,9 +4702,6 @@
   (local $mask i32)
   (local $newMask i32)
   (local $byte i32)
-  (local $newMaskByte i32)
-  (local $wordMask i64)
-  (local $b i32)
   i32.const 0
   i32.const 8
   call $~lib/arraybuffer/ArrayBuffer#constructor
@@ -4650,7 +4747,7 @@
      i32.eq
      if (result i32)
       i32.const 0
-      i32.const 8
+      i32.const 32
       call $~lib/arraybuffer/ArrayBuffer#constructor
      else
       local.get $mask
@@ -4659,71 +4756,26 @@
      local.get $keyBytes
      local.get $i
      i32.add
-     i32.const 1
-     i32.add
      i32.load8_u
      local.set $byte
-     i32.const 1
-     local.get $byte
-     i32.const 8
-     i32.rem_u
-     i32.shl
-     i32.const 255
-     i32.and
-     i32.const -1
-     i32.xor
      local.get $newMask
-     i32.const 31
      local.get $byte
-     i32.const 8
-     i32.div_u
-     i32.sub
-     i32.add
-     i32.load8_u
-     i32.and
-     local.set $newMaskByte
-     local.get $newMask
-     i32.const 31
-     local.get $byte
-     i32.const 8
-     i32.div_u
-     i32.sub
-     i32.add
-     local.get $newMaskByte
-     i32.store8
-     i64.const 0
-     local.set $wordMask
-     i32.const 0
-     local.set $b
-     loop $for-loop|1
-      local.get $b
-      i32.const 4
-      i32.lt_s
-      if
-       local.get $wordMask
-       local.get $newMask
-       i32.const 8
-       local.get $b
-       i32.mul
-       i32.add
-       i64.load
-       i64.or
-       local.set $wordMask
-       local.get $b
-       i32.const 1
-       i32.add
-       local.set $b
-       br $for-loop|1
-      end
+     call $assembly/indexer/bst/isSetU256
+     if
+      local.get $newMask
+      local.get $byte
+      call $assembly/indexer/bst/unsetBitU256
      end
-     local.get $wordMask
-     i64.const 0
-     i64.eq
+     local.get $newMask
+     call $assembly/indexer/bst/isZeroU256
      if
       local.get $ptr
       call $assembly/indexer/tables/IndexPointer#nullify
-     else
       br $for-break0
+     else
+      local.get $ptr
+      local.get $newMask
+      call $assembly/indexer/tables/IndexPointer#set
      end
      local.get $i
      i32.const 1
@@ -4733,39 +4785,6 @@
     end
    end
   end
- )
- (func $assembly/indexer/bst/isSetU256 (param $mask i32) (param $position i32) (result i32)
-  (local $bytePosition i32)
-  (local $bitPosition i32)
-  (local $existingByte i32)
-  (local $bitMask i32)
-  local.get $position
-  i32.const 8
-  i32.div_s
-  local.set $bytePosition
-  local.get $position
-  i32.const 8
-  i32.rem_s
-  local.set $bitPosition
-  local.get $mask
-  local.get $bytePosition
-  i32.add
-  i32.load8_u
-  local.set $existingByte
-  i32.const 1
-  i32.const 7
-  local.get $bitPosition
-  i32.sub
-  i32.const 7
-  i32.and
-  i32.shl
-  local.set $bitMask
-  local.get $bitMask
-  local.get $existingByte
-  i32.and
-  i32.const 0
-  i32.ne
-  return
  )
  (func $assembly/indexer/bst/setBitU256 (param $mask i32) (param $position i32)
   (local $bytePosition i32)
@@ -4829,11 +4848,16 @@
     local.get $i
     call $~lib/arraybuffer/ArrayBuffer#constructor
     local.set $partialKey
-    local.get $partialKey
-    local.get $keyBytes
     local.get $i
-    call $assembly/utils/memcpy/memcpy
-    drop
+    i32.const 0
+    i32.ne
+    if
+     local.get $partialKey
+     local.get $keyBytes
+     local.get $i
+     call $assembly/utils/memcpy/memcpy
+     drop
+    end
     local.get $this
     local.get $partialKey
     call $assembly/indexer/bst/BST<u64>#getMaskPointer

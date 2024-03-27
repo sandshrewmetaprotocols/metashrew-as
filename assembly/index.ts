@@ -1,24 +1,33 @@
 import { Box } from "./utils/box";
 import { memcpy } from "./utils/memcpy";
-import { 
-  concat, 
-  reverse, 
-  parseLenThenBytes, 
-  parsePrimitive, 
-  parsePushOp, 
-  parseBytes, 
-  isPushOp, 
-  decodeTag, 
-  parseVarInt 
+import {
+  concat,
+  reverse,
+  parseLenThenBytes,
+  parsePrimitive,
+  parsePushOp,
+  parseBytes,
+  isPushOp,
+  decodeTag,
+  parseVarInt,
 } from "./utils/utils";
 import { Index, get, set, _flush, input } from "./indexer/index";
 import { console } from "./utils/logging";
 import { abort } from "./utils/abort";
 import { Block } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
-import { BST, setBitU256, binarySearchU64, binarySearchU32, binarySearchU16, binarySearchU8, binarySearchU256, maskGreaterThan,maskLowerThan } from "./indexer/bst";
+import {
+  BST,
+  setBitU256,
+  binarySearchU64,
+  binarySearchU32,
+  binarySearchU16,
+  binarySearchU8,
+  binarySearchU256,
+  maskGreaterThan,
+  maskLowerThan,
+} from "./indexer/bst";
 import { IndexPointer } from "./indexer/tables";
-
 
 export function test_parseBlock(): void {
   const data = input();
@@ -35,7 +44,9 @@ function logK<K>(v: K): void {
 
 export function test_seekLower(): void {
   const ptr = IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint");
-  const bst = BST.at<u64>(IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"));
+  const bst = BST.at<u64>(
+    IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"),
+  );
   bst.set(3, String.UTF8.encode("test"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
@@ -48,7 +59,9 @@ export function test_seekLower(): void {
 
 export function test_seekGreater(): void {
   const ptr = IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint");
-  const bst = BST.at<u64>(IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"));
+  const bst = BST.at<u64>(
+    IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"),
+  );
   bst.set(3, String.UTF8.encode("test"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
@@ -69,8 +82,6 @@ export function test_maskLowerThan(): void {
   maskLowerThan(data, <u8>190);
   maskLowerThan(data, <u8>100);
   maskLowerThan(data, <u8>32);
-
-
 }
 
 export function test_maskGreaterThan(): void {
@@ -81,8 +92,6 @@ export function test_maskGreaterThan(): void {
   console.log(Box.from(data).toHexString());
   maskGreaterThan(data, 3);
   console.log(Box.from(data).toHexString());
-
-
 }
 
 export function test_maskLowerThan2(): void {
@@ -90,8 +99,8 @@ export function test_maskLowerThan2(): void {
   setBitU256(data, 3);
   setBitU256(data, 0);
   maskLowerThan(data, <u8>4);
-//  console.log("maskLowerThan(3)");
-//  console.log(Box.from(data).toHexString());
+  //  console.log("maskLowerThan(3)");
+  //  console.log(Box.from(data).toHexString());
 }
 
 export function test_binarySearch(): void {
