@@ -11,7 +11,7 @@ export function maskLowerThan(v: ArrayBuffer, position: u8): void {
   ary[3] = bswap<u64>(load<u64>(changetype<usize>(v) + 3*sizeof<u64>()));
   const byteSelected = position / 64;
   const bitSelected = position % 64;
-  ary[byteSelected] = ary[byteSelected] & <u64>(((1 << (64 - bitSelected)) - 1) << bitSelected);
+  ary[byteSelected] = ary[byteSelected] & <u64>(((1 << bitSelected) - 1) << (64 - bitSelected));
   for (let i = byteSelected + 1; i < 4; i++) {
     ary[i] = 0;
   }
@@ -100,8 +100,8 @@ export function binarySearchU2(word: u8, forHighest: bool): i32 {
 export function setBitU256(mask: ArrayBuffer, position: i32): void {
   const bytePosition = position / 8;
   const bitPosition = position % 8;
-  const existingByte = load<u8>(changetype<usize>(mask) + <usize>bytePosition);
-  const newBit = <u8>(1 << (7 - <u8>bitPosition));
+  const existingByte: u8 = load<u8>(changetype<usize>(mask) + <usize>bytePosition);
+  const newBit: u8 = <u8>(1 << (7 - <u8>bitPosition));
   store<u8>(changetype<usize>(mask) + <usize>bytePosition, existingByte | newBit);
 }
 
@@ -141,7 +141,7 @@ export class BST<K> {
       const ptr = this.getMaskPointer(partialKey);
       const mask = ptr.get();
       const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
-      const byte = load<u8>(changetype<usize>(keyBytes) + i + 1);
+      const byte = load<u8>(changetype<usize>(keyBytes) + i);
       const isSet = isSetU256(newMask, byte);
       if (!isSetU256(newMask, byte)) {
         setBitU256(newMask, byte);
@@ -181,38 +181,34 @@ export class BST<K> {
     let partialKey = keyBytes;
     let symbol: i32 = -1;
     let i: i32 = sizeof<K>() - 1;
+    let shift: boolean = true;
     for (; i >= 0; i--) {
-      console.log(Box.from(partialKey).toHexString());
       partialKey = new ArrayBuffer(i);
       memcpy(
         changetype<usize>(partialKey),
         changetype<usize>(keyBytes),
         sizeof<K>() - 1,
       );
-      console.log(Box.from(partialKey).toHexString());
       const ptr = this.getMaskPointer(partialKey);
       const mask = ptr.get();
+      if (mask.byteLength === 0) { continue; }
       const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
-      if (i === sizeof<K>() - 1) {
-	console.log(Box.from(newMask).toHexString());
-        maskLowerThan(
-          newMask,
-          load<u8>(changetype<usize>(partialKey) + <usize>i),
-	);
-	console.log(Box.from(newMask).toHexString());
-	console.log(Box.from(newMask).toHexString());
+      if (shift && binarySearchU256(newMask, false) !== 0) {
+        shift = false;
+        const thisByte = load<u8>(changetype<usize>(keyBytes) + <usize>i);
+        maskLowerThan(newMask, thisByte);
       }
-
       symbol = binarySearchU256(newMask, false);
-
-      if (symbol !== -1) break;
+      if (symbol < 0) break;
     }
     if (symbol === -1) return ~(0 as K);
     let extendKey = partialKey;
+    i++;
     for (; i < sizeof<K>(); i++) {
       let thisKey = new ArrayBuffer(i + 1);
       memcpy(changetype<usize>(thisKey), changetype<usize>(extendKey), i);
       store<u8>(changetype<usize>(thisKey) + i, <u8>symbol);
+      extendKey = thisKey;
       const mask = this.getMaskPointer(thisKey).get();
       if (mask.byteLength === 0) {
         return load<K>(changetype<usize>(thisKey));

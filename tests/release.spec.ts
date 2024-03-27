@@ -42,4 +42,12 @@ describe("metashrew index", () => {
     const indexer = makeIndexer();
     const result = await indexer.run("test_binarySearch");
   });
+  it("test_binarySearch2", async () => {
+    const indexer = makeIndexer();
+    const result = await indexer.run("test_binarySearch2");
+  });
+  it("test_binarySearch3", async () => {
+    const indexer = makeIndexer();
+    const result = await indexer.run("test_binarySearch3");
+  });
 });
