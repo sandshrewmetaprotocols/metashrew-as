@@ -37,7 +37,7 @@ export function binarySearchU256(v: ArrayBuffer, forHighest: bool): i32 {
   const left = leftHigh | leftLow;
   const right = rightHigh | rightLow;
   if (left | right === 0) return -1;
-  if (!forHighest || right === 0) {
+  if (!forHighest || (right === 0)) {
     return binarySearchU128(leftHigh, leftLow, forHighest);
   } else {
     return sizeof<u64>()*16 + binarySearchU128(rightHigh, rightLow, forHighest);
@@ -56,19 +56,16 @@ export function binarySearchU128(high: u64, low: u64, forHighest: bool): i32 {
 export function binarySearchU64(word: u64, forHighest: bool): i32 {
   if (word === 0) return -1;
   const low = <u32>(word & U32.MAX_VALUE);
-  const high = <u32>((word >> <u64>sizeof<u32>()) & U32.MAX_VALUE);
-  if (!forHighest || low === 0) {
-    return binarySearchU32(high, forHighest);
-  } else {
-    return sizeof<u32>()*8 + binarySearchU32(low, forHighest);
-  }
+  const high = <u32>((word >> (<u64>sizeof<u32>()*8)) & U32.MAX_VALUE);
+  if (forHighest &&  high !== 0) return binarySearchU32(high, forHighest);
+  return sizeof<u32>()*8 +  sizeof<u32>()*8 + binarySearchU32(low, forHighest);
 }
 
 export function binarySearchU32(word: u32, forHighest: bool): i32 {
   if (word === 0) return -1;
   const low: u16 = <u16>(word & U16.MAX_VALUE);
-  const high: u16 = <u16>((word >> <u32>sizeof<u16>()) & U16.MAX_VALUE);
-  if (!forHighest || low === 0) {
+  const high: u16 = <u16>((word >> (<u32>sizeof<u16>()*8)) & U16.MAX_VALUE);
+  if (forHighest && high !== 0) {
     return binarySearchU16(high, forHighest);
   } else {
     return sizeof<u16>()*8 + binarySearchU16(low, forHighest);
@@ -78,9 +75,9 @@ export function binarySearchU32(word: u32, forHighest: bool): i32 {
 export function binarySearchU16(word: u16, forHighest: bool): i32 {
   if (word === 0) return -1;
   const low: u8 = <u8>(word & U8.MAX_VALUE);
-  const high: u8 = <u8>((word >> <u16>sizeof<u8>()) & U8.MAX_VALUE);
-  if (!forHighest || low === 0) {
-    return binarySearchU16(high, forHighest);
+  const high: u8 = <u8>((word >> (<u16>sizeof<u8>()*8)) & U8.MAX_VALUE);
+  if (forHighest && high !== 0) {
+    return binarySearchU8(high, forHighest);
   } else {
     return sizeof<u8>()*8 + binarySearchU8(low, forHighest);
   }
@@ -90,7 +87,7 @@ export function binarySearchU8(word: u8, forHighest: bool): i32 {
   if (word === 0) return -1;
   const high = (word & 0xf0) >> 4;
   const low = word & 0x0f;
-  if (!forHighest || low === 0) {
+  if (forHighest && high !== 0) {
     return binarySearchU4(high, forHighest);
   }
   return 4 + binarySearchU4(low, forHighest);
@@ -100,7 +97,7 @@ export function binarySearchU4(word: u8, forHighest: bool): i32 {
   if (word === 0) return -1;
   const high = (word & 0x0c) >> 4;
   const low = word & 0x03;
-  if (!forHighest || low === 0) {
+  if (forHighest && high !== 0) {
     return binarySearchU2(high, forHighest);
   }
   return 2 + binarySearchU2(low, forHighest);
@@ -109,9 +106,7 @@ export function binarySearchU4(word: u8, forHighest: bool): i32 {
 export function binarySearchU2(word: u8, forHighest: bool): i32 {
   if (word === 0) return -1;
   const high = (word & 0x02) >> 1;
-  const low = word & 0x01;
-  if (high & low === 0x01) return forHighest ? 0 : 1;
-  return low;
+  return (forHighest && high !== 0) ? 0 : 1;
 }
   
 export class BST<K> {

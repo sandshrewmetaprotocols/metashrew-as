@@ -2,8 +2,8 @@
  (type $0 (func (param i32 i32)))
  (type $1 (func (param i32) (result i32)))
  (type $2 (func (param i32 i32) (result i32)))
- (type $3 (func (param i32 i32 i32) (result i32)))
- (type $4 (func))
+ (type $3 (func))
+ (type $4 (func (param i32 i32 i32) (result i32)))
  (type $5 (func (param i32 i32 i32 i32) (result i32)))
  (type $6 (func (param i32 i32 i32)))
  (type $7 (func (result i32)))
@@ -138,6 +138,7 @@
  (elem $0 (i32.const 1) $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|1 $assembly/utils/rlp/toRLP~anonymous|2 $assembly/utils/rlp/toRLP~anonymous|3)
  (export "_start" (func $assembly/index/_start))
  (export "test_maskLowerThan" (func $assembly/index/test_maskLowerThan))
+ (export "test_binarySearch" (func $assembly/index/test_binarySearch))
  (export "memory" (memory $0))
  (start $~start)
  (func $~lib/rt/stub/maybeGrowMemory (param $newOffset i32)
@@ -5028,7 +5029,6 @@
  )
  (func $assembly/indexer/bst/binarySearchU2 (param $word i32) (param $forHighest i32) (result i32)
   (local $high i32)
-  (local $low i32)
   local.get $word
   i32.const 255
   i32.and
@@ -5046,25 +5046,19 @@
   i32.and
   i32.shr_u
   local.set $high
-  local.get $word
-  i32.const 1
-  i32.and
-  local.set $low
-  local.get $high
-  local.get $low
-  i32.const 1
-  i32.eq
-  i32.and
-  if
-   local.get $forHighest
-   if (result i32)
-    i32.const 0
-   else
-    i32.const 1
-   end
-   return
+  local.get $forHighest
+  if (result i32)
+   local.get $high
+   i32.const 0
+   i32.ne
+  else
+   i32.const 0
   end
-  local.get $low
+  if (result i32)
+   i32.const 0
+  else
+   i32.const 1
+  end
   return
  )
  (func $assembly/indexer/bst/binarySearchU4 (param $word i32) (param $forHighest i32) (result i32)
@@ -5092,13 +5086,12 @@
   i32.and
   local.set $low
   local.get $forHighest
-  i32.eqz
   if (result i32)
-   i32.const 1
-  else
-   local.get $low
+   local.get $high
    i32.const 0
-   i32.eq
+   i32.ne
+  else
+   i32.const 0
   end
   if
    local.get $high
@@ -5138,13 +5131,12 @@
   i32.and
   local.set $low
   local.get $forHighest
-  i32.eqz
   if (result i32)
-   i32.const 1
-  else
-   local.get $low
+   local.get $high
    i32.const 0
-   i32.eq
+   i32.ne
+  else
+   i32.const 0
   end
   if
    local.get $high
@@ -5179,6 +5171,8 @@
   i32.const 65535
   i32.and
   i32.const 1
+  i32.const 8
+  i32.mul
   i32.const 15
   i32.and
   i32.shr_u
@@ -5186,18 +5180,17 @@
   i32.and
   local.set $high
   local.get $forHighest
-  i32.eqz
   if (result i32)
-   i32.const 1
-  else
-   local.get $low
+   local.get $high
    i32.const 0
-   i32.eq
+   i32.ne
+  else
+   i32.const 0
   end
   if
    local.get $high
    local.get $forHighest
-   call $assembly/indexer/bst/binarySearchU16
+   call $assembly/indexer/bst/binarySearchU8
    return
   else
    i32.const 1
@@ -5227,18 +5220,19 @@
   local.set $low
   local.get $word
   i32.const 2
+  i32.const 8
+  i32.mul
   i32.shr_u
   global.get $~lib/number/U16.MAX_VALUE
   i32.and
   local.set $high
   local.get $forHighest
-  i32.eqz
   if (result i32)
-   i32.const 1
-  else
-   local.get $low
+   local.get $high
    i32.const 0
-   i32.eq
+   i32.ne
+  else
+   i32.const 0
   end
   if
    local.get $high
@@ -5275,6 +5269,8 @@
   local.set $low
   local.get $word
   i64.const 4
+  i64.const 8
+  i64.mul
   i64.shr_u
   global.get $~lib/number/U32.MAX_VALUE
   i64.extend_i32_u
@@ -5282,30 +5278,31 @@
   i32.wrap_i64
   local.set $high
   local.get $forHighest
-  i32.eqz
   if (result i32)
-   i32.const 1
-  else
-   local.get $low
+   local.get $high
    i32.const 0
-   i32.eq
+   i32.ne
+  else
+   i32.const 0
   end
   if
    local.get $high
    local.get $forHighest
    call $assembly/indexer/bst/binarySearchU32
    return
-  else
-   i32.const 4
-   i32.const 8
-   i32.mul
-   local.get $low
-   local.get $forHighest
-   call $assembly/indexer/bst/binarySearchU32
-   i32.add
-   return
   end
-  unreachable
+  i32.const 4
+  i32.const 8
+  i32.mul
+  i32.const 4
+  i32.const 8
+  i32.mul
+  i32.add
+  local.get $low
+  local.get $forHighest
+  call $assembly/indexer/bst/binarySearchU32
+  i32.add
+  return
  )
  (func $assembly/indexer/bst/binarySearchU128 (param $high i64) (param $low i64) (param $forHighest i32) (result i32)
   local.get $low
@@ -6894,7 +6891,7 @@
     global.set $~argumentsLength
     local.get $fn
     i32.load
-    call_indirect (type $3)
+    call_indirect (type $4)
     local.set $result
     local.get $outStart
     local.get $i
@@ -7956,6 +7953,183 @@
   local.get $data
   call $assembly/utils/box/Box.from
   call $assembly/utils/box/Box#toHexString
+  call $assembly/utils/logging/Console#log
+ )
+ (func $~lib/util/number/itoa32 (param $value i32) (param $radix i32) (result i32)
+  (local $sign i32)
+  (local $out i32)
+  (local $decimals i32)
+  (local $buffer i32)
+  (local $num i32)
+  (local $offset i32)
+  (local $decimals|8 i32)
+  (local $buffer|9 i32)
+  (local $num|10 i32)
+  (local $offset|11 i32)
+  (local $val32 i32)
+  (local $decimals|13 i32)
+  local.get $radix
+  i32.const 2
+  i32.lt_s
+  if (result i32)
+   i32.const 1
+  else
+   local.get $radix
+   i32.const 36
+   i32.gt_s
+  end
+  if
+   i32.const 2800
+   i32.const 2928
+   i32.const 373
+   i32.const 5
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $value
+  i32.eqz
+  if
+   i32.const 2992
+   return
+  end
+  local.get $value
+  i32.const 31
+  i32.shr_u
+  i32.const 1
+  i32.shl
+  local.set $sign
+  local.get $sign
+  if
+   i32.const 0
+   local.get $value
+   i32.sub
+   local.set $value
+  end
+  local.get $radix
+  i32.const 10
+  i32.eq
+  if
+   local.get $value
+   call $~lib/util/number/decimalCount32
+   local.set $decimals
+   local.get $decimals
+   i32.const 1
+   i32.shl
+   local.get $sign
+   i32.add
+   i32.const 2
+   call $~lib/rt/stub/__new
+   local.set $out
+   local.get $out
+   local.get $sign
+   i32.add
+   local.set $buffer
+   local.get $value
+   local.set $num
+   local.get $decimals
+   local.set $offset
+   i32.const 0
+   i32.const 1
+   i32.ge_s
+   drop
+   local.get $buffer
+   local.get $num
+   local.get $offset
+   call $~lib/util/number/utoa32_dec_lut
+  else
+   local.get $radix
+   i32.const 16
+   i32.eq
+   if
+    i32.const 31
+    local.get $value
+    i32.clz
+    i32.sub
+    i32.const 2
+    i32.shr_s
+    i32.const 1
+    i32.add
+    local.set $decimals|8
+    local.get $decimals|8
+    i32.const 1
+    i32.shl
+    local.get $sign
+    i32.add
+    i32.const 2
+    call $~lib/rt/stub/__new
+    local.set $out
+    local.get $out
+    local.get $sign
+    i32.add
+    local.set $buffer|9
+    local.get $value
+    local.set $num|10
+    local.get $decimals|8
+    local.set $offset|11
+    i32.const 0
+    i32.const 1
+    i32.ge_s
+    drop
+    local.get $buffer|9
+    local.get $num|10
+    i64.extend_i32_u
+    local.get $offset|11
+    call $~lib/util/number/utoa_hex_lut
+   else
+    local.get $value
+    local.set $val32
+    local.get $val32
+    i64.extend_i32_u
+    local.get $radix
+    call $~lib/util/number/ulog_base
+    local.set $decimals|13
+    local.get $decimals|13
+    i32.const 1
+    i32.shl
+    local.get $sign
+    i32.add
+    i32.const 2
+    call $~lib/rt/stub/__new
+    local.set $out
+    local.get $out
+    local.get $sign
+    i32.add
+    local.get $val32
+    i64.extend_i32_u
+    local.get $decimals|13
+    local.get $radix
+    call $~lib/util/number/utoa64_any_core
+   end
+  end
+  local.get $sign
+  if
+   local.get $out
+   i32.const 45
+   i32.store16
+  end
+  local.get $out
+  return
+ )
+ (func $~lib/number/I32#toString (param $this i32) (param $radix i32) (result i32)
+  local.get $this
+  local.get $radix
+  call $~lib/util/number/itoa32
+  return
+ )
+ (func $assembly/index/test_binarySearch
+  global.get $assembly/utils/logging/console
+  i32.const 32768
+  i32.const 0
+  call $assembly/indexer/bst/binarySearchU16
+  i32.const 10
+  call $~lib/number/I32#toString
+  call $assembly/utils/logging/Console#log
+  global.get $assembly/utils/logging/console
+  i32.const 32768
+  i32.const 1
+  call $assembly/indexer/bst/binarySearchU16
+  i32.const 10
+  call $~lib/number/I32#toString
   call $assembly/utils/logging/Console#log
  )
  (func $~start
