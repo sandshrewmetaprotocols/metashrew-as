@@ -157,6 +157,16 @@ export function isZeroU256(mask: ArrayBuffer): boolean {
   return true;
 }
 
+export function byteAt<T>(v: ArrayBuffer, byte: T): u8 {
+  return load<u8>(changetype<usize>(v) + <usize>byte);
+}
+
+export function toBuffer<T>(v: T): ArrayBuffer {
+  const data = new ArrayBuffer(sizeof<T>());
+  store<T>(changetype<usize>(data), bswap<T>(v));
+  return data;
+}
+
 export class BST<K> {
   public ptr: IndexPointer;
   constructor(ptr: IndexPointer) {
@@ -166,7 +176,7 @@ export class BST<K> {
     return new BST<K>(key);
   }
   getMaskPointer(partialKey: ArrayBuffer): IndexPointer {
-    return this.ptr.keyword("/").select(partialKey).keyword("/mask");
+    return this.ptr.select(partialKey).keyword("/mask");
   }
   markPath(key: K): void {
     const keyBytes = new ArrayBuffer(sizeof<K>());
@@ -208,95 +218,53 @@ export class BST<K> {
       }
     }
   }
-  seekLower(start: K): K {
-    const keyBytes = new ArrayBuffer(sizeof<K>());
-    store<K>(changetype<usize>(keyBytes), bswap<K>(start));
+  _findBoundaryFromPartial(keyBytes: ArrayBuffer, seekHigher: bool): K {
     let partialKey = keyBytes;
-    let symbol: i32 = -1;
-    let i: i32 = sizeof<K>() - 1;
-    let shift: boolean = true;
-    for (; i >= 0; i--) {
-      partialKey = new ArrayBuffer(i);
+    while (partialKey.byteLength !== sizeof<K>()) {
+      const newPartial = new ArrayBuffer(partialKey.byteLength + 1);
       memcpy(
+        changetype<usize>(newPartial),
         changetype<usize>(partialKey),
-        changetype<usize>(keyBytes),
-        sizeof<K>() - 1,
+	partialKey.byteLength
       );
-      const ptr = this.getMaskPointer(partialKey);
-      const mask = ptr.get();
-      if (mask.byteLength === 0) {
-        continue;
-      }
-      const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
-      if (shift && binarySearchU256(newMask, false) !== 0) {
-        shift = false;
-        const thisByte = load<u8>(changetype<usize>(keyBytes) + <usize>i);
-        maskLowerThan(newMask, thisByte);
-      }
-      symbol = binarySearchU256(newMask, false);
-      if (symbol < 0) break;
+      store<u8>(changetype<usize>(newPartial) + <usize>partialKey.byteLength, <u8>binarySearchU256(this.getMaskPointer(partialKey).get(), seekHigher));
+      partialKey = newPartial;
     }
-    if (symbol === -1) return ~(0 as K);
-    let extendKey = partialKey;
-    i++;
-    for (; i < sizeof<K>(); i++) {
-      let thisKey = new ArrayBuffer(i + 1);
-      memcpy(changetype<usize>(thisKey), changetype<usize>(extendKey), i);
-      store<u8>(changetype<usize>(thisKey) + i, <u8>symbol);
-      extendKey = thisKey;
+    return bswap<K>(load<K>(changetype<usize>(partialKey)));
+  }
+  seekLower(start: K): K {
+    let partialKey = new ArrayBuffer(sizeof<K>());
+    store<K>(changetype<usize>(partialKey), bswap<K>(start));
+    do { 
+      const thisKey = Box.from(partialKey).shrinkBack(1).toArrayBuffer();
       const mask = this.getMaskPointer(thisKey).get();
-      if (mask.byteLength === 0) {
-        return load<K>(changetype<usize>(thisKey));
-      } else {
-        symbol = binarySearchU256(mask, false);
+      if (mask.byteLength !== 0) {
+        maskLowerThan(mask, byteAt(partialKey, thisKey.byteLength));
+	const symbol = binarySearchU256(mask, false);
+	if (symbol !== -1) {
+          return this._findBoundaryFromPartial(Box.concat([ Box.from(thisKey), Box.from(toBuffer<u8>(<u8>symbol)) ]), false);
+	}
       }
-    }
+      partialKey = thisKey;
+    } while (partialKey.byteLength !== 0);
     return ~(0 as K);
   }
   seekGreater(start: K): K {
-    const keyBytes = new ArrayBuffer(sizeof<K>());
-    store<K>(changetype<usize>(keyBytes), bswap<K>(start));
-    let partialKey = keyBytes;
-    let symbol: i32 = -1;
-    let i: i32 = sizeof<K>() - 1;
-    let shift: boolean = true;
-    for (; i >= 0; i--) {
-      partialKey = new ArrayBuffer(i);
-      memcpy(
-        changetype<usize>(partialKey),
-        changetype<usize>(keyBytes),
-        sizeof<K>() - 1,
-      );
-      const ptr = this.getMaskPointer(partialKey);
-      const mask = ptr.get();
-      if (mask.byteLength === 0) {
-        continue;
-      }
-      const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
-      if (shift && binarySearchU256(newMask, true) !== 255) {
-        shift = false;
-        const thisByte = load<u8>(changetype<usize>(keyBytes) + <usize>i);
-        maskGreaterThan(newMask, thisByte);
-      }
-      symbol = binarySearchU256(newMask, true);
-      if (symbol < 0) break;
-    }
-    if (symbol === -1) return 0 as K;
-    let extendKey = partialKey;
-    i++;
-    for (; i < sizeof<K>(); i++) {
-      let thisKey = new ArrayBuffer(i + 1);
-      memcpy(changetype<usize>(thisKey), changetype<usize>(extendKey), i);
-      store<u8>(changetype<usize>(thisKey) + i, <u8>symbol);
-      extendKey = thisKey;
+    let partialKey = new ArrayBuffer(sizeof<K>());
+    store<K>(changetype<usize>(partialKey), bswap<K>(start));
+    do { 
+      const thisKey = Box.from(partialKey).shrinkBack(1).toArrayBuffer();
       const mask = this.getMaskPointer(thisKey).get();
-      if (mask.byteLength === 0) {
-        return load<K>(changetype<usize>(thisKey));
-      } else {
-        symbol = binarySearchU256(mask, true);
+      if (mask.byteLength !== 0) {
+        maskGreaterThan(mask, byteAt(partialKey, thisKey.byteLength));
+	const symbol = binarySearchU256(mask, true);
+	if (symbol !== -1) {
+          return this._findBoundaryFromPartial(Box.concat([ Box.from(thisKey), Box.from(toBuffer<u8>(<u8>symbol)) ]), true);
+	}
       }
-    }
-    return 0 as K;
+      partialKey = thisKey;
+    } while (partialKey.byteLength !== 0);
+    return (0 as K);
   }
   set(k: K, v: ArrayBuffer): void {
     const key = bswap<K>(k);

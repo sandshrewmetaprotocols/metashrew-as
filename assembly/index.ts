@@ -38,7 +38,7 @@ export function test_parseBlock(): void {
 
 function logK<K>(v: K): void {
   const data = new ArrayBuffer(sizeof<K>());
-  store<K>(changetype<usize>(data), v);
+  store<K>(changetype<usize>(data), bswap<u64>(v));
   console.log(Box.from(data).toHexString());
 }
 
@@ -50,10 +50,28 @@ export function test_seekLower(): void {
   bst.set(3, String.UTF8.encode("test"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
+ // console.log("bst.seekLower(0xffffffffffffffff))");
+  //logK<u64>(bst.seekLower(0xffffffffffffffff));
+//  console.log("bst.seekLower(0x0300000000000000)");
+  //logK<u64>(bst.seekLower(0x0300000000000000));
+  _flush();
+}
+
+export function test_seekLower2(): void {
+  const ptr = IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint");
+  const bst = BST.at<u64>(
+    IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"),
+  );
+  bst.set(3, String.UTF8.encode("test"));
+  bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
+  bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
   console.log("bst.seekLower(0xffffffffffffffff))");
   logK<u64>(bst.seekLower(0xffffffffffffffff));
   console.log("bst.seekLower(0x0300000000000000)");
   logK<u64>(bst.seekLower(0x0300000000000000));
+//  console.log("bst.seekLower(0x03 << 16)");
+  //logK<u64>(bst.seekLower(0x03 << 16));
+  //bst.nullify(<u64>(0x03 << 16));
   _flush();
 }
 
@@ -88,10 +106,10 @@ export function test_maskGreaterThan(): void {
   const data = new ArrayBuffer(32);
   setBitU256(data, 0);
   setBitU256(data, 3);
-  console.log("maskGreaterThan((bytes), 3)");
-  console.log(Box.from(data).toHexString());
+  //console.log("maskGreaterThan((bytes), 3)");
+  //console.log(Box.from(data).toHexString());
   maskGreaterThan(data, 3);
-  console.log(Box.from(data).toHexString());
+  //console.log(Box.from(data).toHexString());
 }
 
 export function test_maskLowerThan2(): void {

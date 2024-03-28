@@ -21,41 +21,20 @@ const makeIndexer = () => {
 };
 
 describe("metashrew index", () => {
-  it("test_parseBlock", async () => {
+  const makeTest = (s) => it(s, async () => {
     const indexer = makeIndexer();
-    const result = await indexer.run("test_parseBlock");
-    
+    const result = await indexer.run(s);
   });
-  it("test_seekLower", async () => {
-    const indexer = makeIndexer();
-    const result = await indexer.run("test_seekLower");
-  });
-  it("test_seekGreater", async () => {
-    const indexer = makeIndexer();
-    const result = await indexer.run("test_seekGreater");
-  });
-  it("test_maskLowerThan", async () => {
-    const indexer = makeIndexer();
-    const result = await indexer.run("test_maskLowerThan");
-  });
-  it("test_maskGreaterThan", async () => {
-    const indexer = makeIndexer();
-    const result = await indexer.run("test_maskGreaterThan");
-  });
-  it("test_maskLowerThan2", async () => {
-    const indexer = makeIndexer();
-    const result = await indexer.run("test_maskLowerThan2");
-  });
-  it("test_binarySearch", async () => {
-    const indexer = makeIndexer();
-    const result = await indexer.run("test_binarySearch");
-  });
-  it("test_binarySearch2", async () => {
-    const indexer = makeIndexer();
-    const result = await indexer.run("test_binarySearch2");
-  });
-  it("test_binarySearch3", async () => {
-    const indexer = makeIndexer();
-    const result = await indexer.run("test_binarySearch3");
-  });
+  [
+    "test_parseBlock",
+    "test_seekLower",
+    "test_seekLower2",
+    "test_seekGreater",
+    "test_maskLowerThan",
+    "test_maskGreaterThan",
+    "test_maskLowerThan2",
+    "test_binarySearch",
+    "test_binarySearch2",
+    "test_binarySearch3"
+  ].forEach((v) => makeTest(v));
 });

@@ -84,10 +84,8 @@ export class Input {
     let txid = toPointer(this.hash.start).toBox(<usize>32);
     let vout = toPointer(this.hash.start + 32).toBox(<usize>4);
 
-    let correctedTxid = reverse(txid.toArrayBuffer());
-
     // let bytes = toPointer(this.hash.start).toBox(<usize>36);
-    return OutPoint.from(correctedTxid, parsePrimitive<u32>(vout));
+    return OutPoint.from(reverse(txid.toArrayBuffer()), parsePrimitive<u32>(vout));
   }
 
   inscription(): Inscription | null {

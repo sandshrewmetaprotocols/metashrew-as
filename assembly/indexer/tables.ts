@@ -38,7 +38,7 @@ export class IndexPointer {
   }
   selectValue<T>(key: T): IndexPointer {
     const keyBytes = new ArrayBuffer(sizeof<T>());
-    store<T>(changetype<usize>(keyBytes), key);
+    store<T>(changetype<usize>(keyBytes), bswap<u64>(key));
     return this.select(keyBytes);
   }
   keyword(key: string): IndexPointer {
