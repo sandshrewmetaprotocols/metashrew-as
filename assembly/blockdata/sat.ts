@@ -3,6 +3,7 @@ import {
   DIFFCHANGE_INTERVAL,
   primitiveToBuffer,
   concat,
+  Box
 } from "../utils";
 import { Height } from "./height";
 import { Epoch } from "./epoch";
@@ -56,18 +57,19 @@ export class Sat {
 }
 
 export class SatPoint {
-  outpoint: OutPoint;
-  offset: u64;
-
-  constructor(outpoint: OutPoint, offset: u64) {
+  public offset: u64;
+  public outpoint: ArrayBuffer;
+  constructor(outpoint: ArrayBuffer, offset: u64) {
     this.outpoint = outpoint;
     this.offset = offset;
   }
-
-  toBuffer(): ArrayBuffer {
-    return concat([
-      this.outpoint.toBuffer(),
-      primitiveToBuffer<u64>(this.offset),
-    ]);
+  toArrayBuffer(): ArrayBuffer {
+    const outpointBytes = this.outpoint;
+    const offsetBytes = new ArrayBuffer(outpointBytes.byteLength + <i32>sizeof<u64>());
+    store<u64>(changetype<usize>(offsetBytes), this.offset);
+    return Box.concat([ Box.from(outpointBytes), Box.from(offsetBytes) ]);
+  }
+  static from(outpoint: ArrayBuffer, offset: u64): SatPoint {
+    return new SatPoint(outpoint, offset);
   }
 }

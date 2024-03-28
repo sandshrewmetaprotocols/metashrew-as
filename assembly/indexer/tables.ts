@@ -25,6 +25,9 @@ export class IndexPointer {
   static wrap(pointer: ArrayBuffer): IndexPointer {
     return changetype<IndexPointer>(pointer);
   }
+  static for(keyword: string): IndexPointer {
+    return IndexPointer.wrap(String.UTF8.encode(keyword));
+  }
   unwrap(): ArrayBuffer {
     return changetype<ArrayBuffer>(this);
   }
@@ -32,6 +35,11 @@ export class IndexPointer {
     return IndexPointer.wrap(
       Box.concat([Box.from(this.unwrap()), Box.from(key)]),
     );
+  }
+  selectValue<T>(key: T): IndexPointer {
+    const keyBytes = new ArrayBuffer(sizeof<T>());
+    store<T>(changetype<usize>(keyBytes), key);
+    return this.select(keyBytes);
   }
   keyword(key: string): IndexPointer {
     return this.select(String.UTF8.encode(key));
