@@ -110,6 +110,8 @@
  (data $37.1 (i32.const 4168) "\02\00\00\00H\00\00\00b\00s\00t\00.\00s\00e\00e\00k\00G\00r\00e\00a\00t\00e\00r\00(\000\00x\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00)\00)")
  (data $38 (i32.const 4252) "\\")
  (data $38.1 (i32.const 4264) "\02\00\00\00F\00\00\00b\00s\00t\00.\00s\00e\00e\00k\00G\00r\00e\00a\00t\00e\00r\00(\000\00x\000\002\000\000\000\000\000\000\000\000\000\000\000\000\000\000\00)")
+ (data $39 (i32.const 4348) "\\")
+ (data $39.1 (i32.const 4360) "\02\00\00\00F\00\00\00b\00s\00t\00.\00s\00e\00e\00k\00G\00r\00e\00a\00t\00e\00r\00(\000\00x\000\003\000\000\000\000\000\000\000\000\000\000\000\000\000\000\00)")
  (table $0 8 8 funcref)
  (elem $0 (i32.const 1) $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|1 $assembly/utils/rlp/toRLP~anonymous|2 $assembly/utils/rlp/toRLP~anonymous|2)
  (export "test_parseBlock" (func $assembly/index/test_parseBlock))
@@ -2441,7 +2443,7 @@
   i32.add
   i32.load
   local.set $1
-  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$472"
+  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$473"
    loop $while-continue|0
     local.get $1
     if
@@ -2458,7 +2460,7 @@
       local.get $3
       i32.eq
      end
-     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$472"
+     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$473"
      local.get $4
      i32.const -2
      i32.and
@@ -2705,7 +2707,7 @@
   i32.add
   i32.load
   local.set $0
-  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$473"
+  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$474"
    loop $while-continue|0
     local.get $0
     if
@@ -2722,7 +2724,7 @@
       local.get $1
       i32.eq
      end
-     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$473"
+     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$474"
      local.get $2
      i32.const -2
      i32.and
@@ -2793,7 +2795,7 @@
   i32.add
   i32.load
   local.set $0
-  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$469"
+  block $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$470"
    loop $while-continue|0
     local.get $0
     if
@@ -2810,7 +2812,7 @@
       local.get $2
       i32.eq
      end
-     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$469"
+     br_if $"__inlined_func$~lib/map/Map<u32,~lib/arraybuffer/ArrayBuffer>#find$470"
      local.get $3
      i32.const -2
      i32.and
@@ -5425,13 +5427,16 @@
   local.get $6
   i32.const 63
   i32.and
+  local.tee $6
+  i32.const 1
+  i32.add
   i64.extend_i32_u
-  local.tee $2
   i64.shl
   i64.const 1
   i64.sub
-  i64.const 64
-  local.get $2
+  i64.const 63
+  local.get $6
+  i64.extend_i32_u
   i64.sub
   i64.shl
   i64.const -1
@@ -5709,6 +5714,16 @@
   i64.const 144115188075855872
   call $assembly/indexer/bst/BST<u64>#seekGreater
   call $assembly/index/logK<u64>
+  i32.const 2
+  global.set $~argumentsLength
+  i32.const 4368
+  i32.const 1
+  call $~lib/string/String.UTF8.encode@varargs
+  call $assembly/utils/logging/__log
+  local.get $0
+  i64.const 216172782113783808
+  call $assembly/indexer/bst/BST<u64>#seekGreater
+  call $assembly/index/logK<u64>
   call $assembly/indexer/index/_flush
  )
  (func $assembly/index/test_maskLowerThan
@@ -5822,7 +5837,7 @@
  )
  (func $~start
   (local $0 i32)
-  i32.const 4348
+  i32.const 4444
   global.set $~lib/rt/stub/offset
   i32.const 0
   i32.const 5

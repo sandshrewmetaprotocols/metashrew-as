@@ -31,7 +31,7 @@ export function maskGreaterThan(v: ArrayBuffer, position: u8): void {
   const bitSelected = position % 64;
   ary[byteSelected] =
     ary[byteSelected] &
-    ~(<u64>(((1 << bitSelected) - 1) << (64 - bitSelected)));
+    ~(<u64>(((1 << (bitSelected + 1)) - 1) << (63 - bitSelected)));
   for (let i: u8 = 0; i < byteSelected; i++) {
     ary[i] = 0;
   }

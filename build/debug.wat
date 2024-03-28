@@ -92,7 +92,7 @@
  (global $~lib/number/U8.MAX_VALUE i32 (i32.const 255))
  (global $~lib/builtins/u64.MAX_VALUE i64 (i64.const -1))
  (global $~lib/number/U64.MAX_VALUE i64 (i64.const -1))
- (global $~lib/memory/__heap_base i32 (i32.const 3324))
+ (global $~lib/memory/__heap_base i32 (i32.const 3420))
  (memory $0 1 32768)
  (data $0 (i32.const 12) "\1c\02\00\00\00\00\00\00\00\00\00\00\04\00\00\00\00\02\00\00000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff\00\00\00\00\00\00\00\00\00\00\00\00")
  (data $1 (i32.const 556) "<\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00(\00\00\00A\00l\00l\00o\00c\00a\00t\00i\00o\00n\00 \00t\00o\00o\00 \00l\00a\00r\00g\00e\00\00\00\00\00")
@@ -133,6 +133,7 @@
  (data $36 (i32.const 3036) "\\\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00B\00\00\00b\00s\00t\00.\00s\00e\00e\00k\00L\00o\00w\00e\00r\00(\000\00x\000\003\000\000\000\000\000\000\000\000\000\000\000\000\000\000\00)\00\00\00\00\00\00\00\00\00\00\00")
  (data $37 (i32.const 3132) "\\\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00H\00\00\00b\00s\00t\00.\00s\00e\00e\00k\00G\00r\00e\00a\00t\00e\00r\00(\000\00x\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00f\00)\00)\00\00\00\00\00")
  (data $38 (i32.const 3228) "\\\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00F\00\00\00b\00s\00t\00.\00s\00e\00e\00k\00G\00r\00e\00a\00t\00e\00r\00(\000\00x\000\002\000\000\000\000\000\000\000\000\000\000\000\000\000\000\00)\00\00\00\00\00\00\00")
+ (data $39 (i32.const 3324) "\\\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00F\00\00\00b\00s\00t\00.\00s\00e\00e\00k\00G\00r\00e\00a\00t\00e\00r\00(\000\00x\000\003\000\000\000\000\000\000\000\000\000\000\000\000\000\000\00)\00\00\00\00\00\00\00")
  (table $0 8 8 funcref)
  (elem $0 (i32.const 1) $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|1 $assembly/utils/rlp/toRLP~anonymous|2 $assembly/utils/rlp/toRLP~anonymous|3)
  (export "test_parseBlock" (func $assembly/index/test_parseBlock))
@@ -7493,11 +7494,15 @@
   call $~lib/array/Array<u64>#__get
   i64.const 1
   local.get $bitSelected
+  i32.const 1
+  i32.add
+  i32.const 255
+  i32.and
   i64.extend_i32_u
   i64.shl
   i64.const 1
   i64.sub
-  i64.const 64
+  i64.const 63
   local.get $bitSelected
   i64.extend_i32_u
   i64.sub
@@ -7700,6 +7705,13 @@
   call $assembly/utils/logging/Console#log
   local.get $bst
   i64.const 144115188075855872
+  call $assembly/indexer/bst/BST<u64>#seekGreater
+  call $assembly/index/logK<u64>
+  global.get $assembly/utils/logging/console
+  i32.const 3344
+  call $assembly/utils/logging/Console#log
+  local.get $bst
+  i64.const 216172782113783808
   call $assembly/indexer/bst/BST<u64>#seekGreater
   call $assembly/index/logK<u64>
   call $assembly/indexer/index/_flush

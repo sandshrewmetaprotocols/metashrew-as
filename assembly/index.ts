@@ -87,6 +87,8 @@ export function test_seekGreater(): void {
   logK<u64>(bst.seekGreater(0xffffffffffffffff));
   console.log("bst.seekGreater(0x0200000000000000)");
   logK<u64>(bst.seekGreater(0x0200000000000000));
+  console.log("bst.seekGreater(0x0300000000000000)");
+  logK<u64>(bst.seekGreater(0x0300000000000000));
   _flush();
 }
 
