@@ -16,15 +16,16 @@
 
 import { toRLP, RLPItem } from "../utils/rlp";
 import { xxh32 } from "../utils/xxh32";
+import { sha256 } from "../utils/sha256";
 import { memcpy } from "../utils/memcpy";
 import { Box } from "../utils/box";
 import { console } from "../utils/logging";
 import {
   IndexPointer
 } from "./tables";
-const _updates = new Map<u32, ArrayBuffer>();
+const _updates = new Map<string, ArrayBuffer>();
 
-const _updateKeys = new Map<u32, ArrayBuffer>();
+const _updateKeys = new Map<string, ArrayBuffer>();
 
 const BUFFER_SIZE = <u32>0x100000;
 let _filled: u32 = 0;
@@ -35,25 +36,29 @@ export function input(): ArrayBuffer {
   __load_input(data);
   return data;
 }
+function hash(k: ArrayBuffer): string {
+  return String.UTF8.decode(k);
+}
 export function set(k: ArrayBuffer, v: ArrayBuffer): void {
-  const h = xxh32(k);
+  const h = hash(k);
   _updates.set(h, v);
   _updateKeys.set(h, k);
 }
 export function get(k: ArrayBuffer): ArrayBuffer {
-  const h = xxh32(k);
+  const h = hash(k);
+  let result = changetype<ArrayBuffer>(0);
   if (!_updates.has(h)) {
-    let result = new ArrayBuffer(__get_len(k));
+    result = new ArrayBuffer(__get_len(k));
     __get(k, result);
     _updates.set(h, result);
     _updateKeys.set(h, result);
-    return result;
-  } else return _updates.get(h);
+  } else result = _updates.get(h);
+  return result;
 }
 export function _flush(): void {
   const hashKeys = _updates.keys();
   const rlpInput = new Array<RLPItem>();
-  hashKeys.reduce((r: Array<RLPItem>, v: u32, i: i32, ary: Array<u32>) => {
+  hashKeys.reduce((r: Array<RLPItem>, v: string, i: i32, ary: Array<string>) => {
     r.push(RLPItem.fromArrayBuffer(_updateKeys.get(v)));
     r.push(RLPItem.fromArrayBuffer(_updates.get(v)));
     return r;
