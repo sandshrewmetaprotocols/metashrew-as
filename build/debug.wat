@@ -5,9 +5,9 @@
  (type $3 (func))
  (type $4 (func (param i32 i32 i32) (result i32)))
  (type $5 (func (param i32 i32 i32 i32) (result i32)))
- (type $6 (func (param i32 i32 i32)))
- (type $7 (func (result i32)))
- (type $8 (func (param i32)))
+ (type $6 (func (param i32)))
+ (type $7 (func (param i32 i32 i32)))
+ (type $8 (func (result i32)))
  (type $9 (func (param i32 i64)))
  (type $10 (func (param i32 i32 i32 i32)))
  (type $11 (func (param i32 i32 i32 i32 i32) (result i32)))
@@ -6439,11 +6439,44 @@
   end
   unreachable
  )
+ (func $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#clear" (param $this i32)
+  local.get $this
+  i32.const 0
+  i32.const 4
+  i32.const 4
+  i32.mul
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set:buckets"
+  local.get $this
+  i32.const 4
+  i32.const 1
+  i32.sub
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set:bucketsMask"
+  local.get $this
+  i32.const 0
+  i32.const 4
+  block $"~lib/map/ENTRY_SIZE<~lib/string/String,~lib/arraybuffer/ArrayBuffer>|inlined.7" (result i32)
+   i32.const 12
+   br $"~lib/map/ENTRY_SIZE<~lib/string/String,~lib/arraybuffer/ArrayBuffer>|inlined.7"
+  end
+  i32.mul
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set:entries"
+  local.get $this
+  i32.const 4
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set:entriesCapacity"
+  local.get $this
+  i32.const 0
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set:entriesOffset"
+  local.get $this
+  i32.const 0
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set:entriesCount"
+ )
  (func $assembly/indexer/index/_flush
   (local $hashKeys i32)
   (local $rlpInput i32)
   (local $buffer i32)
-  global.get $assembly/indexer/index/_updates
+  global.get $assembly/indexer/index/_updateKeys
   call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#keys"
   local.set $hashKeys
   i32.const 0
@@ -6459,6 +6492,8 @@
   call $assembly/utils/rlp/RLPItem.fromList
   call $assembly/utils/rlp/toRLP
   local.set $buffer
+  global.get $assembly/indexer/index/_updateKeys
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#clear"
   local.get $buffer
   call $assembly/indexer/index/__flush
  )

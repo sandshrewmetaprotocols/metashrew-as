@@ -56,7 +56,7 @@ export function get(k: ArrayBuffer): ArrayBuffer {
   return result;
 }
 export function _flush(): void {
-  const hashKeys = _updates.keys();
+  const hashKeys = _updateKeys.keys();
   const rlpInput = new Array<RLPItem>();
   hashKeys.reduce((r: Array<RLPItem>, v: string, i: i32, ary: Array<string>) => {
     r.push(RLPItem.fromArrayBuffer(_updateKeys.get(v)));
@@ -65,6 +65,7 @@ export function _flush(): void {
 
   }, rlpInput);
   const buffer = toRLP(RLPItem.fromList(rlpInput));
+  _updateKeys.clear();
   __flush(buffer);
 }
 

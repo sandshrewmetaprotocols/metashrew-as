@@ -2610,14 +2610,14 @@
     if (result i32)
      i32.const 0
     else
-     block $__inlined_func$~lib/string/String.__eq$539 (result i32)
+     block $__inlined_func$~lib/string/String.__eq$545 (result i32)
       i32.const 1
       local.get $5
       i32.load
       local.tee $2
       local.get $1
       i32.eq
-      br_if $__inlined_func$~lib/string/String.__eq$539
+      br_if $__inlined_func$~lib/string/String.__eq$545
       drop
       i32.const 0
       local.get $1
@@ -2625,7 +2625,7 @@
       local.get $2
       i32.eqz
       i32.or
-      br_if $__inlined_func$~lib/string/String.__eq$539
+      br_if $__inlined_func$~lib/string/String.__eq$545
       drop
       i32.const 0
       local.get $2
@@ -2642,7 +2642,7 @@
       i32.const 1
       i32.shr_u
       i32.ne
-      br_if $__inlined_func$~lib/string/String.__eq$539
+      br_if $__inlined_func$~lib/string/String.__eq$545
       drop
       local.get $1
       local.set $3
@@ -3883,7 +3883,7 @@
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
-  global.get $assembly/indexer/index/_updates
+  global.get $assembly/indexer/index/_updateKeys
   local.tee $1
   i32.load offset=8
   local.set $5
@@ -4066,6 +4066,29 @@
   i32.const 3
   call $assembly/utils/rlp/RLPItem#constructor
   call $assembly/utils/rlp/toRLP
+  local.set $1
+  global.get $assembly/indexer/index/_updateKeys
+  local.tee $0
+  i32.const 16
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  i32.store
+  local.get $0
+  i32.const 3
+  i32.store offset=4
+  local.get $0
+  i32.const 48
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  i32.store offset=8
+  local.get $0
+  i32.const 4
+  i32.store offset=12
+  local.get $0
+  i32.const 0
+  i32.store offset=16
+  local.get $0
+  i32.const 0
+  i32.store offset=20
+  local.get $1
   call $assembly/indexer/index/__flush
  )
  (func $assembly/index/test_seekLower
