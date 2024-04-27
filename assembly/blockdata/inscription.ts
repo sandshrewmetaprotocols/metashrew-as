@@ -73,11 +73,6 @@ export class Inscription {
     this.fields.push(new Field(<u32>0x00, contentBody));
   }
   toArrayBuffer(): ArrayBuffer {
-    return this.fields.reduce(
-      (r: ArrayBuffer, v: Field, i: i32, ary: Array<Field>) => {
-        return Box.concat([Box.from(r), Box.from(v.data)]);
-      },
-      new ArrayBuffer(0),
-    );
+    return this.bytes.toArrayBuffer();
   }
 }
