@@ -61,6 +61,7 @@ export function _flush(): void {
   }, rlpInput);
   const buffer = toRLP(RLPItem.fromList(rlpInput));
   __flush(buffer);
+  __collect();
 }
 
 

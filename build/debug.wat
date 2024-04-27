@@ -6111,6 +6111,8 @@
   end
   unreachable
  )
+ (func $~lib/rt/stub/__collect
+ )
  (func $assembly/indexer/index/_flush
   (local $hashKeys i32)
   (local $rlpInput i32)
@@ -6133,6 +6135,7 @@
   local.set $buffer
   local.get $buffer
   call $assembly/indexer/index/__flush
+  call $~lib/rt/stub/__collect
  )
  (func $assembly/index/test_seekLower
   (local $ptr i32)
