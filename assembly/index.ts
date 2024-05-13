@@ -14,7 +14,7 @@ import {
 import { Index, get, set, _flush, input } from "./indexer/index";
 import { console } from "./utils/logging";
 import { abort } from "./utils/abort";
-import { Block } from "./blockdata";
+import { Transaction, Block } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
 import {
   BST,
@@ -42,6 +42,15 @@ function logK<K>(v: K): void {
   console.log(Box.from(data).toHexString());
 }
 
+export function test_parseWitness(): void {
+  const data = input();
+  const box = Box.from(data);
+  const height = parsePrimitive<u32>(box);
+  const tx = new Transaction(box);
+  tx.ins[1].inscription();
+}
+
+
 export function test_seekLower(): void {
   const ptr = IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint");
   const bst = BST.at<u64>(
@@ -65,10 +74,6 @@ export function test_seekLower2(): void {
   bst.set(3, String.UTF8.encode("test"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
-  console.log("bst.seekLower(0xffffffffffffffff))");
-  logK<u64>(bst.seekLower(0xffffffffffffffff));
-  console.log("bst.seekLower(0x0300000000000000)");
-  logK<u64>(bst.seekLower(0x0300000000000000));
 //  console.log("bst.seekLower(0x03 << 16)");
   //logK<u64>(bst.seekLower(0x03 << 16));
   //bst.nullify(<u64>(0x03 << 16));
@@ -83,12 +88,6 @@ export function test_seekGreater(): void {
   bst.set(3, String.UTF8.encode("test"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
-  console.log("bst.seekGreater(0xffffffffffffffff))");
-  logK<u64>(bst.seekGreater(0xffffffffffffffff));
-  console.log("bst.seekGreater(0x0200000000000000)");
-  logK<u64>(bst.seekGreater(0x0200000000000000));
-  console.log("bst.seekGreater(0x0300000000000000)");
-  logK<u64>(bst.seekGreater(0x0300000000000000));
   _flush();
 }
 

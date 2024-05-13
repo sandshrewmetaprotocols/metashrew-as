@@ -1,6 +1,7 @@
 import { Box } from "../utils/box";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
 import { parsePushOp, decodeTag, concat } from "../utils/utils";
+import { console } from "../utils/logging";
 
 export class Field {
   public tag: u32;
@@ -43,9 +44,8 @@ export class Inscription {
 
     let ordTag = parsePushOp(inscBox);
     if (String.UTF8.decode(ordTag.toArrayBuffer()) !== "ord") {
-      return this;
+      throw Error('invalid inscription');
     }
-
     let tag: usize;
     let content = new Array<ArrayBuffer>();
     for (

@@ -90,7 +90,7 @@ export class Input {
 
   inscription(): Inscription | null {
     let script = this.witness.tapscript();
-    if (script == nullptr<Box>()) return null;
+    if (script == nullptr<Box>() || !Witness.isInscribed(script)) return null;
     return new Inscription(script);
   }
 }

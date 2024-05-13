@@ -1,6 +1,8 @@
 import { Box } from "../utils/box";
-import { parsePrimitive, parseLenThenBytes, parseVarInt } from "../utils/utils";
-import { toPointer, nullptr } from "../utils/pointer";
+import { isPushOp, parsePrimitive, parseLenThenBytes, parseVarInt, parsePushOp, decodeTag, concat } from "../utils/utils";
+import { console } from "../utils/logging";
+import { toPointer, nullptr, Pointer } from "../utils/pointer";
+import { toPointer, nullptr, Pointer } from "../utils/pointer";
 
 export class WitnessPart {
   public bytes: Box;
@@ -34,6 +36,11 @@ export class WitnessPart {
   }
 }
 
+function containsPushOp(data: Box): boolean {
+  if (data.len < 1) return false;
+  return isPushOp(load<u8>(data.start));
+}
+
 export class Witness {
   public bytes: Box;
   public parts: Array<WitnessPart>;
@@ -49,7 +56,33 @@ export class Witness {
     const tail: usize = data.start;
     this.bytes = toPointer(head).toBox(tail - head);
   }
+  static isInscribed(data: Box): boolean {
+    const view = data.sliceFrom(0);
 
+    let head = view.start;
+    let len = view.len;
+    let tail = view.start + len;
+
+    // find the inscription
+    while (head < tail - 1) {
+      if (load<u8>(head) == 0x00 && load<u8>(head + 1) == 0x63) {
+        head += 2;
+        len -= 2;
+        break;
+      }
+      head++;
+      len--;
+    }
+    while (tail > head) {
+      if (load<u8>(tail) == 0x68) break;
+      tail--;
+      len--;
+    }
+    let inscBox = toPointer(head).toBox(len);
+    if (!containsPushOp(inscBox)) return false;
+    let ordTag = parsePushOp(inscBox);
+    return String.UTF8.decode(ordTag.toArrayBuffer()) === "ord";
+  }
   taprootAnnex(): boolean {
     if (this.parts.length >= 2) {
       return this.parts[this.parts.length - 1].taprootAnnex;
