@@ -28,6 +28,7 @@ import {
   maskLowerThan,
 } from "./indexer/bst";
 import { IndexPointer } from "./indexer/tables";
+import { Input } from "./blockdata/transaction";
 
 export function test_parseBlock(): void {
   const data = input();
@@ -139,4 +140,14 @@ export function test_binarySearch3(): void {
   const data = new ArrayBuffer(32);
   setBitU256(data, 0);
   setBitU256(data, 2);
+}
+
+export function test_inscription(): void {
+  const data = input();
+  const box = Box.from(data);
+  const height = parsePrimitive<u32>(box);
+  const tx = new Transaction(box);
+  tx.ins.forEach((v: Input, i: i32, ary: Array<Input>) => {
+    v.inscription();
+  });
 }

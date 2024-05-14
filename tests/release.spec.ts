@@ -46,4 +46,14 @@ describe("metashrew index", () => {
     indexer.setBlockHeight(709635);
     const result = await indexer.run('test_parseWitness');
   });
+  it('should parse an inscription without error', async () => {
+    const indexer = new IndexerProgram(
+      new Uint8Array(Array.from(WASM_BINARY)).buffer,
+    );
+    indexer.on("log", (v) => console.log(v));
+    indexer.setBlock('0x0100000003464abf3e31163d6081eac19f8fc14d34108d7c98ece34a33763d9ddbb5194f8e000000006a47304402205e58d1cb002f62d51e027e68a1b74c039a643e0a3bf00774d383c803d2c10e9002201315138bb52827f5ff4b03b14bd8208eed3781767aa240c583b8cec58d09ca6f01210294a85c8e902a85cb978dd5fe1f230d915779337eddd6ad03a86f69534725f2daffffffff1f2b73052d8a09792c4a096adbbe16220dc30bbdb6ad71d4878d44eccaa843b5000000006b483045022100b5a6e3e940f363348f0e2212ab90b382fc536ca4edeb5642179e47c6c23b836702202ab9052f1899e60c339e97d432b02cfd9bd51048a331d206603ff4d8794e43c301210294a85c8e902a85cb978dd5fe1f230d915779337eddd6ad03a86f69534725f2daffffffff35a7f2740dea30e57cbd416c2fb3b5138b1ea86f9c588e1f45f380767575d7ee000000006b483045022100c0416860f54462516f6431ee20ef40833e0d53dd914223be090ebfb72f689317022038a42715e3b87ea6f492da3ef4cb7530ee2e3a4a5cae1206de6a136a5cda4ccd01210294a85c8e902a85cb978dd5fe1f230d915779337eddd6ad03a86f69534725f2daffffffff014640c7f83d00000017a914dcfbeddd8daafa20221169eab5a2356500cbc9168700000000');
+    indexer.setBlockHeight(770051);
+    const result = await indexer.run('test_inscription');
+  });
+
 });

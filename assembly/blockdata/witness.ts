@@ -96,37 +96,36 @@ export class Witness {
     var len = this.parts.length;
     var script: Box = nullptr<Box>();
     // fail if witness stack is empty
-    if (len == 0) {
+    if (len < 1) {
       return nullptr<Box>();
     }
 
     if (len >= 2) {
       let m: Array<WitnessPart>;
+      let mLen = this.parts.length;
       // check for taproot annex
       if (this.parts[len - 1].taprootAnnex) {
-        m = this.parts.slice(0, len - 1);
+        //m = this.parts.slice(0, len - 1);
+	mLen--;
       } else {
-        m = this.parts.slice(0);
+        //m = this.parts.slice(0, len);
       }
-
-      let mLen = m.length;
 
       // keypath spend
       // TODO: validate the remaining signature
-      if (mLen == 1) return nullptr<Box>();
+      if (mLen <= 1) return nullptr<Box>();
 
-      if (mLen >= 2) {
         // if this is a signature
-        if (m[mLen - 2].isScript != true) return script;
+        if (!this.parts[mLen - 2].isScript) {
+          return script;
+	}
 
-        let control = m[mLen - 1].bytes;
+        let control = this.parts[mLen - 1].bytes;
         if (control.len < 33 || (control.len - 33) % 32 != 0) return script;
 
         // return copy so it can be parsed;
-        script = m[mLen - 2].bytes.sliceFrom(0);
+        script = this.parts[mLen - 2].bytes.sliceFrom(0);
         return script;
-      }
-      return script;
     } else {
       return script;
     }
