@@ -66,6 +66,21 @@ export function parsePushOp(data: Box): Box {
   return data;
 }
 
+export function fromPushBox(v: Box): ArrayBuffer {
+  if (v.start === 0) {
+    if (v.len === 0) {
+      const result = new ArrayBuffer(4);
+      store<i32>(changetype<usize>(result), -1);
+      return result;
+    } else {
+      const result = new ArrayBuffer(1);
+      store<u8>(changetype<usize>(result), <u8>v.len);
+      return result;
+    }
+  }
+  return v.toArrayBuffer();
+}
+
 export function isPushOp(op: u8): boolean {
   return (op >= 0x00 && op <= 0x4f) || (op > 0x50 && op <= 0x60);
 }

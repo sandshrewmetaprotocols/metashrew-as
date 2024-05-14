@@ -1,6 +1,6 @@
 import { Box } from "../utils/box";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
-import { isOrdTag, parsePushOp, decodeTag, concat } from "../utils/utils";
+import { isOrdTag, parsePushOp, decodeTag, fromPushBox, concat } from "../utils/utils";
 import { console } from "../utils/logging";
 
 export class Field {
@@ -56,7 +56,7 @@ export class Inscription {
       if (decodeTag(i) >= 0x01 && decodeTag(i) <= 0x0b) {
         tag = decodeTag(i);
         this.fields.push(
-          new Field(<u32>tag, parsePushOp(inscBox).toArrayBuffer()),
+          new Field(<u32>tag, fromPushBox(parsePushOp(inscBox))),
         );
       } else if (decodeTag(i) == 0x00) {
         break;
@@ -65,7 +65,7 @@ export class Inscription {
     // handle content body pushes if data remains
     while (inscBox.len > 0) {
       let i = parsePushOp(inscBox);
-      content.push(i.toArrayBuffer());
+      content.push(fromPushBox(i));
     }
 
     // fill out content body
