@@ -1,6 +1,6 @@
 import { Box } from "../utils/box";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
-import { parsePushOp, decodeTag, concat } from "../utils/utils";
+import { isOrdTag, parsePushOp, decodeTag, concat } from "../utils/utils";
 import { console } from "../utils/logging";
 
 export class Field {
@@ -43,8 +43,8 @@ export class Inscription {
     this.bytes = inscBox.sliceFrom(0);
 
     let ordTag = parsePushOp(inscBox);
-    if (String.UTF8.decode(ordTag.toArrayBuffer()) !== "ord") {
-      throw Error('invalid inscription');
+    if (!isOrdTag(ordTag)) {
+      throw Error("invalid inscription");
     }
     let tag: usize;
     let content = new Array<ArrayBuffer>();

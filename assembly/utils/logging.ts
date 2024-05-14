@@ -1,3 +1,4 @@
+
 @external("env", "__log") declare function __log(s: ArrayBuffer): void;
 function _log(s: string): void {
   console.log(s);

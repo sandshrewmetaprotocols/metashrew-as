@@ -82,6 +82,10 @@ export function decodeTag(box: Box): usize {
   return load<usize>(changetype<usize>(buffer));
 }
 
+export function isOrdTag(data: Box): boolean {
+  return (load<u32>(data.start) & 0x00ffffff) === 0x64726f;
+}
+
 export function parseVarInt(data: Box): u64 {
   const first: u8 = load<u8>(data.start);
   data.shrinkFront(<usize>1);

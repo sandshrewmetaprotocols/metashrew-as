@@ -225,9 +225,12 @@ export class BST<K> {
       memcpy(
         changetype<usize>(newPartial),
         changetype<usize>(partialKey),
-	partialKey.byteLength
+        partialKey.byteLength,
       );
-      store<u8>(changetype<usize>(newPartial) + <usize>partialKey.byteLength, <u8>binarySearchU256(this.getMaskPointer(partialKey).get(), seekHigher));
+      store<u8>(
+        changetype<usize>(newPartial) + <usize>partialKey.byteLength,
+        <u8>binarySearchU256(this.getMaskPointer(partialKey).get(), seekHigher),
+      );
       partialKey = newPartial;
     }
     return bswap<K>(load<K>(changetype<usize>(partialKey)));
@@ -235,15 +238,18 @@ export class BST<K> {
   seekLower(start: K): K {
     let partialKey = new ArrayBuffer(sizeof<K>());
     store<K>(changetype<usize>(partialKey), bswap<K>(start));
-    do { 
+    do {
       const thisKey = Box.from(partialKey).shrinkBack(1).toArrayBuffer();
       const mask = this.getMaskPointer(thisKey).get();
       if (mask.byteLength !== 0) {
         maskLowerThan(mask, byteAt(partialKey, thisKey.byteLength));
-	const symbol = binarySearchU256(mask, false);
-	if (symbol !== -1) {
-          return this._findBoundaryFromPartial(Box.concat([ Box.from(thisKey), Box.from(toBuffer<u8>(<u8>symbol)) ]), false);
-	}
+        const symbol = binarySearchU256(mask, false);
+        if (symbol !== -1) {
+          return this._findBoundaryFromPartial(
+            Box.concat([Box.from(thisKey), Box.from(toBuffer<u8>(<u8>symbol))]),
+            false,
+          );
+        }
       }
       partialKey = thisKey;
     } while (partialKey.byteLength !== 0);
@@ -252,19 +258,22 @@ export class BST<K> {
   seekGreater(start: K): K {
     let partialKey = new ArrayBuffer(sizeof<K>());
     store<K>(changetype<usize>(partialKey), bswap<K>(start));
-    do { 
+    do {
       const thisKey = Box.from(partialKey).shrinkBack(1).toArrayBuffer();
       const mask = this.getMaskPointer(thisKey).get();
       if (mask.byteLength !== 0) {
         maskGreaterThan(mask, byteAt(partialKey, thisKey.byteLength));
-	const symbol = binarySearchU256(mask, true);
-	if (symbol !== -1) {
-          return this._findBoundaryFromPartial(Box.concat([ Box.from(thisKey), Box.from(toBuffer<u8>(<u8>symbol)) ]), true);
-	}
+        const symbol = binarySearchU256(mask, true);
+        if (symbol !== -1) {
+          return this._findBoundaryFromPartial(
+            Box.concat([Box.from(thisKey), Box.from(toBuffer<u8>(<u8>symbol))]),
+            true,
+          );
+        }
       }
       partialKey = thisKey;
     } while (partialKey.byteLength !== 0);
-    return (0 as K);
+    return 0 as K;
   }
   set(k: K, v: ArrayBuffer): void {
     const key = bswap<K>(k);
@@ -282,7 +291,7 @@ export class BST<K> {
   }
   nullify(k: K): void {
     const key = bswap<K>(k);
-    const keyBytes = new ArrayBuffer(sizeof<K>());;
+    const keyBytes = new ArrayBuffer(sizeof<K>());
     this.ptr.select(keyBytes).set(new ArrayBuffer(0));
   }
 }

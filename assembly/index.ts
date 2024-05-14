@@ -1,6 +1,7 @@
 import { Box } from "./utils/box";
 import { memcpy } from "./utils/memcpy";
 import {
+  isOrdTag,
   concat,
   reverse,
   parseLenThenBytes,
@@ -79,6 +80,11 @@ export function test_seekLower2(): void {
   //logK<u64>(bst.seekLower(0x03 << 16));
   //bst.nullify(<u64>(0x03 << 16));
   _flush();
+}
+
+export function test_isOrdTag(): void {
+  const s = String.UTF8.encode("ord");
+  isOrdTag(Box.from(s));
 }
 
 export function test_seekGreater(): void {

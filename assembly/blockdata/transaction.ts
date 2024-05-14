@@ -85,10 +85,14 @@ export class Input {
     let vout = toPointer(this.hash.start + 32).toBox(<usize>4);
 
     // let bytes = toPointer(this.hash.start).toBox(<usize>36);
-    return OutPoint.from(reverse(txid.toArrayBuffer()), parsePrimitive<u32>(vout));
+    return OutPoint.from(
+      reverse(txid.toArrayBuffer()),
+      parsePrimitive<u32>(vout),
+    );
   }
 
   inscription(): Inscription | null {
+    if (changetype<usize>(this.witness) === 0) return null;
     let script = this.witness.tapscript();
     if (script == nullptr<Box>() || !Witness.isInscribed(script)) return null;
     return new Inscription(script);
@@ -169,7 +173,7 @@ export class Transaction {
     if (this.flag) {
       let witnessHead = data.start;
       for (let i = 0; i < vinLen; i++) {
-        this.ins[i].witness = instantiate<Witness>(data);
+        this.ins[i].witness = new Witness(data);
       }
       let witnessTail = data.start;
       this.witnessDataBytes = toPointer(witnessHead).toBox(

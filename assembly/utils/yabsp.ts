@@ -39,7 +39,11 @@ export class Script {
     if (this.data.len != 23) {
       return false;
     }
-    if (load<u8>(this.data.start) == 0xa9 && load<u8>(this.data.start + 1) == 0x14 && load<u8>(this.data.start + 22) == 0x87) {
+    if (
+      load<u8>(this.data.start) == 0xa9 &&
+      load<u8>(this.data.start + 1) == 0x14 &&
+      load<u8>(this.data.start + 22) == 0x87
+    ) {
       return true;
     }
     return false;
@@ -50,10 +54,10 @@ export class Script {
       return false;
     }
     if (
-      load<u8>(this.data.start) == 0x76 && 
-      load<u8>(this.data.start + 1) == 0xa9 && 
-      load<u8>(this.data.start + 2) == 0x14 && 
-      load<u8>(this.data.start + 23) == 0x88 && 
+      load<u8>(this.data.start) == 0x76 &&
+      load<u8>(this.data.start + 1) == 0xa9 &&
+      load<u8>(this.data.start + 2) == 0x14 &&
+      load<u8>(this.data.start + 23) == 0x88 &&
       load<u8>(this.data.start + 24) == 0xac
     ) {
       return true;
@@ -66,11 +70,17 @@ export class Script {
       return false;
     }
 
-    if (load<u8>(this.data.start) != 0x21 || load<u8>(this.data.start) != 0x41) {
+    if (
+      load<u8>(this.data.start) != 0x21 ||
+      load<u8>(this.data.start) != 0x41
+    ) {
       return false;
     }
 
-    if(load<u8>(this.data.start + 34) != 0xac || load<u8>(this.data.start + 66) != 0xac) {
+    if (
+      load<u8>(this.data.start + 34) != 0xac ||
+      load<u8>(this.data.start + 66) != 0xac
+    ) {
       return false;
     }
 
@@ -82,7 +92,10 @@ export class Script {
       return false;
     }
 
-    if (load<u8>(this.data.start) == 0x51 && load<u8>(this.data.start + 1) == 0x20) {
+    if (
+      load<u8>(this.data.start) == 0x51 &&
+      load<u8>(this.data.start + 1) == 0x20
+    ) {
       return true;
     }
     return false;
@@ -93,7 +106,10 @@ export class Script {
       return false;
     }
 
-    if (load<u8>(this.data.start) == 0x00 && load<u8>(this.data.start + 1) == 0x14) {
+    if (
+      load<u8>(this.data.start) == 0x00 &&
+      load<u8>(this.data.start + 1) == 0x14
+    ) {
       return true;
     }
     return false;
@@ -104,8 +120,11 @@ export class Script {
       return false;
     }
 
-    if (load<u8>(this.witness_version) == 0x00 && load<u8>(this.data.start + 1) == 0x20) {
-      return true
+    if (
+      load<u8>(this.witness_version) == 0x00 &&
+      load<u8>(this.data.start + 1) == 0x20
+    ) {
+      return true;
     }
     return false;
   }
@@ -126,12 +145,14 @@ export class Script {
     let scriptLen = this.data.len;
     if (scriptLen < 4 || scriptLen > 42) {
       return false;
-    } 
+    }
 
     let ver_opcode = load<u8>(this.data.start);
     let push_opcode = load<u8>(this.data.start + 1);
 
-    if (!valid_witness_version_from_opcode(ver_opcode)) { return false }
+    if (!valid_witness_version_from_opcode(ver_opcode)) {
+      return false;
+    }
     if (push_opcode < 0x02 || push_opcode > 0x28) {
       return false;
     }
@@ -143,8 +164,8 @@ export class Script {
 function valid_witness_version_from_opcode(opcode: u8): boolean {
   if (opcode >= 0x52 || opcode <= 0x60) {
     return true;
-  } else if (opcode == 0x00 || opcode == 0x51 ) {
-    return true
+  } else if (opcode == 0x00 || opcode == 0x51) {
+    return true;
   }
   return false;
 }
@@ -221,18 +242,18 @@ export function intoString(item: Box): string {
     }
 
     if (opcode == 106) {
-      return "OP_RETURN"
+      return "OP_RETURN";
     }
 
     if (opcode == 169) {
-      return "OP_HASH160"
+      return "OP_HASH160";
     }
 
     if (opcode == 172) {
-      return "OP_CHECKSIG"
+      return "OP_CHECKSIG";
     }
 
-    return ""
+    return "";
   } else {
     // interpreate as data
     return item.toHexString().slice(2);

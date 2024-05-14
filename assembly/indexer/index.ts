@@ -1,17 +1,27 @@
+
 @external("env", "__set") declare function __set(
   k: ArrayBuffer,
   v: ArrayBuffer,
 ): void;
 
+
 @external("env", "__get") declare function __get(
   k: ArrayBuffer,
   v: ArrayBuffer,
 ): void;
+
+
 @external("env", "__get_len") declare function __get_len(k: ArrayBuffer): i32;
+
+
 @external("env", "__flush") declare function __flush(values: ArrayBuffer): void;
+
+
 @external("env", "__load_input") declare function __load_input(
   block: ArrayBuffer,
 ): void;
+
+
 @external("env", "__host_len") declare function __host_len(): i32;
 
 import { toRLP, RLPItem } from "../utils/rlp";
@@ -20,16 +30,13 @@ import { sha256 } from "../utils/sha256";
 import { memcpy } from "../utils/memcpy";
 import { Box } from "../utils/box";
 import { console } from "../utils/logging";
-import {
-  IndexPointer
-} from "./tables";
+import { IndexPointer } from "./tables";
 const _updates = new Map<string, ArrayBuffer>();
 
 const _updateKeys = new Map<string, ArrayBuffer>();
 
 const BUFFER_SIZE = <u32>0x100000;
 let _filled: u32 = 0;
-
 
 export function input(): ArrayBuffer {
   const data = new ArrayBuffer(__host_len());
@@ -58,18 +65,19 @@ export function get(k: ArrayBuffer): ArrayBuffer {
 export function _flush(): void {
   const hashKeys = _updateKeys.keys();
   const rlpInput = new Array<RLPItem>();
-  hashKeys.reduce((r: Array<RLPItem>, v: string, i: i32, ary: Array<string>) => {
-    r.push(RLPItem.fromArrayBuffer(_updateKeys.get(v)));
-    r.push(RLPItem.fromArrayBuffer(_updates.get(v)));
-    return r;
-
-  }, rlpInput);
+  hashKeys.reduce(
+    (r: Array<RLPItem>, v: string, i: i32, ary: Array<string>) => {
+      r.push(RLPItem.fromArrayBuffer(_updateKeys.get(v)));
+      r.push(RLPItem.fromArrayBuffer(_updates.get(v)));
+      return r;
+    },
+    rlpInput,
+  );
   const buffer = toRLP(RLPItem.fromList(rlpInput));
   _updateKeys.clear();
   __flush(buffer);
   __collect();
 }
-
 
 /**
  * Class - Index

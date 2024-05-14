@@ -9,11 +9,14 @@ export class Node {
     this.key = key;
     this.value = value;
   }
+
+
   @inline
   static from(key: ArrayBuffer, value: ArrayBuffer): Node {
     return new Node(key, value);
   }
 }
+
 
 @final
 @unmanaged
@@ -48,7 +51,11 @@ export class IndexPointer {
     const value = this.get();
     if (value.byteLength === 0) return <T>0;
     const container = new ArrayBuffer(sizeof<T>());
-    memcpy(changetype<usize>(container), changetype<usize>(value), value.byteLength);
+    memcpy(
+      changetype<usize>(container),
+      changetype<usize>(value),
+      value.byteLength,
+    );
     return load<T>(changetype<usize>(container));
   }
   setValue<T>(v: T): void {

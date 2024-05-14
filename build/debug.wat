@@ -6,8 +6,8 @@
  (type $4 (func (param i32 i32 i32) (result i32)))
  (type $5 (func (param i32 i32 i32 i32) (result i32)))
  (type $6 (func (param i32 i32 i32)))
- (type $7 (func (result i32)))
- (type $8 (func (param i32)))
+ (type $7 (func (param i32)))
+ (type $8 (func (result i32)))
  (type $9 (func (param i32 i64)))
  (type $10 (func (param i32 i32 i32 i32)))
  (type $11 (func (param i32 i32 i32 i32 i32) (result i32)))
@@ -19,6 +19,7 @@
  (import "env" "abort" (func $~lib/builtins/abort (param i32 i32 i32 i32)))
  (import "env" "__host_len" (func $assembly/indexer/index/__host_len (result i32)))
  (import "env" "__load_input" (func $assembly/indexer/index/__load_input (param i32)))
+ (import "env" "__log" (func $assembly/utils/logging/__log (param i32)))
  (import "env" "__get_len" (func $assembly/indexer/index/__get_len (param i32) (result i32)))
  (import "env" "__get" (func $assembly/indexer/index/__get (param i32 i32)))
  (import "env" "__flush" (func $assembly/indexer/index/__flush (param i32)))
@@ -81,7 +82,7 @@
  (global $~lib/native/ASC_SHRINK_LEVEL i32 (i32.const 0))
  (global $~lib/builtins/u64.MAX_VALUE i64 (i64.const -1))
  (global $~lib/number/U64.MAX_VALUE i64 (i64.const -1))
- (global $~lib/memory/__heap_base i32 (i32.const 3132))
+ (global $~lib/memory/__heap_base i32 (i32.const 3228))
  (memory $0 1 32768)
  (data $0 (i32.const 12) "\1c\02\00\00\00\00\00\00\00\00\00\00\04\00\00\00\00\02\00\00000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff\00\00\00\00\00\00\00\00\00\00\00\00")
  (data $1 (i32.const 556) "<\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00(\00\00\00A\00l\00l\00o\00c\00a\00t\00i\00o\00n\00 \00t\00o\00o\00 \00l\00a\00r\00g\00e\00\00\00\00\00")
@@ -103,31 +104,34 @@
  (data $17 (i32.const 2156) "<\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00&\00\00\00~\00l\00i\00b\00/\00s\00t\00a\00t\00i\00c\00a\00r\00r\00a\00y\00.\00t\00s\00\00\00\00\00\00\00")
  (data $18 (i32.const 2220) ",\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\1a\00\00\00~\00l\00i\00b\00/\00a\00r\00r\00a\00y\00.\00t\00s\00\00\00")
  (data $19 (i32.const 2268) "|\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00^\00\00\00E\00l\00e\00m\00e\00n\00t\00 \00t\00y\00p\00e\00 \00m\00u\00s\00t\00 \00b\00e\00 \00n\00u\00l\00l\00a\00b\00l\00e\00 \00i\00f\00 \00a\00r\00r\00a\00y\00 \00i\00s\00 \00h\00o\00l\00e\00y\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
- (data $20 (i32.const 2396) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\06\00\00\00o\00r\00d\00\00\00\00\00\00\00")
- (data $21 (i32.const 2428) "\\\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00B\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00b\00l\00o\00c\00k\00d\00a\00t\00a\00/\00i\00n\00s\00c\00r\00i\00p\00t\00i\00o\00n\00.\00t\00s\00\00\00\00\00\00\00\00\00\00\00")
- (data $22 (i32.const 2524) "\1c\00\00\00\00\00\00\00\00\00\00\00\1b\00\00\00\08\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00")
- (data $23 (i32.const 2556) "\1c\00\00\00\00\00\00\00\00\00\00\00\1d\00\00\00\08\00\00\00\02\00\00\00\00\00\00\00\00\00\00\00")
- (data $24 (i32.const 2588) "\1c\00\00\00\00\00\00\00\00\00\00\00\1e\00\00\00\08\00\00\00\03\00\00\00\00\00\00\00\00\00\00\00")
- (data $25 (i32.const 2620) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\02\00\00\00/\00\00\00\00\00\00\00\00\00\00\00")
- (data $26 (i32.const 2652) ",\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\10\00\00\00o\00u\00t\00p\00o\00i\00n\00t\00\00\00\00\00\00\00\00\00\00\00\00\00")
- (data $27 (i32.const 2700) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\08\00\00\00t\00e\00s\00t\00\00\00\00\00")
- (data $28 (i32.const 2732) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\n\00\00\00/\00m\00a\00s\00k\00\00\00")
- (data $29 (i32.const 2764) "<\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00$\00\00\00K\00e\00y\00 \00d\00o\00e\00s\00 \00n\00o\00t\00 \00e\00x\00i\00s\00t\00\00\00\00\00\00\00\00\00")
- (data $30 (i32.const 2828) ",\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\16\00\00\00~\00l\00i\00b\00/\00m\00a\00p\00.\00t\00s\00\00\00\00\00\00\00")
- (data $31 (i32.const 2876) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\n\00\00\00t\00e\00s\00t\003\00\00\00")
- (data $32 (i32.const 2908) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\n\00\00\00t\00e\00s\00t\002\00\00\00")
- (data $33 (i32.const 2940) "\1c\00\00\00\00\00\00\00\00\00\00\00#\00\00\00\08\00\00\00\04\00\00\00\00\00\00\00\00\00\00\00")
- (data $34 (i32.const 2972) "\1c\00\00\00\00\00\00\00\00\00\00\00$\00\00\00\08\00\00\00\05\00\00\00\00\00\00\00\00\00\00\00")
- (data $35 (i32.const 3004) "\1c\00\00\00\00\00\00\00\00\00\00\00%\00\00\00\08\00\00\00\06\00\00\00\00\00\00\00\00\00\00\00")
- (data $36 (i32.const 3036) "\1c\00\00\00\00\00\00\00\00\00\00\00&\00\00\00\08\00\00\00\07\00\00\00\00\00\00\00\00\00\00\00")
- (data $37 (i32.const 3068) "\1c\00\00\00\00\00\00\00\00\00\00\00&\00\00\00\08\00\00\00\08\00\00\00\00\00\00\00\00\00\00\00")
- (data $38 (i32.const 3100) "\1c\00\00\00\00\00\00\00\00\00\00\00(\00\00\00\08\00\00\00\t\00\00\00\00\00\00\00\00\00\00\00")
+ (data $20 (i32.const 2396) "<\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00(\00\00\00t\00h\00i\00s\00 \00i\00s\00 \00n\00o\00t\00 \00a\00 \00s\00c\00r\00i\00p\00t\00\00\00\00\00")
+ (data $21 (i32.const 2460) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\n\00\00\00f\00i\00x\00e\00d\00\00\00")
+ (data $22 (i32.const 2492) "\\\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00B\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00b\00l\00o\00c\00k\00d\00a\00t\00a\00/\00i\00n\00s\00c\00r\00i\00p\00t\00i\00o\00n\00.\00t\00s\00\00\00\00\00\00\00\00\00\00\00")
+ (data $23 (i32.const 2588) "\1c\00\00\00\00\00\00\00\00\00\00\00\1b\00\00\00\08\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00")
+ (data $24 (i32.const 2620) "\1c\00\00\00\00\00\00\00\00\00\00\00\1d\00\00\00\08\00\00\00\02\00\00\00\00\00\00\00\00\00\00\00")
+ (data $25 (i32.const 2652) "\1c\00\00\00\00\00\00\00\00\00\00\00\1e\00\00\00\08\00\00\00\03\00\00\00\00\00\00\00\00\00\00\00")
+ (data $26 (i32.const 2684) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\02\00\00\00/\00\00\00\00\00\00\00\00\00\00\00")
+ (data $27 (i32.const 2716) ",\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\10\00\00\00o\00u\00t\00p\00o\00i\00n\00t\00\00\00\00\00\00\00\00\00\00\00\00\00")
+ (data $28 (i32.const 2764) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\08\00\00\00t\00e\00s\00t\00\00\00\00\00")
+ (data $29 (i32.const 2796) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\n\00\00\00/\00m\00a\00s\00k\00\00\00")
+ (data $30 (i32.const 2828) "<\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00$\00\00\00K\00e\00y\00 \00d\00o\00e\00s\00 \00n\00o\00t\00 \00e\00x\00i\00s\00t\00\00\00\00\00\00\00\00\00")
+ (data $31 (i32.const 2892) ",\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\16\00\00\00~\00l\00i\00b\00/\00m\00a\00p\00.\00t\00s\00\00\00\00\00\00\00")
+ (data $32 (i32.const 2940) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\n\00\00\00t\00e\00s\00t\003\00\00\00")
+ (data $33 (i32.const 2972) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\n\00\00\00t\00e\00s\00t\002\00\00\00")
+ (data $34 (i32.const 3004) "\1c\00\00\00\00\00\00\00\00\00\00\00#\00\00\00\08\00\00\00\04\00\00\00\00\00\00\00\00\00\00\00")
+ (data $35 (i32.const 3036) "\1c\00\00\00\00\00\00\00\00\00\00\00$\00\00\00\08\00\00\00\05\00\00\00\00\00\00\00\00\00\00\00")
+ (data $36 (i32.const 3068) "\1c\00\00\00\00\00\00\00\00\00\00\00%\00\00\00\08\00\00\00\06\00\00\00\00\00\00\00\00\00\00\00")
+ (data $37 (i32.const 3100) "\1c\00\00\00\00\00\00\00\00\00\00\00&\00\00\00\08\00\00\00\07\00\00\00\00\00\00\00\00\00\00\00")
+ (data $38 (i32.const 3132) "\1c\00\00\00\00\00\00\00\00\00\00\00&\00\00\00\08\00\00\00\08\00\00\00\00\00\00\00\00\00\00\00")
+ (data $39 (i32.const 3164) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\06\00\00\00o\00r\00d\00\00\00\00\00\00\00")
+ (data $40 (i32.const 3196) "\1c\00\00\00\00\00\00\00\00\00\00\00(\00\00\00\08\00\00\00\t\00\00\00\00\00\00\00\00\00\00\00")
  (table $0 10 10 funcref)
  (elem $0 (i32.const 1) $assembly/utils/utils/concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|1 $assembly/utils/rlp/toRLP~anonymous|2 $assembly/utils/rlp/toRLP~anonymous|3 $assembly/index/test_inscription~anonymous|0)
  (export "test_parseBlock" (func $assembly/index/test_parseBlock))
  (export "test_parseWitness" (func $assembly/index/test_parseWitness))
  (export "test_seekLower" (func $assembly/index/test_seekLower))
  (export "test_seekLower2" (func $assembly/index/test_seekLower2))
+ (export "test_isOrdTag" (func $assembly/index/test_isOrdTag))
  (export "test_seekGreater" (func $assembly/index/test_seekGreater))
  (export "test_maskLowerThan" (func $assembly/index/test_maskLowerThan))
  (export "test_maskGreaterThan" (func $assembly/index/test_maskGreaterThan))
@@ -3437,10 +3441,18 @@
   local.get $this
   i32.load8_u offset=5
  )
+ (func $assembly/utils/logging/Console#log (param $this i32) (param $v i32)
+  local.get $v
+  i32.const 1
+  i32.const 2
+  global.set $~argumentsLength
+  i32.const 0
+  call $~lib/string/String.UTF8.encode@varargs
+  call $assembly/utils/logging/__log
+ )
  (func $assembly/blockdata/witness/Witness#tapscript (param $this i32) (result i32)
   (local $len i32)
   (local $script i32)
-  (local $m i32)
   (local $mLen i32)
   (local $control i32)
   local.get $this
@@ -3494,9 +3506,15 @@
    call $assembly/blockdata/witness/WitnessPart#get:isScript
    i32.eqz
    if
+    global.get $assembly/utils/logging/console
+    i32.const 2416
+    call $assembly/utils/logging/Console#log
     local.get $script
     return
    end
+   global.get $assembly/utils/logging/console
+   i32.const 2480
+   call $assembly/utils/logging/Console#log
    local.get $this
    call $assembly/blockdata/witness/Witness#get:parts
    local.get $mLen
@@ -3760,397 +3778,14 @@
   local.get $data
   return
  )
- (func $assembly/utils/memcpy/memcpy (param $dest i32) (param $src i32) (param $len i32) (result i32)
-  local.get $dest
-  local.get $src
-  local.get $len
-  memory.copy
-  local.get $dest
-  return
- )
- (func $assembly/utils/box/Box#toArrayBuffer (param $this i32) (result i32)
-  (local $result i32)
-  i32.const 0
-  local.get $this
-  call $assembly/utils/box/Box#get:len
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $result
-  local.get $result
-  local.get $this
+ (func $assembly/utils/utils/isOrdTag (param $data i32) (result i32)
+  local.get $data
   call $assembly/utils/box/Box#get:start
-  local.get $this
-  call $assembly/utils/box/Box#get:len
-  call $assembly/utils/memcpy/memcpy
-  drop
-  local.get $result
-  return
- )
- (func $~lib/string/String.UTF8.decodeUnsafe (param $buf i32) (param $len i32) (param $nullTerminated i32) (result i32)
-  (local $bufOff i32)
-  (local $bufEnd i32)
-  (local $str i32)
-  (local $strOff i32)
-  (local $u0 i32)
-  (local $u1 i32)
-  (local $u2 i32)
-  (local $lo i32)
-  (local $hi i32)
-  local.get $buf
-  local.set $bufOff
-  local.get $buf
-  local.get $len
-  i32.add
-  local.set $bufEnd
-  local.get $bufEnd
-  local.get $bufOff
-  i32.ge_u
-  i32.eqz
-  if
-   i32.const 0
-   i32.const 1632
-   i32.const 770
-   i32.const 7
-   call $~lib/builtins/abort
-   unreachable
-  end
-  local.get $len
-  i32.const 1
-  i32.shl
-  i32.const 2
-  call $~lib/rt/stub/__new
-  local.set $str
-  local.get $str
-  local.set $strOff
-  block $while-break|0
-   loop $while-continue|0
-    local.get $bufOff
-    local.get $bufEnd
-    i32.lt_u
-    if
-     local.get $bufOff
-     i32.load8_u
-     local.set $u0
-     local.get $bufOff
-     i32.const 1
-     i32.add
-     local.set $bufOff
-     local.get $u0
-     i32.const 128
-     i32.and
-     i32.eqz
-     if
-      local.get $nullTerminated
-      local.get $u0
-      i32.eqz
-      i32.and
-      if
-       br $while-break|0
-      end
-      local.get $strOff
-      local.get $u0
-      i32.store16
-     else
-      local.get $bufEnd
-      local.get $bufOff
-      i32.eq
-      if
-       br $while-break|0
-      end
-      local.get $bufOff
-      i32.load8_u
-      i32.const 63
-      i32.and
-      local.set $u1
-      local.get $bufOff
-      i32.const 1
-      i32.add
-      local.set $bufOff
-      local.get $u0
-      i32.const 224
-      i32.and
-      i32.const 192
-      i32.eq
-      if
-       local.get $strOff
-       local.get $u0
-       i32.const 31
-       i32.and
-       i32.const 6
-       i32.shl
-       local.get $u1
-       i32.or
-       i32.store16
-      else
-       local.get $bufEnd
-       local.get $bufOff
-       i32.eq
-       if
-        br $while-break|0
-       end
-       local.get $bufOff
-       i32.load8_u
-       i32.const 63
-       i32.and
-       local.set $u2
-       local.get $bufOff
-       i32.const 1
-       i32.add
-       local.set $bufOff
-       local.get $u0
-       i32.const 240
-       i32.and
-       i32.const 224
-       i32.eq
-       if
-        local.get $u0
-        i32.const 15
-        i32.and
-        i32.const 12
-        i32.shl
-        local.get $u1
-        i32.const 6
-        i32.shl
-        i32.or
-        local.get $u2
-        i32.or
-        local.set $u0
-       else
-        local.get $bufEnd
-        local.get $bufOff
-        i32.eq
-        if
-         br $while-break|0
-        end
-        local.get $u0
-        i32.const 7
-        i32.and
-        i32.const 18
-        i32.shl
-        local.get $u1
-        i32.const 12
-        i32.shl
-        i32.or
-        local.get $u2
-        i32.const 6
-        i32.shl
-        i32.or
-        local.get $bufOff
-        i32.load8_u
-        i32.const 63
-        i32.and
-        i32.or
-        local.set $u0
-        local.get $bufOff
-        i32.const 1
-        i32.add
-        local.set $bufOff
-       end
-       local.get $u0
-       i32.const 65536
-       i32.lt_u
-       if
-        local.get $strOff
-        local.get $u0
-        i32.store16
-       else
-        local.get $u0
-        i32.const 65536
-        i32.sub
-        local.set $u0
-        local.get $u0
-        i32.const 10
-        i32.shr_u
-        i32.const 55296
-        i32.or
-        local.set $lo
-        local.get $u0
-        i32.const 1023
-        i32.and
-        i32.const 56320
-        i32.or
-        local.set $hi
-        local.get $strOff
-        local.get $lo
-        local.get $hi
-        i32.const 16
-        i32.shl
-        i32.or
-        i32.store
-        local.get $strOff
-        i32.const 2
-        i32.add
-        local.set $strOff
-       end
-      end
-     end
-     local.get $strOff
-     i32.const 2
-     i32.add
-     local.set $strOff
-     br $while-continue|0
-    end
-   end
-  end
-  local.get $str
-  local.get $strOff
-  local.get $str
-  i32.sub
-  call $~lib/rt/stub/__renew
-  return
- )
- (func $~lib/string/String.UTF8.decode (param $buf i32) (param $nullTerminated i32) (result i32)
-  local.get $buf
-  local.get $buf
-  call $~lib/arraybuffer/ArrayBuffer#get:byteLength
-  local.get $nullTerminated
-  call $~lib/string/String.UTF8.decodeUnsafe
-  return
- )
- (func $~lib/util/string/compareImpl (param $str1 i32) (param $index1 i32) (param $str2 i32) (param $index2 i32) (param $len i32) (result i32)
-  (local $ptr1 i32)
-  (local $ptr2 i32)
-  (local $7 i32)
-  (local $a i32)
-  (local $b i32)
-  local.get $str1
-  local.get $index1
-  i32.const 1
-  i32.shl
-  i32.add
-  local.set $ptr1
-  local.get $str2
-  local.get $index2
-  i32.const 1
-  i32.shl
-  i32.add
-  local.set $ptr2
-  i32.const 0
-  i32.const 2
-  i32.lt_s
-  drop
-  local.get $len
-  i32.const 4
-  i32.ge_u
-  if (result i32)
-   local.get $ptr1
-   i32.const 7
-   i32.and
-   local.get $ptr2
-   i32.const 7
-   i32.and
-   i32.or
-   i32.eqz
-  else
-   i32.const 0
-  end
-  if
-   block $do-break|0
-    loop $do-loop|0
-     local.get $ptr1
-     i64.load
-     local.get $ptr2
-     i64.load
-     i64.ne
-     if
-      br $do-break|0
-     end
-     local.get $ptr1
-     i32.const 8
-     i32.add
-     local.set $ptr1
-     local.get $ptr2
-     i32.const 8
-     i32.add
-     local.set $ptr2
-     local.get $len
-     i32.const 4
-     i32.sub
-     local.set $len
-     local.get $len
-     i32.const 4
-     i32.ge_u
-     br_if $do-loop|0
-    end
-   end
-  end
-  loop $while-continue|1
-   local.get $len
-   local.tee $7
-   i32.const 1
-   i32.sub
-   local.set $len
-   local.get $7
-   if
-    local.get $ptr1
-    i32.load16_u
-    local.set $a
-    local.get $ptr2
-    i32.load16_u
-    local.set $b
-    local.get $a
-    local.get $b
-    i32.ne
-    if
-     local.get $a
-     local.get $b
-     i32.sub
-     return
-    end
-    local.get $ptr1
-    i32.const 2
-    i32.add
-    local.set $ptr1
-    local.get $ptr2
-    i32.const 2
-    i32.add
-    local.set $ptr2
-    br $while-continue|1
-   end
-  end
-  i32.const 0
-  return
- )
- (func $~lib/string/String.__eq (param $left i32) (param $right i32) (result i32)
-  (local $leftLength i32)
-  local.get $left
-  local.get $right
+  i32.load
+  i32.const 16777215
+  i32.and
+  i32.const 6582895
   i32.eq
-  if
-   i32.const 1
-   return
-  end
-  local.get $left
-  i32.const 0
-  i32.eq
-  if (result i32)
-   i32.const 1
-  else
-   local.get $right
-   i32.const 0
-   i32.eq
-  end
-  if
-   i32.const 0
-   return
-  end
-  local.get $left
-  call $~lib/string/String#get:length
-  local.set $leftLength
-  local.get $leftLength
-  local.get $right
-  call $~lib/string/String#get:length
-  i32.ne
-  if
-   i32.const 0
-   return
-  end
-  local.get $left
-  i32.const 0
-  local.get $right
-  i32.const 0
-  local.get $leftLength
-  call $~lib/util/string/compareImpl
-  i32.eqz
   return
  )
  (func $assembly/blockdata/witness/Witness.isInscribed (param $data i32) (result i32)
@@ -4283,11 +3918,7 @@
   call $assembly/utils/utils/parsePushOp
   local.set $ordTag
   local.get $ordTag
-  call $assembly/utils/box/Box#toArrayBuffer
-  i32.const 0
-  call $~lib/string/String.UTF8.decode
-  i32.const 2416
-  call $~lib/string/String.__eq
+  call $assembly/utils/utils/isOrdTag
   return
  )
  (func $assembly/blockdata/inscription/Inscription#set:bytes (param $this i32) (param $bytes i32)
@@ -4407,13 +4038,6 @@
   i32.const 0
   call $~lib/rt/stub/__link
  )
- (func $~lib/string/String.__ne (param $left i32) (param $right i32) (result i32)
-  local.get $left
-  local.get $right
-  call $~lib/string/String.__eq
-  i32.eqz
-  return
- )
  (func $~lib/array/Array<~lib/arraybuffer/ArrayBuffer>#set:buffer (param $this i32) (param $buffer i32)
   local.get $this
   local.get $buffer
@@ -4513,6 +4137,14 @@
   call $~lib/array/Array<~lib/arraybuffer/ArrayBuffer>#set:length_
   local.get $this
  )
+ (func $assembly/utils/memcpy/memcpy (param $dest i32) (param $src i32) (param $len i32) (result i32)
+  local.get $dest
+  local.get $src
+  local.get $len
+  memory.copy
+  local.get $dest
+  return
+ )
  (func $assembly/utils/utils/decodeTag (param $box i32) (result i32)
   (local $v i32)
   (local $buffer i32)
@@ -4598,6 +4230,23 @@
   local.get $data
   call $assembly/blockdata/inscription/Field#set:data
   local.get $this
+ )
+ (func $assembly/utils/box/Box#toArrayBuffer (param $this i32) (result i32)
+  (local $result i32)
+  i32.const 0
+  local.get $this
+  call $assembly/utils/box/Box#get:len
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.set $result
+  local.get $result
+  local.get $this
+  call $assembly/utils/box/Box#get:start
+  local.get $this
+  call $assembly/utils/box/Box#get:len
+  call $assembly/utils/memcpy/memcpy
+  drop
+  local.get $result
+  return
  )
  (func $~lib/array/Array<assembly/blockdata/inscription/Field>#get:length_ (param $this i32) (result i32)
   local.get $this
@@ -4952,13 +4601,13 @@
   (local $result i32)
   i32.const 0
   local.get $data
-  i32.const 2576
+  i32.const 2640
   i32.const 0
   call $~lib/array/Array<assembly/utils/box/Box>#reduce<i32>
   call $~lib/arraybuffer/ArrayBuffer#constructor
   local.set $result
   local.get $data
-  i32.const 2608
+  i32.const 2672
   local.get $result
   call $~lib/array/Array<assembly/utils/box/Box>#reduce<usize>
   drop
@@ -4967,7 +4616,7 @@
  )
  (func $assembly/utils/utils/concat (param $data i32) (result i32)
   local.get $data
-  i32.const 2544
+  i32.const 2608
   call $~lib/array/Array<~lib/arraybuffer/ArrayBuffer>#map<assembly/utils/box/Box>
   call $assembly/utils/box/Box.concat
   return
@@ -5127,14 +4776,11 @@
   call $assembly/utils/utils/parsePushOp
   local.set $ordTag
   local.get $ordTag
-  call $assembly/utils/box/Box#toArrayBuffer
-  i32.const 0
-  call $~lib/string/String.UTF8.decode
-  i32.const 2416
-  call $~lib/string/String.__ne
+  call $assembly/utils/utils/isOrdTag
+  i32.eqz
   if
    i32.const 0
-   i32.const 2448
+   i32.const 2512
    i32.const 47
    i32.const 7
    call $~lib/builtins/abort
@@ -5466,8 +5112,229 @@
   call $assembly/indexer/bst/BST<u64>#get:ptr
   local.get $partialKey
   call $assembly/indexer/tables/IndexPointer#select
-  i32.const 2752
+  i32.const 2816
   call $assembly/indexer/tables/IndexPointer#keyword
+  return
+ )
+ (func $~lib/string/String.UTF8.decodeUnsafe (param $buf i32) (param $len i32) (param $nullTerminated i32) (result i32)
+  (local $bufOff i32)
+  (local $bufEnd i32)
+  (local $str i32)
+  (local $strOff i32)
+  (local $u0 i32)
+  (local $u1 i32)
+  (local $u2 i32)
+  (local $lo i32)
+  (local $hi i32)
+  local.get $buf
+  local.set $bufOff
+  local.get $buf
+  local.get $len
+  i32.add
+  local.set $bufEnd
+  local.get $bufEnd
+  local.get $bufOff
+  i32.ge_u
+  i32.eqz
+  if
+   i32.const 0
+   i32.const 1632
+   i32.const 770
+   i32.const 7
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $len
+  i32.const 1
+  i32.shl
+  i32.const 2
+  call $~lib/rt/stub/__new
+  local.set $str
+  local.get $str
+  local.set $strOff
+  block $while-break|0
+   loop $while-continue|0
+    local.get $bufOff
+    local.get $bufEnd
+    i32.lt_u
+    if
+     local.get $bufOff
+     i32.load8_u
+     local.set $u0
+     local.get $bufOff
+     i32.const 1
+     i32.add
+     local.set $bufOff
+     local.get $u0
+     i32.const 128
+     i32.and
+     i32.eqz
+     if
+      local.get $nullTerminated
+      local.get $u0
+      i32.eqz
+      i32.and
+      if
+       br $while-break|0
+      end
+      local.get $strOff
+      local.get $u0
+      i32.store16
+     else
+      local.get $bufEnd
+      local.get $bufOff
+      i32.eq
+      if
+       br $while-break|0
+      end
+      local.get $bufOff
+      i32.load8_u
+      i32.const 63
+      i32.and
+      local.set $u1
+      local.get $bufOff
+      i32.const 1
+      i32.add
+      local.set $bufOff
+      local.get $u0
+      i32.const 224
+      i32.and
+      i32.const 192
+      i32.eq
+      if
+       local.get $strOff
+       local.get $u0
+       i32.const 31
+       i32.and
+       i32.const 6
+       i32.shl
+       local.get $u1
+       i32.or
+       i32.store16
+      else
+       local.get $bufEnd
+       local.get $bufOff
+       i32.eq
+       if
+        br $while-break|0
+       end
+       local.get $bufOff
+       i32.load8_u
+       i32.const 63
+       i32.and
+       local.set $u2
+       local.get $bufOff
+       i32.const 1
+       i32.add
+       local.set $bufOff
+       local.get $u0
+       i32.const 240
+       i32.and
+       i32.const 224
+       i32.eq
+       if
+        local.get $u0
+        i32.const 15
+        i32.and
+        i32.const 12
+        i32.shl
+        local.get $u1
+        i32.const 6
+        i32.shl
+        i32.or
+        local.get $u2
+        i32.or
+        local.set $u0
+       else
+        local.get $bufEnd
+        local.get $bufOff
+        i32.eq
+        if
+         br $while-break|0
+        end
+        local.get $u0
+        i32.const 7
+        i32.and
+        i32.const 18
+        i32.shl
+        local.get $u1
+        i32.const 12
+        i32.shl
+        i32.or
+        local.get $u2
+        i32.const 6
+        i32.shl
+        i32.or
+        local.get $bufOff
+        i32.load8_u
+        i32.const 63
+        i32.and
+        i32.or
+        local.set $u0
+        local.get $bufOff
+        i32.const 1
+        i32.add
+        local.set $bufOff
+       end
+       local.get $u0
+       i32.const 65536
+       i32.lt_u
+       if
+        local.get $strOff
+        local.get $u0
+        i32.store16
+       else
+        local.get $u0
+        i32.const 65536
+        i32.sub
+        local.set $u0
+        local.get $u0
+        i32.const 10
+        i32.shr_u
+        i32.const 55296
+        i32.or
+        local.set $lo
+        local.get $u0
+        i32.const 1023
+        i32.and
+        i32.const 56320
+        i32.or
+        local.set $hi
+        local.get $strOff
+        local.get $lo
+        local.get $hi
+        i32.const 16
+        i32.shl
+        i32.or
+        i32.store
+        local.get $strOff
+        i32.const 2
+        i32.add
+        local.set $strOff
+       end
+      end
+     end
+     local.get $strOff
+     i32.const 2
+     i32.add
+     local.set $strOff
+     br $while-continue|0
+    end
+   end
+  end
+  local.get $str
+  local.get $strOff
+  local.get $str
+  i32.sub
+  call $~lib/rt/stub/__renew
+  return
+ )
+ (func $~lib/string/String.UTF8.decode (param $buf i32) (param $nullTerminated i32) (result i32)
+  local.get $buf
+  local.get $buf
+  call $~lib/arraybuffer/ArrayBuffer#get:byteLength
+  local.get $nullTerminated
+  call $~lib/string/String.UTF8.decodeUnsafe
   return
  )
  (func $assembly/indexer/index/hash (param $k i32) (result i32)
@@ -5758,6 +5625,153 @@
  (func $"~lib/map/MapEntry<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#get:key" (param $this i32) (result i32)
   local.get $this
   i32.load
+ )
+ (func $~lib/util/string/compareImpl (param $str1 i32) (param $index1 i32) (param $str2 i32) (param $index2 i32) (param $len i32) (result i32)
+  (local $ptr1 i32)
+  (local $ptr2 i32)
+  (local $7 i32)
+  (local $a i32)
+  (local $b i32)
+  local.get $str1
+  local.get $index1
+  i32.const 1
+  i32.shl
+  i32.add
+  local.set $ptr1
+  local.get $str2
+  local.get $index2
+  i32.const 1
+  i32.shl
+  i32.add
+  local.set $ptr2
+  i32.const 0
+  i32.const 2
+  i32.lt_s
+  drop
+  local.get $len
+  i32.const 4
+  i32.ge_u
+  if (result i32)
+   local.get $ptr1
+   i32.const 7
+   i32.and
+   local.get $ptr2
+   i32.const 7
+   i32.and
+   i32.or
+   i32.eqz
+  else
+   i32.const 0
+  end
+  if
+   block $do-break|0
+    loop $do-loop|0
+     local.get $ptr1
+     i64.load
+     local.get $ptr2
+     i64.load
+     i64.ne
+     if
+      br $do-break|0
+     end
+     local.get $ptr1
+     i32.const 8
+     i32.add
+     local.set $ptr1
+     local.get $ptr2
+     i32.const 8
+     i32.add
+     local.set $ptr2
+     local.get $len
+     i32.const 4
+     i32.sub
+     local.set $len
+     local.get $len
+     i32.const 4
+     i32.ge_u
+     br_if $do-loop|0
+    end
+   end
+  end
+  loop $while-continue|1
+   local.get $len
+   local.tee $7
+   i32.const 1
+   i32.sub
+   local.set $len
+   local.get $7
+   if
+    local.get $ptr1
+    i32.load16_u
+    local.set $a
+    local.get $ptr2
+    i32.load16_u
+    local.set $b
+    local.get $a
+    local.get $b
+    i32.ne
+    if
+     local.get $a
+     local.get $b
+     i32.sub
+     return
+    end
+    local.get $ptr1
+    i32.const 2
+    i32.add
+    local.set $ptr1
+    local.get $ptr2
+    i32.const 2
+    i32.add
+    local.set $ptr2
+    br $while-continue|1
+   end
+  end
+  i32.const 0
+  return
+ )
+ (func $~lib/string/String.__eq (param $left i32) (param $right i32) (result i32)
+  (local $leftLength i32)
+  local.get $left
+  local.get $right
+  i32.eq
+  if
+   i32.const 1
+   return
+  end
+  local.get $left
+  i32.const 0
+  i32.eq
+  if (result i32)
+   i32.const 1
+  else
+   local.get $right
+   i32.const 0
+   i32.eq
+  end
+  if
+   i32.const 0
+   return
+  end
+  local.get $left
+  call $~lib/string/String#get:length
+  local.set $leftLength
+  local.get $leftLength
+  local.get $right
+  call $~lib/string/String#get:length
+  i32.ne
+  if
+   i32.const 0
+   return
+  end
+  local.get $left
+  i32.const 0
+  local.get $right
+  i32.const 0
+  local.get $leftLength
+  call $~lib/util/string/compareImpl
+  i32.eqz
+  return
  )
  (func $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#find" (param $this i32) (param $key i32) (param $hashCode i32) (result i32)
   (local $entry i32)
@@ -6113,8 +6127,8 @@
   local.get $entry
   i32.eqz
   if
-   i32.const 2784
    i32.const 2848
+   i32.const 2912
    i32.const 105
    i32.const 17
    call $~lib/builtins/abort
@@ -7332,11 +7346,11 @@
   if
    local.get $item
    call $assembly/utils/rlp/RLPItem#asList
-   i32.const 2992
+   i32.const 3056
    call $~lib/array/Array<assembly/utils/rlp/RLPItem>#map<~lib/arraybuffer/ArrayBuffer>
    local.set $list
    local.get $list
-   i32.const 3024
+   i32.const 3088
    i32.const 0
    call $~lib/array/Array<~lib/arraybuffer/ArrayBuffer>#reduce<i32>
    local.set $length
@@ -7358,7 +7372,7 @@
     i32.add
     i32.store8
     local.get $list
-    i32.const 3056
+    i32.const 3120
     local.get $result
     i32.const 1
     i32.add
@@ -7485,7 +7499,7 @@
      end
     end
     local.get $list
-    i32.const 3088
+    i32.const 3152
     local.get $result
     i32.const 1
     i32.add
@@ -7767,7 +7781,7 @@
   call $~lib/array/Array<assembly/utils/rlp/RLPItem>#constructor
   local.set $rlpInput
   local.get $hashKeys
-  i32.const 2960
+  i32.const 3024
   local.get $rlpInput
   call $~lib/array/Array<~lib/string/String>#reduce<~lib/array/Array<assembly/utils/rlp/RLPItem>>
   drop
@@ -7784,30 +7798,30 @@
  (func $assembly/index/test_seekLower
   (local $ptr i32)
   (local $bst i32)
-  i32.const 2640
+  i32.const 2704
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
   i32.const 0
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/tables/IndexPointer.wrap
-  i32.const 2672
+  i32.const 2736
   call $assembly/indexer/tables/IndexPointer#keyword
   local.set $ptr
-  i32.const 2640
+  i32.const 2704
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
   i32.const 0
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/tables/IndexPointer.wrap
-  i32.const 2672
+  i32.const 2736
   call $assembly/indexer/tables/IndexPointer#keyword
   call $assembly/indexer/bst/BST.at<u64>
   local.set $bst
   local.get $bst
   i64.const 3
-  i32.const 2720
+  i32.const 2784
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -7818,7 +7832,7 @@
   i64.const 3
   i64.const 16
   i64.shl
-  i32.const 2896
+  i32.const 2960
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -7828,7 +7842,7 @@
   local.get $bst
   i64.const 3
   call $~lib/polyfills/bswap<u64>
-  i32.const 2928
+  i32.const 2992
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -7840,30 +7854,30 @@
  (func $assembly/index/test_seekLower2
   (local $ptr i32)
   (local $bst i32)
-  i32.const 2640
+  i32.const 2704
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
   i32.const 0
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/tables/IndexPointer.wrap
-  i32.const 2672
+  i32.const 2736
   call $assembly/indexer/tables/IndexPointer#keyword
   local.set $ptr
-  i32.const 2640
+  i32.const 2704
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
   i32.const 0
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/tables/IndexPointer.wrap
-  i32.const 2672
+  i32.const 2736
   call $assembly/indexer/tables/IndexPointer#keyword
   call $assembly/indexer/bst/BST.at<u64>
   local.set $bst
   local.get $bst
   i64.const 3
-  i32.const 2720
+  i32.const 2784
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -7874,7 +7888,7 @@
   i64.const 3
   i64.const 16
   i64.shl
-  i32.const 2896
+  i32.const 2960
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -7884,7 +7898,7 @@
   local.get $bst
   i64.const 3
   call $~lib/polyfills/bswap<u64>
-  i32.const 2928
+  i32.const 2992
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -7893,33 +7907,47 @@
   call $assembly/indexer/bst/BST<u64>#set
   call $assembly/indexer/index/_flush
  )
+ (func $assembly/index/test_isOrdTag
+  (local $s i32)
+  i32.const 3184
+  i32.const 0
+  i32.const 1
+  global.set $~argumentsLength
+  i32.const 0
+  call $~lib/string/String.UTF8.encode@varargs
+  local.set $s
+  local.get $s
+  call $assembly/utils/box/Box.from
+  call $assembly/utils/utils/isOrdTag
+  drop
+ )
  (func $assembly/index/test_seekGreater
   (local $ptr i32)
   (local $bst i32)
-  i32.const 2640
+  i32.const 2704
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
   i32.const 0
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/tables/IndexPointer.wrap
-  i32.const 2672
+  i32.const 2736
   call $assembly/indexer/tables/IndexPointer#keyword
   local.set $ptr
-  i32.const 2640
+  i32.const 2704
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
   i32.const 0
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/tables/IndexPointer.wrap
-  i32.const 2672
+  i32.const 2736
   call $assembly/indexer/tables/IndexPointer#keyword
   call $assembly/indexer/bst/BST.at<u64>
   local.set $bst
   local.get $bst
   i64.const 3
-  i32.const 2720
+  i32.const 2784
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -7930,7 +7958,7 @@
   i64.const 3
   i64.const 16
   i64.shl
-  i32.const 2896
+  i32.const 2960
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -7940,7 +7968,7 @@
   local.get $bst
   i64.const 3
   call $~lib/polyfills/bswap<u64>
-  i32.const 2928
+  i32.const 2992
   i32.const 0
   i32.const 1
   global.set $~argumentsLength
@@ -8546,7 +8574,7 @@
   local.set $tx
   local.get $tx
   call $assembly/blockdata/transaction/Transaction#get:ins
-  i32.const 3120
+  i32.const 3216
   call $~lib/array/Array<assembly/blockdata/transaction/Input>#forEach
  )
  (func $~start

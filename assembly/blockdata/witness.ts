@@ -1,5 +1,14 @@
 import { Box } from "../utils/box";
-import { isPushOp, parsePrimitive, parseLenThenBytes, parseVarInt, parsePushOp, decodeTag, concat } from "../utils/utils";
+import {
+  isPushOp,
+  parsePrimitive,
+  parseLenThenBytes,
+  parseVarInt,
+  parsePushOp,
+  isOrdTag,
+  decodeTag,
+  concat,
+} from "../utils/utils";
 import { console } from "../utils/logging";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
@@ -81,7 +90,7 @@ export class Witness {
     let inscBox = toPointer(head).toBox(len);
     if (!containsPushOp(inscBox)) return false;
     let ordTag = parsePushOp(inscBox);
-    return String.UTF8.decode(ordTag.toArrayBuffer()) === "ord";
+    return isOrdTag(ordTag);
   }
   taprootAnnex(): boolean {
     if (this.parts.length >= 2) {
@@ -101,12 +110,13 @@ export class Witness {
     }
 
     if (len >= 2) {
-      let m: Array<WitnessPart>;
+      // let m: Array<WitnessPart>;
       let mLen = this.parts.length;
       // check for taproot annex
+      // console.log(this.parts[len - 1].bytes.toArrayBuffer().toString());
       if (this.parts[len - 1].taprootAnnex) {
         //m = this.parts.slice(0, len - 1);
-	mLen--;
+        mLen--;
       } else {
         //m = this.parts.slice(0, len);
       }
@@ -115,17 +125,17 @@ export class Witness {
       // TODO: validate the remaining signature
       if (mLen <= 1) return nullptr<Box>();
 
-        // if this is a signature
-        if (!this.parts[mLen - 2].isScript) {
-          return script;
-	}
-
-        let control = this.parts[mLen - 1].bytes;
-        if (control.len < 33 || (control.len - 33) % 32 != 0) return script;
-
-        // return copy so it can be parsed;
-        script = this.parts[mLen - 2].bytes.sliceFrom(0);
+      // if this is a signature
+      if (!this.parts[mLen - 2].isScript) {
         return script;
+      }
+
+      let control = this.parts[mLen - 1].bytes;
+      if (control.len < 33 || (control.len - 33) % 32 != 0) return script;
+
+      // return copy so it can be parsed;
+      script = this.parts[mLen - 2].bytes.sliceFrom(0);
+      return script;
     } else {
       return script;
     }
