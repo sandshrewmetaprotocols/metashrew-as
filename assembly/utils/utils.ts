@@ -1,6 +1,7 @@
 import { Box } from "./box";
 import { toPointer, nullptr, Pointer } from "./pointer";
 import { memcpy } from "./memcpy";
+import { console } from "./logging";
 
 export function reverse(data: ArrayBuffer): ArrayBuffer {
   const result = new ArrayBuffer(data.byteLength);
@@ -40,8 +41,52 @@ export function parseBytes(data: Box, sz: usize): Box {
   return result;
 }
 
-export function parsePushOp(data: Box): Box {
+export function parseScriptForLength(data: Box): i32 {
+  let length: i32 = 1;
   const opcode = parsePrimitive<u8>(data);
+  if (opcode == 0x4d) {
+    let sz = <usize>parsePrimitive<u16>(data);
+    parseBytes(data, sz);
+    length += <i32>sz + 2;
+    return length;
+  }
+  if (opcode == 0x4e) {
+    let sz = <usize>parsePrimitive<u32>(data);
+    parseBytes(data, sz);
+    length += <i32>sz + 4;
+    return length;
+  }
+  if (opcode == 0x4f) {
+    toPointer(<usize>0).toBox(<usize>0);
+    return length;
+  }
+  if (opcode == 0x51) {
+    toPointer(<usize>0).toBox(<usize>0); // return a pointer value 0 for -1
+    return length;
+  }
+  if (opcode >= 0x52 && opcode <= 0x60) {
+    toPointer(<usize>0).toBox(<usize>opcode - <usize>0x50);
+    return length;
+  }
+  if (opcode >= 0x01 && opcode <= 0x4b) {
+    parseBytes(data, <usize>opcode);
+    length += <i32>opcode;
+    return length;
+  }
+  if (opcode == 0) {
+    data.sliceFrom(0).setLength(0);
+    return length;
+  }
+  return length;
+}
+
+export function parsePushOp(data: Box): Box {
+  if (data.len == 0) return data
+  const opcode = parsePrimitive<u8>(data);
+// console.log("opcode " + opcode.toString()
+  if (opcode == 0x4c) {
+    return parseBytes(data, <usize>parsePrimitive<u8>(data));
+  }
   if (opcode == 0x4d) {
     return parseBytes(data, <usize>parsePrimitive<u16>(data));
   }
@@ -66,7 +111,12 @@ export function parsePushOp(data: Box): Box {
   return data;
 }
 
-export function fromPushBox(v: Box): ArrayBuffer {
+
+export function _fromPushBox(v: Box): ArrayBuffer {
+  // console.log("Box {");
+  // console.log("  start: " + v.start.toString(10));
+  // console.log("  len: " + v.len.toString(10));
+  // console.log("}");
   if (v.start === 0) {
     if (v.len === 0) {
       const result = new ArrayBuffer(4);
@@ -79,6 +129,11 @@ export function fromPushBox(v: Box): ArrayBuffer {
     }
   }
   return v.toArrayBuffer();
+}
+
+export function fromPushBox(v: Box): ArrayBuffer {
+  const result = _fromPushBox(v);
+  return result;
 }
 
 export function isPushOp(op: u8): boolean {

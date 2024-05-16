@@ -1,6 +1,6 @@
 import { Box } from "../utils/box";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
-import { isOrdTag, parsePushOp, decodeTag, fromPushBox, concat } from "../utils/utils";
+import { isOrdTag, parsePushOp, decodeTag, fromPushBox, concat, parsePrimitive, parseBytes } from "../utils/utils";
 import { console } from "../utils/logging";
 
 export class Field {
@@ -12,36 +12,55 @@ export class Field {
   }
 }
 
+export function parseEnvelope(view: Box): Box {
+  let head = view.start;
+  let len = view.len;
+
+  while (head < (view.start + view.len) - 1) {
+    if (load<u8>(head) == 0x00 && load<u8>(head + 1) == 0x63) {
+      head += 2;
+      len -= 2;
+      break;
+    }
+    head++;
+    len--;
+  }
+
+  let subview = toPointer(head).toBox(len);
+  // console.log("subview " + subview.toHexString())
+  while (subview.len > 0) {
+    if (load<u8>(subview.start) == 0x68) {
+      // console.log("errror finding closing tag")
+      let distance = <i32>(subview.start) - <i32>head;
+      // console.log("pointer distance " + distance.toString())
+      let envelopeBox = toPointer(head).toBox(distance);
+      return envelopeBox;
+    }
+    parsePushOp(subview);
+  }
+  
+  // console.log("error after parsing envelope")
+  // return pointer to zero as fail case 
+  return nullptr<Box>(); 
+}
+
 export class Inscription {
   bytes: Box;
   public fields: Array<Field>;
+  public malformed: boolean;
   constructor(data: Box) {
     this.bytes = nullptr<Box>();
     this.fields = new Array<Field>();
+    this.malformed = false;
     const view = data.sliceFrom(0);
+    // console.log("entire view " + view.toHexString())
 
-    let head = view.start;
-    let len = view.len;
-    let tail = view.start + len;
-
-    // find the inscription
-    while (head < tail - 1) {
-      if (load<u8>(head) == 0x00 && load<u8>(head + 1) == 0x63) {
-        head += 2;
-        len -= 2;
-        break;
-      }
-      head++;
-      len--;
-    }
-    while (tail > head) {
-      if (load<u8>(tail) == 0x68) break;
-      tail--;
-      len--;
-    }
-    let inscBox = toPointer(head).toBox(len);
+    let inscBox: Box = parseEnvelope(view);
     this.bytes = inscBox.sliceFrom(0);
-
+    
+    // console.log("inscription Box" + inscBox.toHexString());
+    
+    
     let ordTag = parsePushOp(inscBox);
     if (!isOrdTag(ordTag)) {
       throw Error("invalid inscription");
@@ -62,15 +81,25 @@ export class Inscription {
         break;
       }
     }
+    
+    // console.log("parsed Inscription Box " + inscBox.toHexString())
+    
     // handle content body pushes if data remains
-    while (inscBox.len > 0) {
-      let i = parsePushOp(inscBox);
-      content.push(fromPushBox(i));
+    if (inscBox != nullptr<Box>()) {
+      // console.log("error handling content body")
+      while (inscBox.len > 0) {
+        let i = parsePushOp(inscBox);
+        // console.log("content body" + i.toHexString());;
+        content.push(fromPushBox(i));
+      }
     }
+    
+    // console.log("error after handling content body");
 
     // fill out content body
     let contentBody: ArrayBuffer = concat(content);
     this.fields.push(new Field(<u32>0x00, contentBody));
+    // console.log("inscription success")
   }
   toArrayBuffer(): ArrayBuffer {
     return this.bytes.toArrayBuffer();

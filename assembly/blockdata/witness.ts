@@ -113,7 +113,6 @@ export class Witness {
       // let m: Array<WitnessPart>;
       let mLen = this.parts.length;
       // check for taproot annex
-      // console.log(this.parts[len - 1].bytes.toArrayBuffer().toString());
       if (this.parts[len - 1].taprootAnnex) {
         //m = this.parts.slice(0, len - 1);
         mLen--;

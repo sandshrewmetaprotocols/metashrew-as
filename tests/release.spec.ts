@@ -7,6 +7,20 @@ const ORDINAL_GENESIS = fs.readFileSync(
   path.join(__dirname, "ordinal-genesis.hex"),
   "utf8",
 );
+const BLOCK_780004 = fs.readFileSync(
+  path.join(__dirname, "broken-780004.hex"),
+  "utf8",
+)
+
+const TX_2349be4894 = fs.readFileSync(
+  path.join(__dirname, "2349be4894.hex"),
+  "utf8"
+);
+
+const BLOCK_778163 = fs.readFileSync(
+  path.join(__dirname, "broken_tx.hex"),
+  "utf8",
+);
 
 const WASM_BINARY = fs.readFileSync(path.join(__dirname, '..', 'build', 'release.wasm'));
 
@@ -56,5 +70,32 @@ describe("metashrew index", () => {
     indexer.setBlockHeight(770051);
     const result = await indexer.run('test_inscription');
   });
+  it('should parse entire block', async () => {
+    const indexer = new IndexerProgram(
+      new Uint8Array(Array.from(WASM_BINARY)).buffer
+    );
+    indexer.on("log", (v) => console.log(v));
+    indexer.setBlock(BLOCK_780004);
+    indexer.setBlockHeight(780004);
+    const result = await indexer.run('test_inscription');
+  });
+  it('it should parse transactgion 2349be4894', async () => {
+    const indexer = new IndexerProgram(
+      new Uint8Array(Array.from(WASM_BINARY)).buffer
+    );
+    indexer.on("log", (v) => console.log(v));
+    indexer.setBlock(TX_2349be4894);
+    indexer.setBlockHeight(780002);
+    const result = await indexer.run('test_inscription');
+  });
+  // it('should parse entire block', async () => {
+  //   const indexer = new IndexerProgram(
+  //     new Uint8Array(Array.from(WASM_BINARY)).buffer
+  //   );
+  //   indexer.on("log", (v) => console.log(v));
+  //   indexer.setBlock(BLOCK_778163);
+  //   indexer.setBlockHeight(778163);
+  //   const result = await indexer.run('test_inscription');
+  // });
 
 });
