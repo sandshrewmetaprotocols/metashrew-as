@@ -64,6 +64,7 @@ export class Inscription {
 
     let inscBox: Box = parseEnvelope(view);
     this.bytes = inscBox.sliceFrom(0);
+
     
     // console.log("inscription Box" + inscBox.toHexString());
     
@@ -81,6 +82,8 @@ export class Inscription {
     ) {
       if (decodeTag(i) >= 0x01 && decodeTag(i) <= 0x0b) {
         tag = decodeTag(i);
+	console.log(tag.toString(10));
+	const data = parsePushOp(inscBox);
         this.fields.push(
           new Field(<u32>tag, fromPushBox(parsePushOp(inscBox))),
         );
@@ -108,7 +111,16 @@ export class Inscription {
     this.fields.push(new Field(<u32>0x00, contentBody));
     // console.log("inscription success")
   }
+  field(tag: i32): ArrayBuffer | null {
+    for (let i = 0; i < this.fields.length; i++) {
+      if (this.fields[i].tag === <u32>tag) return this.fields[i].data;
+    }
+    return null;
+  }
   toArrayBuffer(): ArrayBuffer {
     return this.bytes.toArrayBuffer();
+  }
+  body(): ArrayBuffer | null {
+    return this.field(0);
   }
 }
