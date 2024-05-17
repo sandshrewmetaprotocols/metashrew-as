@@ -1,6 +1,6 @@
 import { Box } from "../utils/box";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
-import { isOrdTag, parsePushOp, decodeTag, fromPushBox, concat, parsePrimitive, parseBytes } from "../utils/utils";
+import { isPushOp, isOrdTag, parsePushOp, decodeTag, fromPushBox, concat, parsePrimitive, parseBytes } from "../utils/utils";
 import { console } from "../utils/logging";
 
 export class Field {
@@ -22,8 +22,15 @@ export function parseEnvelope(view: Box): Box {
       len -= 2;
       break;
     }
-    head++;
-    len--;
+    const next = toPointer(head).toBox(len);
+    if (isPushOp(load<u8>(head))) {
+      parsePushOp(next);
+      head = next.start;
+      len = next.len;
+    } else {
+      head++;
+      len--;
+    }
   }
 
   let subview = toPointer(head).toBox(len);

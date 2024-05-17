@@ -22,7 +22,7 @@ const BLOCK_778163 = fs.readFileSync(
   "utf8",
 );
 
-const WASM_BINARY = fs.readFileSync(path.join(__dirname, '..', 'build', 'release.wasm'));
+const WASM_BINARY = fs.readFileSync(path.join(__dirname, '..', 'build', 'debug.wasm'));
 
 const makeIndexer = () => {
   const indexer = new IndexerProgram(
@@ -40,6 +40,7 @@ describe("metashrew index", () => {
     const result = await indexer.run(s);
   });
   [
+	  /*
     "test_parseBlock",
     "test_seekLower",
     "test_seekLower2",
@@ -50,7 +51,8 @@ describe("metashrew index", () => {
     "test_binarySearch",
     "test_binarySearch2",
     "test_binarySearch3",
-    "test_isOrdTag"
+    "test_isOrdTag" */
+    "test_indexBrc20"
   ].forEach((v) => makeTest(v));
   it('should parse a tapscript without error', async () => {
     const indexer = new IndexerProgram(

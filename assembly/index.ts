@@ -15,7 +15,7 @@ import {
 import { Index, get, set, _flush, input } from "./indexer/index";
 import { console } from "./utils/logging";
 import { abort } from "./utils/abort";
-import { Transaction, Block } from "./blockdata";
+import { Transaction, Block, Inscription } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
 import {
   BST,
@@ -156,4 +156,17 @@ export function test_inscription(): void {
   tx.ins.forEach((v: Input, i: i32, ary: Array<Input>) => {
     v.inscription();
   });
+}
+
+function decodeHex(hex: string): ArrayBuffer {
+  const result = new ArrayBuffer(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) {
+    store<u8>(changetype<usize>(result) + (i / 2), <u8>parseInt(hex.substring(i, i + 2), 16));
+  }
+  return result;
+}
+
+export function test_indexBrc20(): void {
+  const tx = new Transaction(Box.from(decodeHex('02000000000101aabe7e0d5a3a56bb049a417b4e6f90dd2d6a57890fbc6568f476baaae061300a8f03000000fffffffd01260100000000000016001413c8d4f4be75d11b463a35b141a1067155c407a80340b29a41195ee892d8b3ddf0b7912fa0c93cfdc3dc7b22dfdd65ecdc88c2fdcc52684bc09f7f220e7e92be4bfd44c50d05853bee38c1b5800d0c52b7a16f980e9e71203b3e59eda857e9fc750376b1deb6147aa45410410a561e062fb36172b600634eac0063036f726401010a746578742f706c61696e00397b2270223a226272632d3230222c226f70223a226d696e74222c227469636b223a2273617473222c22616d74223a223939393939393939227d6821c03b3e59eda857e9fc750376b1deb6147aa45410410a561e062fb36172b600634e00000000')));
+  (tx.ins[0].inscription() as Inscription);
 }
