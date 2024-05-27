@@ -82,7 +82,6 @@ export class Inscription {
     ) {
       if (decodeTag(i) >= 0x01 && decodeTag(i) <= 0x0b) {
         tag = decodeTag(i);
-	console.log(tag.toString(10));
 	const data = parsePushOp(inscBox);
         this.fields.push(
           new Field(<u32>tag, fromPushBox(parsePushOp(inscBox))),

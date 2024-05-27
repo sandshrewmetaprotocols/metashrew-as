@@ -61,8 +61,8 @@ export function test_seekLower(): void {
   bst.set(3, String.UTF8.encode("test"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
- // console.log("bst.seekLower(0xffffffffffffffff))");
-  //logK<u64>(bst.seekLower(0xffffffffffffffff));
+//  console.log("bst.seekLower(0xffffffffffffffff))");
+//  logK<u64>(bst.seekLower(0xffffffffffffffff));
 //  console.log("bst.seekLower(0x0300000000000000)");
   //logK<u64>(bst.seekLower(0x0300000000000000));
   _flush();
@@ -76,8 +76,7 @@ export function test_seekLower2(): void {
   bst.set(3, String.UTF8.encode("test"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
-//  console.log("bst.seekLower(0x03 << 16)");
-  //logK<u64>(bst.seekLower(0x03 << 16));
+//  logK<u64>(bst.seekLower(0x03 << 16));
   //bst.nullify(<u64>(0x03 << 16));
   _flush();
 }
@@ -93,8 +92,14 @@ export function test_seekGreater(): void {
     IndexPointer.wrap(String.UTF8.encode("/")).keyword("outpoint"),
   );
   bst.set(3, String.UTF8.encode("test"));
+  bst.set(4, String.UTF8.encode("test2"));
   bst.set(<u64>(0x03 << 16), String.UTF8.encode("test3"));
+  bst.set(<u64>((0x03 << 16) | 0x04), String.UTF8.encode("test3"));
+  /*
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
+  bst.set(bswap<u64>(4), String.UTF8.encode("test4"));
+ */
+  console.log(bst.seekGreater((0x03 << 16) | 0x04).toString(10));
   _flush();
 }
 
@@ -169,4 +174,9 @@ function decodeHex(hex: string): ArrayBuffer {
 export function test_indexBrc20(): void {
   const tx = new Transaction(Box.from(decodeHex('02000000000101aabe7e0d5a3a56bb049a417b4e6f90dd2d6a57890fbc6568f476baaae061300a8f03000000fffffffd01260100000000000016001413c8d4f4be75d11b463a35b141a1067155c407a80340b29a41195ee892d8b3ddf0b7912fa0c93cfdc3dc7b22dfdd65ecdc88c2fdcc52684bc09f7f220e7e92be4bfd44c50d05853bee38c1b5800d0c52b7a16f980e9e71203b3e59eda857e9fc750376b1deb6147aa45410410a561e062fb36172b600634eac0063036f726401010a746578742f706c61696e00397b2270223a226272632d3230222c226f70223a226d696e74222c227469636b223a2273617473222c22616d74223a223939393939393939227d6821c03b3e59eda857e9fc750376b1deb6147aa45410410a561e062fb36172b600634e00000000')));
   (tx.ins[0].inscription() as Inscription);
+}
+
+export function test_txid(): void {
+  const tx = new Transaction(Box.from(decodeHex('010000000174a016bad8927ee739aff7289f5574b8f57fcc32272829ac3aef3edb9959ad580000000048473044022018d1fc212affb41dd322fdcdc8d0474d7eab7ab414a712361f81f93df7fd9bed02200d7d431ac3c7b61a46b30f911797fde4ede3014434cb00149ab71eed26335f0201ffffffff0200111024010000001976a91420420e56079150b50fb0617dce4c374bd61eccea88ac0ae1f505000000001976a91410f958cbe9cf6d26c2e2ace39766c2cdb87179f788ac00000000')));
+  console.log(Box.from(tx.txid()).toHexString());
 }

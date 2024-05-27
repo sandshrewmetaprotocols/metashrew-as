@@ -82,12 +82,10 @@ export class Input {
    */
   previousOutput(): OutPoint {
     let txid = toPointer(this.hash.start).toBox(<usize>32);
-    let vout = toPointer(this.hash.start + 32).toBox(<usize>4);
-
     // let bytes = toPointer(this.hash.start).toBox(<usize>36);
     return OutPoint.from(
       reverse(txid.toArrayBuffer()),
-      parsePrimitive<u32>(vout),
+      this.index
     );
   }
 

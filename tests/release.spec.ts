@@ -40,7 +40,6 @@ describe("metashrew index", () => {
     const result = await indexer.run(s);
   });
   [
-	  /*
     "test_parseBlock",
     "test_seekLower",
     "test_seekLower2",
@@ -51,8 +50,9 @@ describe("metashrew index", () => {
     "test_binarySearch",
     "test_binarySearch2",
     "test_binarySearch3",
-    "test_isOrdTag" */
-    "test_indexBrc20"
+    "test_isOrdTag" ,
+    "test_indexBrc20",
+    "test_txid"
   ].forEach((v) => makeTest(v));
   it('should parse a tapscript without error', async () => {
     const indexer = new IndexerProgram(
