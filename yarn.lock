@@ -600,6 +600,12 @@ expect@*, expect@^29.0.0:
     jest-message-util "^29.7.0"
     jest-util "^29.7.0"
 
+"fast-sha256-as@https://github.com/sandshrewmetaprotocols/fast-sha256-as":
+  version "0.1.0"
+  resolved "https://github.com/sandshrewmetaprotocols/fast-sha256-as#cf0d16832326b16433e12cc85e320d7c089838d5"
+  dependencies:
+    lodash "^4.17.21"
+
 fill-range@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-7.0.1.tgz#1919a6a7c75fe38b2c7c77e5198535da9acdda40"
