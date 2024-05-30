@@ -602,7 +602,7 @@ expect@*, expect@^29.0.0:
 
 "fast-sha256-as@https://github.com/sandshrewmetaprotocols/fast-sha256-as":
   version "0.1.0"
-  resolved "https://github.com/sandshrewmetaprotocols/fast-sha256-as#cf0d16832326b16433e12cc85e320d7c089838d5"
+  resolved "https://github.com/sandshrewmetaprotocols/fast-sha256-as#d6ecec4bfc2368aaed3029c2e0f48fe7c5f4be5c"
   dependencies:
     lodash "^4.17.21"
 
