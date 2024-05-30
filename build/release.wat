@@ -1,21 +1,22 @@
 (module
  (type $0 (func (param i32) (result i32)))
- (type $1 (func (param i32 i32) (result i32)))
- (type $2 (func))
- (type $3 (func (param i32 i32 i32 i32) (result i32)))
- (type $4 (func (param i32 i32 i32)))
- (type $5 (func (param i32 i32 i32) (result i32)))
- (type $6 (func (param i32)))
- (type $7 (func (param i32 i32)))
- (type $8 (func (result i32)))
+ (type $1 (func))
+ (type $2 (func (param i32 i32) (result i32)))
+ (type $3 (func (param i32 i32 i32)))
+ (type $4 (func (param i32 i32 i32 i32) (result i32)))
+ (type $5 (func (param i32 i32)))
+ (type $6 (func (result i32)))
+ (type $7 (func (param i32)))
+ (type $8 (func (param i32 i32 i32) (result i32)))
  (type $9 (func (param i32 i32 i32 i32)))
  (type $10 (func (param i32) (result i64)))
  (type $11 (func (param i32 i64 i32)))
- (type $12 (func (param i32 i32 i64)))
- (type $13 (func (param i32 i32) (result i64)))
- (type $14 (func (param i64) (result i32)))
- (type $15 (func (param i32) (result f64)))
- (type $16 (func (param i32 i32 i32 i32 i32) (result i32)))
+ (type $12 (func (param i32 i64)))
+ (type $13 (func (param i32 i32 i64)))
+ (type $14 (func (param i32 i32) (result i64)))
+ (type $15 (func (param i64) (result i32)))
+ (type $16 (func (param i32) (result f64)))
+ (type $17 (func (param i32 i32 i32 i32 i32) (result i32)))
  (import "env" "abort" (func $~lib/builtins/abort (param i32 i32 i32 i32)))
  (import "env" "__host_len" (func $assembly/indexer/index/__host_len (result i32)))
  (import "env" "__load_input" (func $assembly/indexer/index/__load_input (param i32)))
@@ -95,46 +96,38 @@
  (data $31 (i32.const 4140) "\1c")
  (data $31.1 (i32.const 4152) "#\00\00\00\08\00\00\00\04")
  (data $32 (i32.const 4172) "\1c")
- (data $32.1 (i32.const 4184) "$\00\00\00\08\00\00\00\05")
- (data $33 (i32.const 4204) "\1c")
- (data $33.1 (i32.const 4216) "%\00\00\00\08\00\00\00\06")
- (data $34 (i32.const 4236) "\1c")
- (data $34.1 (i32.const 4248) "&\00\00\00\08\00\00\00\07")
- (data $35 (i32.const 4268) "\1c")
- (data $35.1 (i32.const 4280) "&\00\00\00\08\00\00\00\08")
- (data $36 (i32.const 4300) "\1c")
- (data $36.1 (i32.const 4312) "\02\00\00\00\06\00\00\00o\00r\00d")
- (data $37 (i32.const 4332) "|")
- (data $37.1 (i32.const 4344) "\02\00\00\00d\00\00\00t\00o\00S\00t\00r\00i\00n\00g\00(\00)\00 \00r\00a\00d\00i\00x\00 \00a\00r\00g\00u\00m\00e\00n\00t\00 \00m\00u\00s\00t\00 \00b\00e\00 \00b\00e\00t\00w\00e\00e\00n\00 \002\00 \00a\00n\00d\00 \003\006")
- (data $38 (i32.const 4460) "<")
- (data $38.1 (i32.const 4472) "\02\00\00\00&\00\00\00~\00l\00i\00b\00/\00u\00t\00i\00l\00/\00n\00u\00m\00b\00e\00r\00.\00t\00s")
- (data $39 (i32.const 4524) "\1c")
- (data $39.1 (i32.const 4536) "\02\00\00\00\02\00\00\000")
- (data $40 (i32.const 4556) "0\000\000\001\000\002\000\003\000\004\000\005\000\006\000\007\000\008\000\009\001\000\001\001\001\002\001\003\001\004\001\005\001\006\001\007\001\008\001\009\002\000\002\001\002\002\002\003\002\004\002\005\002\006\002\007\002\008\002\009\003\000\003\001\003\002\003\003\003\004\003\005\003\006\003\007\003\008\003\009\004\000\004\001\004\002\004\003\004\004\004\005\004\006\004\007\004\008\004\009\005\000\005\001\005\002\005\003\005\004\005\005\005\006\005\007\005\008\005\009\006\000\006\001\006\002\006\003\006\004\006\005\006\006\006\007\006\008\006\009\007\000\007\001\007\002\007\003\007\004\007\005\007\006\007\007\007\008\007\009\008\000\008\001\008\002\008\003\008\004\008\005\008\006\008\007\008\008\008\009\009\000\009\001\009\002\009\003\009\004\009\005\009\006\009\007\009\008\009\009")
- (data $41 (i32.const 4956) "\1c\04")
- (data $41.1 (i32.const 4968) "\02\00\00\00\00\04\00\000\000\000\001\000\002\000\003\000\004\000\005\000\006\000\007\000\008\000\009\000\00a\000\00b\000\00c\000\00d\000\00e\000\00f\001\000\001\001\001\002\001\003\001\004\001\005\001\006\001\007\001\008\001\009\001\00a\001\00b\001\00c\001\00d\001\00e\001\00f\002\000\002\001\002\002\002\003\002\004\002\005\002\006\002\007\002\008\002\009\002\00a\002\00b\002\00c\002\00d\002\00e\002\00f\003\000\003\001\003\002\003\003\003\004\003\005\003\006\003\007\003\008\003\009\003\00a\003\00b\003\00c\003\00d\003\00e\003\00f\004\000\004\001\004\002\004\003\004\004\004\005\004\006\004\007\004\008\004\009\004\00a\004\00b\004\00c\004\00d\004\00e\004\00f\005\000\005\001\005\002\005\003\005\004\005\005\005\006\005\007\005\008\005\009\005\00a\005\00b\005\00c\005\00d\005\00e\005\00f\006\000\006\001\006\002\006\003\006\004\006\005\006\006\006\007\006\008\006\009\006\00a\006\00b\006\00c\006\00d\006\00e\006\00f\007\000\007\001\007\002\007\003\007\004\007\005\007\006\007\007\007\008\007\009\007\00a\007\00b\007\00c\007\00d\007\00e\007\00f\008\000\008\001\008\002\008\003\008\004\008\005\008\006\008\007\008\008\008\009\008\00a\008\00b\008\00c\008\00d\008\00e\008\00f\009\000\009\001\009\002\009\003\009\004\009\005\009\006\009\007\009\008\009\009\009\00a\009\00b\009\00c\009\00d\009\00e\009\00f\00a\000\00a\001\00a\002\00a\003\00a\004\00a\005\00a\006\00a\007\00a\008\00a\009\00a\00a\00a\00b\00a\00c\00a\00d\00a\00e\00a\00f\00b\000\00b\001\00b\002\00b\003\00b\004\00b\005\00b\006\00b\007\00b\008\00b\009\00b\00a\00b\00b\00b\00c\00b\00d\00b\00e\00b\00f\00c\000\00c\001\00c\002\00c\003\00c\004\00c\005\00c\006\00c\007\00c\008\00c\009\00c\00a\00c\00b\00c\00c\00c\00d\00c\00e\00c\00f\00d\000\00d\001\00d\002\00d\003\00d\004\00d\005\00d\006\00d\007\00d\008\00d\009\00d\00a\00d\00b\00d\00c\00d\00d\00d\00e\00d\00f\00e\000\00e\001\00e\002\00e\003\00e\004\00e\005\00e\006\00e\007\00e\008\00e\009\00e\00a\00e\00b\00e\00c\00e\00d\00e\00e\00e\00f\00f\000\00f\001\00f\002\00f\003\00f\004\00f\005\00f\006\00f\007\00f\008\00f\009\00f\00a\00f\00b\00f\00c\00f\00d\00f\00e\00f\00f")
- (data $42 (i32.const 6012) "\\")
- (data $42.1 (i32.const 6024) "\02\00\00\00H\00\00\000\001\002\003\004\005\006\007\008\009\00a\00b\00c\00d\00e\00f\00g\00h\00i\00j\00k\00l\00m\00n\00o\00p\00q\00r\00s\00t\00u\00v\00w\00x\00y\00z")
- (data $43 (i32.const 6108) "\1c")
- (data $43.1 (i32.const 6120) "(\00\00\00\08\00\00\00\t")
- (data $44 (i32.const 6140) "\bc\04")
- (data $44.1 (i32.const 6152) "\02\00\00\00\a8\04\00\000\002\000\000\000\000\000\000\000\000\000\001\000\001\00a\00a\00b\00e\007\00e\000\00d\005\00a\003\00a\005\006\00b\00b\000\004\009\00a\004\001\007\00b\004\00e\006\00f\009\000\00d\00d\002\00d\006\00a\005\007\008\009\000\00f\00b\00c\006\005\006\008\00f\004\007\006\00b\00a\00a\00a\00e\000\006\001\003\000\000\00a\008\00f\000\003\000\000\000\000\000\000\00f\00f\00f\00f\00f\00f\00f\00d\000\001\002\006\000\001\000\000\000\000\000\000\000\000\000\000\000\000\001\006\000\000\001\004\001\003\00c\008\00d\004\00f\004\00b\00e\007\005\00d\001\001\00b\004\006\003\00a\003\005\00b\001\004\001\00a\001\000\006\007\001\005\005\00c\004\000\007\00a\008\000\003\004\000\00b\002\009\00a\004\001\001\009\005\00e\00e\008\009\002\00d\008\00b\003\00d\00d\00f\000\00b\007\009\001\002\00f\00a\000\00c\009\003\00c\00f\00d\00c\003\00d\00c\007\00b\002\002\00d\00f\00d\00d\006\005\00e\00c\00d\00c\008\008\00c\002\00f\00d\00c\00c\005\002\006\008\004\00b\00c\000\009\00f\007\00f\002\002\000\00e\007\00e\009\002\00b\00e\004\00b\00f\00d\004\004\00c\005\000\00d\000\005\008\005\003\00b\00e\00e\003\008\00c\001\00b\005\008\000\000\00d\000\00c\005\002\00b\007\00a\001\006\00f\009\008\000\00e\009\00e\007\001\002\000\003\00b\003\00e\005\009\00e\00d\00a\008\005\007\00e\009\00f\00c\007\005\000\003\007\006\00b\001\00d\00e\00b\006\001\004\007\00a\00a\004\005\004\001\000\004\001\000\00a\005\006\001\00e\000\006\002\00f\00b\003\006\001\007\002\00b\006\000\000\006\003\004\00e\00a\00c\000\000\006\003\000\003\006\00f\007\002\006\004\000\001\000\001\000\00a\007\004\006\005\007\008\007\004\002\00f\007\000\006\00c\006\001\006\009\006\00e\000\000\003\009\007\00b\002\002\007\000\002\002\003\00a\002\002\006\002\007\002\006\003\002\00d\003\002\003\000\002\002\002\00c\002\002\006\00f\007\000\002\002\003\00a\002\002\006\00d\006\009\006\00e\007\004\002\002\002\00c\002\002\007\004\006\009\006\003\006\00b\002\002\003\00a\002\002\007\003\006\001\007\004\007\003\002\002\002\00c\002\002\006\001\006\00d\007\004\002\002\003\00a\002\002\003\009\003\009\003\009\003\009\003\009\003\009\003\009\003\009\002\002\007\00d\006\008\002\001\00c\000\003\00b\003\00e\005\009\00e\00d\00a\008\005\007\00e\009\00f\00c\007\005\000\003\007\006\00b\001\00d\00e\00b\006\001\004\007\00a\00a\004\005\004\001\000\004\001\000\00a\005\006\001\00e\000\006\002\00f\00b\003\006\001\007\002\00b\006\000\000\006\003\004\00e\000\000\000\000\000\000\000\000")
- (data $45 (i32.const 7356) "\1c")
- (data $45.1 (i32.const 7368) "\02")
- (data $46 (i32.const 7388) "|")
- (data $46.1 (i32.const 7400) "\02\00\00\00^\00\00\00U\00n\00e\00x\00p\00e\00c\00t\00e\00d\00 \00\'\00n\00u\00l\00l\00\'\00 \00(\00n\00o\00t\00 \00a\00s\00s\00i\00g\00n\00e\00d\00 \00o\00r\00 \00f\00a\00i\00l\00e\00d\00 \00c\00a\00s\00t\00)")
- (data $47 (i32.const 7516) "<")
- (data $47.1 (i32.const 7528) "\02\00\00\00\"\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00i\00n\00d\00e\00x\00.\00t\00s")
- (data $48 (i32.const 7580) "\0c\03")
- (data $48.1 (i32.const 7592) "\02\00\00\00\fc\02\00\000\001\000\000\000\000\000\000\000\001\007\004\00a\000\001\006\00b\00a\00d\008\009\002\007\00e\00e\007\003\009\00a\00f\00f\007\002\008\009\00f\005\005\007\004\00b\008\00f\005\007\00f\00c\00c\003\002\002\007\002\008\002\009\00a\00c\003\00a\00e\00f\003\00e\00d\00b\009\009\005\009\00a\00d\005\008\000\000\000\000\000\000\000\000\004\008\004\007\003\000\004\004\000\002\002\000\001\008\00d\001\00f\00c\002\001\002\00a\00f\00f\00b\004\001\00d\00d\003\002\002\00f\00d\00c\00d\00c\008\00d\000\004\007\004\00d\007\00e\00a\00b\007\00a\00b\004\001\004\00a\007\001\002\003\006\001\00f\008\001\00f\009\003\00d\00f\007\00f\00d\009\00b\00e\00d\000\002\002\000\000\00d\007\00d\004\003\001\00a\00c\003\00c\007\00b\006\001\00a\004\006\00b\003\000\00f\009\001\001\007\009\007\00f\00d\00e\004\00e\00d\00e\003\000\001\004\004\003\004\00c\00b\000\000\001\004\009\00a\00b\007\001\00e\00e\00d\002\006\003\003\005\00f\000\002\000\001\00f\00f\00f\00f\00f\00f\00f\00f\000\002\000\000\001\001\001\000\002\004\000\001\000\000\000\000\000\000\001\009\007\006\00a\009\001\004\002\000\004\002\000\00e\005\006\000\007\009\001\005\000\00b\005\000\00f\00b\000\006\001\007\00d\00c\00e\004\00c\003\007\004\00b\00d\006\001\00e\00c\00c\00e\00a\008\008\00a\00c\000\00a\00e\001\00f\005\000\005\000\000\000\000\000\000\000\000\001\009\007\006\00a\009\001\004\001\000\00f\009\005\008\00c\00b\00e\009\00c\00f\006\00d\002\006\00c\002\00e\002\00a\00c\00e\003\009\007\006\006\00c\002\00c\00d\00b\008\007\001\007\009\00f\007\008\008\00a\00c\000\000\000\000\000\000\000\000")
- (data $49 (i32.const 8364) "<")
- (data $49.1 (i32.const 8376) "\02\00\00\00$\00\00\00~\00l\00i\00b\00/\00t\00y\00p\00e\00d\00a\00r\00r\00a\00y\00.\00t\00s")
- (data $50 (i32.const 8428) "|")
- (data $50.1 (i32.const 8440) "\02\00\00\00^\00\00\00S\00H\00A\002\005\006\00:\00 \00c\00a\00n\00\'\00t\00 \00u\00p\00d\00a\00t\00e\00 \00b\00e\00c\00a\00u\00s\00e\00 \00h\00a\00s\00h\00 \00w\00a\00s\00 \00f\00i\00n\00i\00s\00h\00e\00d\00.")
- (data $51 (i32.const 8556) "\\")
- (data $51.1 (i32.const 8568) "\02\00\00\00L\00\00\00~\00l\00i\00b\00/\00f\00a\00s\00t\00-\00s\00h\00a\002\005\006\00-\00a\00s\00/\00a\00s\00s\00e\00m\00b\00l\00y\00/\00s\00h\00a\002\005\006\00.\00t\00s")
- (table $0 10 10 funcref)
- (elem $0 (i32.const 1) $assembly/utils/utils/concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|0 $assembly/utils/rlp/toRLP~anonymous|1 $assembly/utils/rlp/toRLP~anonymous|2 $assembly/utils/rlp/toRLP~anonymous|2 $assembly/index/test_inscription~anonymous|0)
+ (data $32.1 (i32.const 4184) "\02\00\00\00\06\00\00\00o\00r\00d")
+ (data $33 (i32.const 4204) "|")
+ (data $33.1 (i32.const 4216) "\02\00\00\00d\00\00\00t\00o\00S\00t\00r\00i\00n\00g\00(\00)\00 \00r\00a\00d\00i\00x\00 \00a\00r\00g\00u\00m\00e\00n\00t\00 \00m\00u\00s\00t\00 \00b\00e\00 \00b\00e\00t\00w\00e\00e\00n\00 \002\00 \00a\00n\00d\00 \003\006")
+ (data $34 (i32.const 4332) "<")
+ (data $34.1 (i32.const 4344) "\02\00\00\00&\00\00\00~\00l\00i\00b\00/\00u\00t\00i\00l\00/\00n\00u\00m\00b\00e\00r\00.\00t\00s")
+ (data $35 (i32.const 4396) "\1c")
+ (data $35.1 (i32.const 4408) "\02\00\00\00\02\00\00\000")
+ (data $36 (i32.const 4428) "0\000\000\001\000\002\000\003\000\004\000\005\000\006\000\007\000\008\000\009\001\000\001\001\001\002\001\003\001\004\001\005\001\006\001\007\001\008\001\009\002\000\002\001\002\002\002\003\002\004\002\005\002\006\002\007\002\008\002\009\003\000\003\001\003\002\003\003\003\004\003\005\003\006\003\007\003\008\003\009\004\000\004\001\004\002\004\003\004\004\004\005\004\006\004\007\004\008\004\009\005\000\005\001\005\002\005\003\005\004\005\005\005\006\005\007\005\008\005\009\006\000\006\001\006\002\006\003\006\004\006\005\006\006\006\007\006\008\006\009\007\000\007\001\007\002\007\003\007\004\007\005\007\006\007\007\007\008\007\009\008\000\008\001\008\002\008\003\008\004\008\005\008\006\008\007\008\008\008\009\009\000\009\001\009\002\009\003\009\004\009\005\009\006\009\007\009\008\009\009")
+ (data $37 (i32.const 4828) "\1c\04")
+ (data $37.1 (i32.const 4840) "\02\00\00\00\00\04\00\000\000\000\001\000\002\000\003\000\004\000\005\000\006\000\007\000\008\000\009\000\00a\000\00b\000\00c\000\00d\000\00e\000\00f\001\000\001\001\001\002\001\003\001\004\001\005\001\006\001\007\001\008\001\009\001\00a\001\00b\001\00c\001\00d\001\00e\001\00f\002\000\002\001\002\002\002\003\002\004\002\005\002\006\002\007\002\008\002\009\002\00a\002\00b\002\00c\002\00d\002\00e\002\00f\003\000\003\001\003\002\003\003\003\004\003\005\003\006\003\007\003\008\003\009\003\00a\003\00b\003\00c\003\00d\003\00e\003\00f\004\000\004\001\004\002\004\003\004\004\004\005\004\006\004\007\004\008\004\009\004\00a\004\00b\004\00c\004\00d\004\00e\004\00f\005\000\005\001\005\002\005\003\005\004\005\005\005\006\005\007\005\008\005\009\005\00a\005\00b\005\00c\005\00d\005\00e\005\00f\006\000\006\001\006\002\006\003\006\004\006\005\006\006\006\007\006\008\006\009\006\00a\006\00b\006\00c\006\00d\006\00e\006\00f\007\000\007\001\007\002\007\003\007\004\007\005\007\006\007\007\007\008\007\009\007\00a\007\00b\007\00c\007\00d\007\00e\007\00f\008\000\008\001\008\002\008\003\008\004\008\005\008\006\008\007\008\008\008\009\008\00a\008\00b\008\00c\008\00d\008\00e\008\00f\009\000\009\001\009\002\009\003\009\004\009\005\009\006\009\007\009\008\009\009\009\00a\009\00b\009\00c\009\00d\009\00e\009\00f\00a\000\00a\001\00a\002\00a\003\00a\004\00a\005\00a\006\00a\007\00a\008\00a\009\00a\00a\00a\00b\00a\00c\00a\00d\00a\00e\00a\00f\00b\000\00b\001\00b\002\00b\003\00b\004\00b\005\00b\006\00b\007\00b\008\00b\009\00b\00a\00b\00b\00b\00c\00b\00d\00b\00e\00b\00f\00c\000\00c\001\00c\002\00c\003\00c\004\00c\005\00c\006\00c\007\00c\008\00c\009\00c\00a\00c\00b\00c\00c\00c\00d\00c\00e\00c\00f\00d\000\00d\001\00d\002\00d\003\00d\004\00d\005\00d\006\00d\007\00d\008\00d\009\00d\00a\00d\00b\00d\00c\00d\00d\00d\00e\00d\00f\00e\000\00e\001\00e\002\00e\003\00e\004\00e\005\00e\006\00e\007\00e\008\00e\009\00e\00a\00e\00b\00e\00c\00e\00d\00e\00e\00e\00f\00f\000\00f\001\00f\002\00f\003\00f\004\00f\005\00f\006\00f\007\00f\008\00f\009\00f\00a\00f\00b\00f\00c\00f\00d\00f\00e\00f\00f")
+ (data $38 (i32.const 5884) "\\")
+ (data $38.1 (i32.const 5896) "\02\00\00\00H\00\00\000\001\002\003\004\005\006\007\008\009\00a\00b\00c\00d\00e\00f\00g\00h\00i\00j\00k\00l\00m\00n\00o\00p\00q\00r\00s\00t\00u\00v\00w\00x\00y\00z")
+ (data $39 (i32.const 5980) "\1c")
+ (data $39.1 (i32.const 5992) "\'\00\00\00\08\00\00\00\05")
+ (data $40 (i32.const 6012) "\bc\04")
+ (data $40.1 (i32.const 6024) "\02\00\00\00\a8\04\00\000\002\000\000\000\000\000\000\000\000\000\001\000\001\00a\00a\00b\00e\007\00e\000\00d\005\00a\003\00a\005\006\00b\00b\000\004\009\00a\004\001\007\00b\004\00e\006\00f\009\000\00d\00d\002\00d\006\00a\005\007\008\009\000\00f\00b\00c\006\005\006\008\00f\004\007\006\00b\00a\00a\00a\00e\000\006\001\003\000\000\00a\008\00f\000\003\000\000\000\000\000\000\00f\00f\00f\00f\00f\00f\00f\00d\000\001\002\006\000\001\000\000\000\000\000\000\000\000\000\000\000\000\001\006\000\000\001\004\001\003\00c\008\00d\004\00f\004\00b\00e\007\005\00d\001\001\00b\004\006\003\00a\003\005\00b\001\004\001\00a\001\000\006\007\001\005\005\00c\004\000\007\00a\008\000\003\004\000\00b\002\009\00a\004\001\001\009\005\00e\00e\008\009\002\00d\008\00b\003\00d\00d\00f\000\00b\007\009\001\002\00f\00a\000\00c\009\003\00c\00f\00d\00c\003\00d\00c\007\00b\002\002\00d\00f\00d\00d\006\005\00e\00c\00d\00c\008\008\00c\002\00f\00d\00c\00c\005\002\006\008\004\00b\00c\000\009\00f\007\00f\002\002\000\00e\007\00e\009\002\00b\00e\004\00b\00f\00d\004\004\00c\005\000\00d\000\005\008\005\003\00b\00e\00e\003\008\00c\001\00b\005\008\000\000\00d\000\00c\005\002\00b\007\00a\001\006\00f\009\008\000\00e\009\00e\007\001\002\000\003\00b\003\00e\005\009\00e\00d\00a\008\005\007\00e\009\00f\00c\007\005\000\003\007\006\00b\001\00d\00e\00b\006\001\004\007\00a\00a\004\005\004\001\000\004\001\000\00a\005\006\001\00e\000\006\002\00f\00b\003\006\001\007\002\00b\006\000\000\006\003\004\00e\00a\00c\000\000\006\003\000\003\006\00f\007\002\006\004\000\001\000\001\000\00a\007\004\006\005\007\008\007\004\002\00f\007\000\006\00c\006\001\006\009\006\00e\000\000\003\009\007\00b\002\002\007\000\002\002\003\00a\002\002\006\002\007\002\006\003\002\00d\003\002\003\000\002\002\002\00c\002\002\006\00f\007\000\002\002\003\00a\002\002\006\00d\006\009\006\00e\007\004\002\002\002\00c\002\002\007\004\006\009\006\003\006\00b\002\002\003\00a\002\002\007\003\006\001\007\004\007\003\002\002\002\00c\002\002\006\001\006\00d\007\004\002\002\003\00a\002\002\003\009\003\009\003\009\003\009\003\009\003\009\003\009\003\009\002\002\007\00d\006\008\002\001\00c\000\003\00b\003\00e\005\009\00e\00d\00a\008\005\007\00e\009\00f\00c\007\005\000\003\007\006\00b\001\00d\00e\00b\006\001\004\007\00a\00a\004\005\004\001\000\004\001\000\00a\005\006\001\00e\000\006\002\00f\00b\003\006\001\007\002\00b\006\000\000\006\003\004\00e\000\000\000\000\000\000\000\000")
+ (data $41 (i32.const 7228) "\1c")
+ (data $41.1 (i32.const 7240) "\02")
+ (data $42 (i32.const 7260) "|")
+ (data $42.1 (i32.const 7272) "\02\00\00\00^\00\00\00U\00n\00e\00x\00p\00e\00c\00t\00e\00d\00 \00\'\00n\00u\00l\00l\00\'\00 \00(\00n\00o\00t\00 \00a\00s\00s\00i\00g\00n\00e\00d\00 \00o\00r\00 \00f\00a\00i\00l\00e\00d\00 \00c\00a\00s\00t\00)")
+ (data $43 (i32.const 7388) "<")
+ (data $43.1 (i32.const 7400) "\02\00\00\00\"\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00i\00n\00d\00e\00x\00.\00t\00s")
+ (data $44 (i32.const 7452) "\0c\03")
+ (data $44.1 (i32.const 7464) "\02\00\00\00\fc\02\00\000\001\000\000\000\000\000\000\000\001\007\004\00a\000\001\006\00b\00a\00d\008\009\002\007\00e\00e\007\003\009\00a\00f\00f\007\002\008\009\00f\005\005\007\004\00b\008\00f\005\007\00f\00c\00c\003\002\002\007\002\008\002\009\00a\00c\003\00a\00e\00f\003\00e\00d\00b\009\009\005\009\00a\00d\005\008\000\000\000\000\000\000\000\000\004\008\004\007\003\000\004\004\000\002\002\000\001\008\00d\001\00f\00c\002\001\002\00a\00f\00f\00b\004\001\00d\00d\003\002\002\00f\00d\00c\00d\00c\008\00d\000\004\007\004\00d\007\00e\00a\00b\007\00a\00b\004\001\004\00a\007\001\002\003\006\001\00f\008\001\00f\009\003\00d\00f\007\00f\00d\009\00b\00e\00d\000\002\002\000\000\00d\007\00d\004\003\001\00a\00c\003\00c\007\00b\006\001\00a\004\006\00b\003\000\00f\009\001\001\007\009\007\00f\00d\00e\004\00e\00d\00e\003\000\001\004\004\003\004\00c\00b\000\000\001\004\009\00a\00b\007\001\00e\00e\00d\002\006\003\003\005\00f\000\002\000\001\00f\00f\00f\00f\00f\00f\00f\00f\000\002\000\000\001\001\001\000\002\004\000\001\000\000\000\000\000\000\001\009\007\006\00a\009\001\004\002\000\004\002\000\00e\005\006\000\007\009\001\005\000\00b\005\000\00f\00b\000\006\001\007\00d\00c\00e\004\00c\003\007\004\00b\00d\006\001\00e\00c\00c\00e\00a\008\008\00a\00c\000\00a\00e\001\00f\005\000\005\000\000\000\000\000\000\000\000\001\009\007\006\00a\009\001\004\001\000\00f\009\005\008\00c\00b\00e\009\00c\00f\006\00d\002\006\00c\002\00e\002\00a\00c\00e\003\009\007\006\006\00c\002\00c\00d\00b\008\007\001\007\009\00f\007\008\008\00a\00c\000\000\000\000\000\000\000\000")
+ (data $45 (i32.const 8236) "<")
+ (data $45.1 (i32.const 8248) "\02\00\00\00$\00\00\00~\00l\00i\00b\00/\00t\00y\00p\00e\00d\00a\00r\00r\00a\00y\00.\00t\00s")
+ (data $46 (i32.const 8300) "|")
+ (data $46.1 (i32.const 8312) "\02\00\00\00^\00\00\00S\00H\00A\002\005\006\00:\00 \00c\00a\00n\00\'\00t\00 \00u\00p\00d\00a\00t\00e\00 \00b\00e\00c\00a\00u\00s\00e\00 \00h\00a\00s\00h\00 \00w\00a\00s\00 \00f\00i\00n\00i\00s\00h\00e\00d\00.")
+ (data $47 (i32.const 8428) "\\")
+ (data $47.1 (i32.const 8440) "\02\00\00\00L\00\00\00~\00l\00i\00b\00/\00f\00a\00s\00t\00-\00s\00h\00a\002\005\006\00-\00a\00s\00/\00a\00s\00s\00e\00m\00b\00l\00y\00/\00s\00h\00a\002\005\006\00.\00t\00s")
+ (table $0 6 6 funcref)
+ (elem $0 (i32.const 1) $assembly/utils/utils/concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/index/test_inscription~anonymous|0)
  (export "test_parseBlock" (func $assembly/index/test_parseBlock))
  (export "test_parseWitness" (func $assembly/index/test_parseWitness))
  (export "test_seekLower" (func $assembly/index/test_seekLower))
@@ -2312,7 +2305,8 @@
   i32.load offset=16
   call $assembly/utils/box/Box#constructor
  )
- (func $~lib/rt/__newArray (param $0 i32) (param $1 i32) (result i32)
+ (func $~lib/rt/__newArray (param $0 i32) (result i32)
+  (local $1 i32)
   (local $2 i32)
   (local $3 i32)
   local.get $0
@@ -2323,7 +2317,7 @@
   call $~lib/rt/stub/__new
   local.set $2
   i32.const 16
-  local.get $1
+  i32.const 26
   call $~lib/rt/stub/__new
   local.tee $1
   local.get $2
@@ -2394,7 +2388,7 @@
     local.get $0
     i32.const 3776
     i32.load
-    call_indirect (type $3)
+    call_indirect (type $4)
     local.set $2
     local.get $1
     i32.const 1
@@ -2438,7 +2432,7 @@
     local.get $0
     i32.const 3808
     i32.load
-    call_indirect (type $3)
+    call_indirect (type $4)
     local.set $1
     local.get $3
     i32.const 1
@@ -2753,7 +2747,6 @@
   local.get $4
   i32.load offset=12
   local.tee $5
-  i32.const 26
   call $~lib/rt/__newArray
   local.tee $0
   i32.load offset=4
@@ -2791,7 +2784,7 @@
     local.get $4
     i32.const 3744
     i32.load
-    call_indirect (type $5)
+    call_indirect (type $8)
     i32.store
     local.get $1
     i32.const 1
@@ -2832,11 +2825,11 @@
   local.set $1
   i32.const 0
   local.set $0
-  block $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
+  block $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
    local.get $1
    i32.const 0
    i32.le_s
-   br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
+   br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
    local.get $1
    i32.const 2
    i32.ge_s
@@ -2855,7 +2848,7 @@
     local.tee $1
     i32.const 1
     i32.le_s
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
     local.get $2
     i32.load offset=4
     local.get $1
@@ -2864,7 +2857,7 @@
     call $~lib/array/Array<assembly/blockdata/transaction/Input>#__get
     i32.load8_u offset=5
     i32.eqz
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
     local.get $2
     i32.load offset=4
     local.get $1
@@ -2886,7 +2879,7 @@
      i32.const 31
      i32.and
     end
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
     local.get $2
     i32.load offset=4
     local.get $1
@@ -2906,7 +2899,7 @@
   end
   local.get $0
   if (result i32)
-   block $__inlined_func$assembly/blockdata/witness/Witness.isInscribed$28 (result i32)
+   block $__inlined_func$assembly/blockdata/witness/Witness.isInscribed$29 (result i32)
     local.get $0
     i32.load
     local.get $0
@@ -3011,7 +3004,7 @@
      i32.const 0
     end
     i32.eqz
-    br_if $__inlined_func$assembly/blockdata/witness/Witness.isInscribed$28
+    br_if $__inlined_func$assembly/blockdata/witness/Witness.isInscribed$29
     drop
     local.get $1
     call $assembly/utils/utils/parsePushOp
@@ -3072,7 +3065,6 @@
  (func $assembly/indexer/tables/IndexPointer#select (param $0 i32) (param $1 i32) (result i32)
   (local $2 i32)
   i32.const 2
-  i32.const 26
   call $~lib/rt/__newArray
   local.tee $2
   i32.load offset=4
@@ -3521,14 +3513,14 @@
     if (result i32)
      i32.const 0
     else
-     block $__inlined_func$~lib/string/String.__eq$794 (result i32)
+     block $__inlined_func$~lib/string/String.__eq$799 (result i32)
       i32.const 1
       local.get $5
       i32.load
       local.tee $2
       local.get $1
       i32.eq
-      br_if $__inlined_func$~lib/string/String.__eq$794
+      br_if $__inlined_func$~lib/string/String.__eq$799
       drop
       i32.const 0
       local.get $1
@@ -3536,7 +3528,7 @@
       local.get $2
       i32.eqz
       i32.or
-      br_if $__inlined_func$~lib/string/String.__eq$794
+      br_if $__inlined_func$~lib/string/String.__eq$799
       drop
       i32.const 0
       local.get $2
@@ -3553,7 +3545,7 @@
       i32.const 1
       i32.shr_u
       i32.ne
-      br_if $__inlined_func$~lib/string/String.__eq$794
+      br_if $__inlined_func$~lib/string/String.__eq$799
       drop
       local.get $1
       local.set $3
@@ -3881,10 +3873,6 @@
    local.get $1
    local.get $0
    call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
-   global.get $assembly/indexer/index/_updateKeys
-   local.get $1
-   local.get $0
-   call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
   end
   local.get $0
   local.get $0
@@ -4209,23 +4197,165 @@
   local.get $2
   call $assembly/indexer/tables/IndexPointer#set
  )
- (func $assembly/utils/rlp/RLPItem#constructor (param $0 i32) (param $1 i32) (result i32)
-  (local $2 i32)
-  i32.const 8
-  i32.const 33
+ (func $~lib/array/Array<~lib/array/Array<u8>>#constructor (result i32)
+  (local $0 i32)
+  (local $1 i32)
+  i32.const 16
+  i32.const 34
   call $~lib/rt/stub/__new
-  local.tee $2
+  local.tee $0
   i32.const 0
   i32.store
-  local.get $2
+  local.get $0
   i32.const 0
   i32.store offset=4
-  local.get $2
   local.get $0
-  i32.store offset=4
-  local.get $2
+  i32.const 0
+  i32.store offset=8
+  local.get $0
+  i32.const 0
+  i32.store offset=12
+  i32.const 32
+  i32.const 1
+  call $~lib/rt/stub/__new
+  local.tee $1
+  i32.const 0
+  i32.const 32
+  memory.fill
+  local.get $0
   local.get $1
   i32.store
+  local.get $0
+  local.get $1
+  i32.store offset=4
+  local.get $0
+  i32.const 32
+  i32.store offset=8
+  local.get $0
+  i32.const 0
+  i32.store offset=12
+  local.get $0
+ )
+ (func $~lib/array/Array<u8>#constructor (param $0 i32) (result i32)
+  (local $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  i32.const 16
+  i32.const 33
+  call $~lib/rt/stub/__new
+  local.tee $1
+  i32.const 0
+  i32.store
+  local.get $1
+  i32.const 0
+  i32.store offset=4
+  local.get $1
+  i32.const 0
+  i32.store offset=8
+  local.get $1
+  i32.const 0
+  i32.store offset=12
+  local.get $0
+  i32.const 1073741820
+  i32.gt_u
+  if
+   i32.const 2608
+   i32.const 3472
+   i32.const 70
+   i32.const 60
+   call $~lib/builtins/abort
+   unreachable
+  end
+  i32.const 8
+  local.get $0
+  local.get $0
+  i32.const 8
+  i32.le_u
+  select
+  local.tee $2
+  i32.const 1
+  call $~lib/rt/stub/__new
+  local.tee $3
+  i32.const 0
+  local.get $2
+  memory.fill
+  local.get $1
+  local.get $3
+  i32.store
+  local.get $1
+  local.get $3
+  i32.store offset=4
+  local.get $1
+  local.get $2
+  i32.store offset=8
+  local.get $1
+  local.get $0
+  i32.store offset=12
+  local.get $1
+ )
+ (func $assembly/indexer/index/arrayBufferToArray (param $0 i32) (result i32)
+  (local $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  local.get $0
+  i32.const 20
+  i32.sub
+  i32.load offset=16
+  call $~lib/array/Array<u8>#constructor
+  local.set $2
+  loop $for-loop|0
+   local.get $1
+   local.get $2
+   i32.load offset=12
+   local.tee $4
+   i32.lt_u
+   if
+    local.get $0
+    local.get $1
+    i32.add
+    i32.load8_u
+    local.set $3
+    local.get $1
+    local.get $4
+    i32.ge_u
+    if
+     local.get $1
+     i32.const 0
+     i32.lt_s
+     if
+      i32.const 3344
+      i32.const 3472
+      i32.const 130
+      i32.const 22
+      call $~lib/builtins/abort
+      unreachable
+     end
+     local.get $2
+     local.get $1
+     i32.const 1
+     i32.add
+     local.tee $4
+     i32.const 0
+     i32.const 1
+     call $~lib/array/ensureCapacity
+     local.get $2
+     local.get $4
+     i32.store offset=12
+    end
+    local.get $2
+    i32.load offset=4
+    local.get $1
+    i32.add
+    local.get $3
+    i32.store8
+    local.get $1
+    i32.const 1
+    i32.add
+    local.set $1
+    br $for-loop|0
+   end
+  end
   local.get $2
  )
  (func $assembly/indexer/index/_flush~anonymous|0 (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (result i32)
@@ -4233,558 +4363,68 @@
   global.get $assembly/indexer/index/_updateKeys
   local.get $1
   call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#get"
-  i32.const 1
-  call $assembly/utils/rlp/RLPItem#constructor
+  call $assembly/indexer/index/arrayBufferToArray
   call $~lib/array/Array<assembly/blockdata/transaction/Output>#push
   drop
   local.get $0
   global.get $assembly/indexer/index/_updates
   local.get $1
   call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#get"
-  i32.const 1
-  call $assembly/utils/rlp/RLPItem#constructor
+  call $assembly/indexer/index/arrayBufferToArray
   call $~lib/array/Array<assembly/blockdata/transaction/Output>#push
   drop
   local.get $0
  )
- (func $assembly/utils/rlp/toRLP~anonymous|0 (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
-  local.get $0
-  call $assembly/utils/rlp/toRLP
- )
- (func $assembly/utils/rlp/toRLP~anonymous|1 (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (result i32)
-  local.get $0
-  local.get $1
-  i32.const 20
-  i32.sub
-  i32.load offset=16
-  i32.add
- )
- (func $assembly/utils/rlp/toRLP~anonymous|2 (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (result i32)
-  local.get $0
-  local.get $1
-  local.get $1
-  i32.const 20
-  i32.sub
-  i32.load offset=16
-  memory.copy
-  local.get $0
-  local.get $1
-  i32.const 20
-  i32.sub
-  i32.load offset=16
-  i32.add
- )
- (func $assembly/utils/rlp/toRLP (param $0 i32) (result i32)
-  (local $1 i32)
+ (func $~lib/array/Array<u8>#push (param $0 i32) (param $1 i32)
   (local $2 i32)
   (local $3 i32)
-  (local $4 i32)
-  (local $5 i32)
-  (local $6 i32)
-  (local $7 i32)
-  (local $8 i32)
-  (local $9 i32)
   local.get $0
-  i32.load
-  i32.const 3
-  i32.eq
-  if
-   local.get $0
-   i32.load offset=4
-   local.tee $5
-   i32.load offset=12
-   local.tee $8
-   i32.const 25
-   call $~lib/rt/__newArray
-   local.tee $6
-   i32.load offset=4
-   local.set $0
-   loop $for-loop|0
-    local.get $2
-    local.get $8
-    local.get $5
-    i32.load offset=12
-    local.tee $7
-    local.get $7
-    local.get $8
-    i32.gt_s
-    select
-    i32.lt_s
-    if
-     local.get $2
-     i32.const 2
-     i32.shl
-     local.tee $7
-     local.get $5
-     i32.load offset=4
-     i32.add
-     i32.load
-     local.set $9
-     i32.const 3
-     global.set $~argumentsLength
-     local.get $0
-     local.get $7
-     i32.add
-     local.get $9
-     local.get $2
-     local.get $5
-     i32.const 4192
-     i32.load
-     call_indirect (type $5)
-     i32.store
-     local.get $2
-     i32.const 1
-     i32.add
-     local.set $2
-     br $for-loop|0
-    end
-   end
-   local.get $6
-   i32.load offset=12
-   local.set $0
-   loop $for-loop|00
-    local.get $3
-    local.get $0
-    local.get $6
-    i32.load offset=12
-    local.tee $2
-    local.get $0
-    local.get $2
-    i32.lt_s
-    select
-    i32.lt_s
-    if
-     local.get $6
-     i32.load offset=4
-     local.get $3
-     i32.const 2
-     i32.shl
-     i32.add
-     i32.load
-     local.set $2
-     i32.const 4
-     global.set $~argumentsLength
-     local.get $1
-     local.get $2
-     local.get $3
-     local.get $6
-     i32.const 4224
-     i32.load
-     call_indirect (type $3)
-     local.set $1
-     local.get $3
-     i32.const 1
-     i32.add
-     local.set $3
-     br $for-loop|00
-    end
-   end
+  local.get $0
+  i32.load offset=12
+  local.tee $2
+  i32.const 1
+  i32.add
+  local.tee $3
+  i32.const 0
+  i32.const 1
+  call $~lib/array/ensureCapacity
+  local.get $0
+  i32.load offset=4
+  local.get $2
+  i32.add
+  local.get $1
+  i32.store8
+  local.get $0
+  local.get $3
+  i32.store offset=12
+ )
+ (func $assembly/proto/metashrew/__proto.Encoder#varint64 (param $0 i32) (param $1 i64)
+  loop $while-continue|0
    local.get $1
-   i32.const 55
-   i32.le_s
+   i64.const 127
+   i64.gt_u
    if
-    local.get $1
-    i32.const 1
-    i32.add
-    call $~lib/arraybuffer/ArrayBuffer#constructor
-    local.tee $0
-    local.get $1
-    i32.const 192
-    i32.add
-    i32.store8
-    local.get $0
-    i32.const 1
-    i32.add
-    local.set $1
-    local.get $6
-    i32.load offset=12
-    local.set $2
-    loop $for-loop|01
-     local.get $4
-     local.get $2
-     local.get $6
-     i32.load offset=12
-     local.tee $3
-     local.get $2
-     local.get $3
-     i32.lt_s
-     select
-     i32.lt_s
-     if
-      local.get $6
-      i32.load offset=4
-      local.get $4
-      i32.const 2
-      i32.shl
-      i32.add
-      i32.load
-      local.set $3
-      i32.const 4
-      global.set $~argumentsLength
-      local.get $1
-      local.get $3
-      local.get $4
-      local.get $6
-      i32.const 4256
-      i32.load
-      call_indirect (type $3)
-      local.set $1
-      local.get $4
-      i32.const 1
-      i32.add
-      local.set $4
-      br $for-loop|01
-     end
-    end
-   else
-    block $__inlined_func$assembly/utils/rlp/byteLengthForLength$380 (result i32)
-     i32.const 4
-     local.get $1
-     i32.const 24
-     i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$380
-     drop
-     i32.const 3
-     local.get $1
-     i32.const 16
-     i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$380
-     drop
-     i32.const 2
-     local.get $1
-     i32.const 8
-     i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$380
-     drop
-     i32.const 1
-    end
-    local.tee $2
-    local.get $1
-    i32.add
-    i32.const 1
-    i32.add
-    call $~lib/arraybuffer/ArrayBuffer#constructor
-    local.tee $0
-    local.get $2
-    i32.const 247
-    i32.add
-    i32.store8
-    local.get $2
-    i32.const 1
-    i32.eq
-    if
-     local.get $0
-     local.get $1
-     i32.store8 offset=1
-    else
-     local.get $2
-     i32.const 2
-     i32.eq
-     if
-      local.get $0
-      local.get $1
-      i32.const 65280
-      i32.and
-      i32.const 8
-      i32.shr_u
-      i32.store8 offset=1
-      local.get $0
-      local.get $1
-      i32.store8 offset=2
-     else
-      local.get $2
-      i32.const 3
-      i32.eq
-      if
-       local.get $0
-       local.get $1
-       i32.const 16711680
-       i32.and
-       i32.const 16
-       i32.shr_u
-       i32.store8 offset=1
-       local.get $0
-       local.get $1
-       i32.const 65280
-       i32.and
-       i32.const 8
-       i32.shr_u
-       i32.store8 offset=2
-       local.get $0
-       local.get $1
-       i32.store8 offset=3
-      else
-       local.get $2
-       i32.const 4
-       i32.eq
-       if
-        local.get $0
-        local.get $1
-        i32.const -16777216
-        i32.and
-        i32.const 24
-        i32.shr_s
-        i32.store8 offset=1
-        local.get $0
-        local.get $1
-        i32.const 16711680
-        i32.and
-        i32.const 16
-        i32.shr_u
-        i32.store8 offset=2
-        local.get $0
-        local.get $1
-        i32.const 65280
-        i32.and
-        i32.const 8
-        i32.shr_u
-        i32.store8 offset=3
-        local.get $0
-        local.get $1
-        i32.store8 offset=4
-       end
-      end
-     end
-    end
-    local.get $0
-    i32.const 1
-    i32.add
-    local.get $2
-    i32.add
-    local.set $1
-    local.get $6
-    i32.load offset=12
-    local.set $2
-    loop $for-loop|02
-     local.get $4
-     local.get $2
-     local.get $6
-     i32.load offset=12
-     local.tee $3
-     local.get $2
-     local.get $3
-     i32.lt_s
-     select
-     i32.lt_s
-     if
-      local.get $6
-      i32.load offset=4
-      local.get $4
-      i32.const 2
-      i32.shl
-      i32.add
-      i32.load
-      local.set $3
-      i32.const 4
-      global.set $~argumentsLength
-      local.get $1
-      local.get $3
-      local.get $4
-      local.get $6
-      i32.const 4288
-      i32.load
-      call_indirect (type $3)
-      local.set $1
-      local.get $4
-      i32.const 1
-      i32.add
-      local.set $4
-      br $for-loop|02
-     end
-    end
-   end
-  else
-   local.get $0
-   i32.load
-   i32.const 1
-   i32.eq
-   if (result i32)
-    local.get $0
-    i32.load offset=4
-    local.tee $2
-    i32.const 20
-    i32.sub
-    i32.load offset=16
-   else
     local.get $0
     i32.load
-    i32.const 2
-    i32.eq
-    if (result i32)
-     local.get $0
-     i32.load offset=4
-     local.tee $0
-     i32.load
-     local.set $2
-     local.get $0
-     i32.load offset=4
-    else
-     i32.const 0
-    end
-   end
-   local.tee $1
-   i32.const 1
-   i32.eq
-   if
-    local.get $2
-    i32.load8_u
-    local.tee $0
-    i32.const 127
-    i32.le_u
-    if
-     i32.const 1
-     call $~lib/arraybuffer/ArrayBuffer#constructor
-     local.tee $1
-     local.get $0
-     i32.store8
-     local.get $1
-     return
-    end
-   end
-   local.get $1
-   i32.const 55
-   i32.le_s
-   local.get $1
-   i32.const 0
-   i32.ge_s
-   i32.and
-   if
     local.get $1
-    i32.const 1
-    i32.add
-    call $~lib/arraybuffer/ArrayBuffer#constructor
-    local.tee $0
+    i64.const 127
+    i64.and
+    i64.const 128
+    i64.or
+    i32.wrap_i64
+    call $~lib/array/Array<u8>#push
     local.get $1
-    i32.const 128
-    i32.add
-    i32.store8
-    local.get $0
-    i32.const 1
-    i32.add
-    local.get $2
-    local.get $1
-    memory.copy
-   else
-    local.get $1
-    block $__inlined_func$assembly/utils/rlp/byteLengthForLength$386 (result i32)
-     i32.const 4
-     local.get $1
-     i32.const 24
-     i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$386
-     drop
-     i32.const 3
-     local.get $1
-     i32.const 16
-     i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$386
-     drop
-     i32.const 2
-     local.get $1
-     i32.const 8
-     i32.shr_s
-     br_if $__inlined_func$assembly/utils/rlp/byteLengthForLength$386
-     drop
-     i32.const 1
-    end
-    local.tee $3
-    i32.add
-    i32.const 1
-    i32.add
-    call $~lib/arraybuffer/ArrayBuffer#constructor
-    local.tee $0
-    local.get $3
-    i32.const 183
-    i32.add
-    i32.store8
-    local.get $3
-    i32.const 1
-    i32.eq
-    if
-     local.get $0
-     local.get $1
-     i32.store8 offset=1
-    else
-     local.get $3
-     i32.const 2
-     i32.eq
-     if
-      local.get $0
-      local.get $1
-      i32.const 65280
-      i32.and
-      i32.const 8
-      i32.shr_u
-      i32.store8 offset=1
-      local.get $0
-      local.get $1
-      i32.store8 offset=2
-     else
-      local.get $3
-      i32.const 3
-      i32.eq
-      if
-       local.get $0
-       local.get $1
-       i32.const 16711680
-       i32.and
-       i32.const 16
-       i32.shr_u
-       i32.store8 offset=1
-       local.get $0
-       local.get $1
-       i32.const 65280
-       i32.and
-       i32.const 8
-       i32.shr_u
-       i32.store8 offset=2
-       local.get $0
-       local.get $1
-       i32.store8 offset=3
-      else
-       local.get $3
-       i32.const 4
-       i32.eq
-       if
-        local.get $0
-        local.get $1
-        i32.const -16777216
-        i32.and
-        i32.const 24
-        i32.shr_s
-        i32.store8 offset=1
-        local.get $0
-        local.get $1
-        i32.const 16711680
-        i32.and
-        i32.const 16
-        i32.shr_u
-        i32.store8 offset=2
-        local.get $0
-        local.get $1
-        i32.const 65280
-        i32.and
-        i32.const 8
-        i32.shr_u
-        i32.store8 offset=3
-        local.get $0
-        local.get $1
-        i32.store8 offset=4
-       end
-      end
-     end
-    end
-    local.get $0
-    i32.const 1
-    i32.add
-    local.get $3
-    i32.add
-    local.get $2
-    local.get $1
-    memory.copy
+    i64.const 7
+    i64.shr_u
+    local.set $1
+    br $while-continue|0
    end
   end
   local.get $0
+  i32.load
+  local.get $1
+  i32.wrap_i64
+  call $~lib/array/Array<u8>#push
  )
  (func $assembly/indexer/index/_flush
   (local $0 i32)
@@ -4794,29 +4434,30 @@
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
+  (local $7 i32)
   global.get $assembly/indexer/index/_updateKeys
-  local.tee $1
+  local.tee $0
   i32.load offset=8
   local.set $5
-  local.get $1
+  local.get $0
   i32.load offset=16
-  local.set $4
+  local.set $3
   i32.const 16
   i32.const 32
   call $~lib/rt/stub/__new
-  local.tee $2
+  local.tee $4
   i32.const 0
   i32.store
-  local.get $2
+  local.get $4
   i32.const 0
   i32.store offset=4
-  local.get $2
+  local.get $4
   i32.const 0
   i32.store offset=8
-  local.get $2
+  local.get $4
   i32.const 0
   i32.store offset=12
-  local.get $4
+  local.get $3
   i32.const 268435455
   i32.gt_u
   if
@@ -4828,178 +4469,258 @@
    unreachable
   end
   i32.const 8
-  local.get $4
-  local.get $4
+  local.get $3
+  local.get $3
   i32.const 8
   i32.le_u
   select
   i32.const 2
   i32.shl
-  local.tee $1
+  local.tee $2
   i32.const 1
   call $~lib/rt/stub/__new
-  local.tee $6
+  local.tee $0
   i32.const 0
-  local.get $1
+  local.get $2
   memory.fill
-  local.get $2
-  local.get $6
-  i32.store
-  local.get $2
-  local.get $6
-  i32.store offset=4
-  local.get $2
-  local.get $1
-  i32.store offset=8
-  local.get $2
   local.get $4
+  local.get $0
+  i32.store
+  local.get $4
+  local.get $0
+  i32.store offset=4
+  local.get $4
+  local.get $2
+  i32.store offset=8
+  local.get $4
+  local.get $3
   i32.store offset=12
   loop $for-loop|0
    local.get $3
-   local.get $4
-   i32.lt_s
+   local.get $7
+   i32.gt_s
    if
     local.get $5
-    local.get $3
+    local.get $7
     i32.const 12
     i32.mul
     i32.add
-    local.tee $1
+    local.tee $2
     i32.load offset=8
     i32.const 1
     i32.and
     i32.eqz
     if
-     local.get $2
-     local.get $0
      local.get $1
-     i32.load
-     call $~lib/array/Array<assembly/blockdata/transaction/Input>#__set
-     local.get $0
+     local.tee $0
      i32.const 1
      i32.add
-     local.set $0
+     local.set $1
+     local.get $4
+     local.get $0
+     local.get $2
+     i32.load
+     call $~lib/array/Array<assembly/blockdata/transaction/Input>#__set
     end
-    local.get $3
+    local.get $7
     i32.const 1
     i32.add
-    local.set $3
+    local.set $7
     br $for-loop|0
    end
   end
-  local.get $2
-  local.get $0
+  local.get $4
+  local.get $1
   i32.const 2
   i32.const 0
   call $~lib/array/ensureCapacity
-  local.get $2
-  local.get $0
+  local.get $4
+  local.get $1
   i32.store offset=12
-  i32.const 16
-  i32.const 34
-  call $~lib/rt/stub/__new
-  local.tee $1
-  i32.const 0
-  i32.store
-  local.get $1
-  i32.const 0
-  i32.store offset=4
-  local.get $1
-  i32.const 0
-  i32.store offset=8
-  local.get $1
-  i32.const 0
-  i32.store offset=12
-  i32.const 32
-  i32.const 1
-  call $~lib/rt/stub/__new
-  local.tee $0
-  i32.const 0
-  i32.const 32
-  memory.fill
-  local.get $1
-  local.get $0
-  i32.store
-  local.get $1
-  local.get $0
-  i32.store offset=4
-  local.get $1
-  i32.const 32
-  i32.store offset=8
-  local.get $1
-  i32.const 0
-  i32.store offset=12
-  local.get $1
-  local.set $3
-  i32.const 0
-  local.set $0
-  local.get $2
+  call $~lib/array/Array<~lib/array/Array<u8>>#constructor
+  local.tee $3
+  local.set $1
+  local.get $4
   i32.load offset=12
-  local.set $5
+  local.set $2
   loop $for-loop|00
-   local.get $0
-   local.get $5
+   local.get $6
    local.get $2
-   i32.load offset=12
-   local.tee $4
    local.get $4
-   local.get $5
+   i32.load offset=12
+   local.tee $0
+   local.get $0
+   local.get $2
    i32.gt_s
    select
    i32.lt_s
    if
-    local.get $2
+    local.get $4
     i32.load offset=4
-    local.get $0
+    local.get $6
     i32.const 2
     i32.shl
     i32.add
     i32.load
-    local.set $4
+    local.set $0
     i32.const 4
     global.set $~argumentsLength
-    local.get $3
-    local.get $4
+    local.get $1
     local.get $0
-    local.get $2
+    local.get $6
+    local.get $4
     i32.const 4160
     i32.load
-    call_indirect (type $3)
-    local.set $3
-    local.get $0
+    call_indirect (type $4)
+    local.set $1
+    local.get $6
     i32.const 1
     i32.add
-    local.set $0
+    local.set $6
     br $for-loop|00
    end
   end
-  local.get $1
-  i32.const 3
-  call $assembly/utils/rlp/RLPItem#constructor
-  call $assembly/utils/rlp/toRLP
-  local.set $1
-  global.get $assembly/indexer/index/_updateKeys
+  i32.const 4
+  i32.const 36
+  call $~lib/rt/stub/__new
   local.tee $0
+  i32.eqz
+  if
+   i32.const 0
+   i32.const 0
+   call $~lib/rt/stub/__new
+   local.set $0
+  end
+  local.get $0
+  call $~lib/array/Array<~lib/array/Array<u8>>#constructor
+  i32.store
+  local.get $0
+  local.get $3
+  i32.store
+  global.get $assembly/indexer/index/_updateKeys
+  local.tee $1
   i32.const 16
   call $~lib/arraybuffer/ArrayBuffer#constructor
   i32.store
-  local.get $0
+  local.get $1
   i32.const 3
   i32.store offset=4
-  local.get $0
+  local.get $1
   i32.const 48
   call $~lib/arraybuffer/ArrayBuffer#constructor
   i32.store offset=8
-  local.get $0
+  local.get $1
   i32.const 4
   i32.store offset=12
-  local.get $0
+  local.get $1
   i32.const 0
   i32.store offset=16
-  local.get $0
+  local.get $1
   i32.const 0
   i32.store offset=20
+  i32.const 0
+  global.set $~argumentsLength
+  i32.const 0
+  local.set $7
+  i32.const 0
+  call $~lib/array/Array<u8>#constructor
+  local.set $1
+  i32.const 4
+  i32.const 37
+  call $~lib/rt/stub/__new
+  local.tee $6
+  i32.const 0
+  i32.store
+  local.get $6
   local.get $1
+  i32.store
+  local.get $6
+  i32.load
+  local.set $5
+  local.get $0
+  i32.load
+  i32.load offset=12
+  i32.const 0
+  i32.gt_s
+  if
+   loop $for-loop|01
+    local.get $7
+    local.get $0
+    i32.load
+    i32.load offset=12
+    i32.lt_s
+    if
+     local.get $6
+     i64.const 10
+     call $assembly/proto/metashrew/__proto.Encoder#varint64
+     local.get $6
+     local.get $0
+     i32.load
+     local.get $7
+     call $~lib/array/Array<assembly/blockdata/transaction/Input>#__get
+     i64.load32_s offset=12
+     call $assembly/proto/metashrew/__proto.Encoder#varint64
+     local.get $0
+     i32.load
+     local.get $7
+     call $~lib/array/Array<assembly/blockdata/transaction/Input>#__get
+     local.set $4
+     i32.const 0
+     local.set $1
+     loop $for-loop|1
+      local.get $1
+      local.get $4
+      i32.load offset=12
+      local.tee $3
+      i32.lt_s
+      if
+       local.get $6
+       i32.load
+       local.set $2
+       local.get $1
+       local.get $3
+       i32.ge_u
+       if
+        i32.const 3344
+        i32.const 3472
+        i32.const 114
+        i32.const 42
+        call $~lib/builtins/abort
+        unreachable
+       end
+       local.get $2
+       local.get $4
+       i32.load offset=4
+       local.get $1
+       i32.add
+       i32.load8_u
+       call $~lib/array/Array<u8>#push
+       local.get $1
+       i32.const 1
+       i32.add
+       local.set $1
+       br $for-loop|1
+      end
+     end
+     local.get $7
+     i32.const 1
+     i32.add
+     local.set $7
+     br $for-loop|01
+    end
+   end
+  end
+  local.get $5
+  i32.load offset=12
+  local.tee $1
+  i32.const 4
+  call $~lib/rt/stub/__new
+  local.tee $0
+  local.get $5
+  i32.load offset=4
+  local.get $1
+  memory.copy
+  local.get $0
   call $assembly/indexer/index/__flush
  )
  (func $assembly/index/test_seekLower
@@ -5072,7 +4793,7 @@
   (local $0 i32)
   i32.const 1
   global.set $~argumentsLength
-  i32.const 4320
+  i32.const 4192
   i32.const 0
   call $~lib/string/String.UTF8.encode@varargs
   local.tee $0
@@ -5089,7 +4810,7 @@
   (local $0 i32)
   (local $1 i32)
   i32.const 16
-  i32.const 39
+  i32.const 38
   call $~lib/rt/stub/__new
   local.tee $0
   i32.const 0
@@ -5415,7 +5136,7 @@
     i32.shr_u
     local.tee $0
     if
-     block $__inlined_func$assembly/indexer/bst/binarySearchU4$17 (result i32)
+     block $__inlined_func$assembly/indexer/bst/binarySearchU4$18 (result i32)
       local.get $0
       i32.const 2
       i32.shr_u
@@ -5425,7 +5146,7 @@
        i32.const 1
        i32.shr_u
        i32.eqz
-       br $__inlined_func$assembly/indexer/bst/binarySearchU4$17
+       br $__inlined_func$assembly/indexer/bst/binarySearchU4$18
       end
       i32.const 2
       i32.const 3
@@ -5438,7 +5159,7 @@
      end
      br $__inlined_func$assembly/indexer/bst/binarySearchU8$4
     end
-    block $__inlined_func$assembly/indexer/bst/binarySearchU4$18 (result i32)
+    block $__inlined_func$assembly/indexer/bst/binarySearchU4$19 (result i32)
      local.get $1
      i32.const 15
      i32.and
@@ -5451,7 +5172,7 @@
       i32.const 1
       i32.shr_u
       i32.eqz
-      br $__inlined_func$assembly/indexer/bst/binarySearchU4$18
+      br $__inlined_func$assembly/indexer/bst/binarySearchU4$19
      end
      i32.const 2
      i32.const 3
@@ -5479,7 +5200,7 @@
     i32.shr_u
     local.tee $0
     if
-     block $__inlined_func$assembly/indexer/bst/binarySearchU4$170 (result i32)
+     block $__inlined_func$assembly/indexer/bst/binarySearchU4$180 (result i32)
       local.get $0
       i32.const 2
       i32.shr_u
@@ -5489,7 +5210,7 @@
        i32.const 1
        i32.shr_u
        i32.eqz
-       br $__inlined_func$assembly/indexer/bst/binarySearchU4$170
+       br $__inlined_func$assembly/indexer/bst/binarySearchU4$180
       end
       i32.const 2
       i32.const 3
@@ -5502,7 +5223,7 @@
      end
      br $__inlined_func$assembly/indexer/bst/binarySearchU8$5
     end
-    block $__inlined_func$assembly/indexer/bst/binarySearchU4$181 (result i32)
+    block $__inlined_func$assembly/indexer/bst/binarySearchU4$191 (result i32)
      local.get $1
      i32.const 2
      i32.shr_u
@@ -5512,7 +5233,7 @@
       i32.const 1
       i32.shr_u
       i32.eqz
-      br $__inlined_func$assembly/indexer/bst/binarySearchU4$181
+      br $__inlined_func$assembly/indexer/bst/binarySearchU4$191
      end
      i32.const 2
      i32.const 3
@@ -5754,7 +5475,7 @@
     i32.div_u
     i32.const 2
     i32.shl
-    i32.const 4556
+    i32.const 4428
     i32.add
     i64.load32_u
     local.get $3
@@ -5762,7 +5483,7 @@
     i32.rem_u
     i32.const 2
     i32.shl
-    i32.const 4556
+    i32.const 4428
     i32.add
     i64.load32_u
     i64.const 32
@@ -5789,7 +5510,7 @@
    i32.rem_u
    i32.const 2
    i32.shl
-   i32.const 4556
+   i32.const 4428
    i32.add
    i32.load
    i32.store
@@ -5812,7 +5533,7 @@
    local.get $1
    i32.const 2
    i32.shl
-   i32.const 4556
+   i32.const 4428
    i32.add
    i32.load
    i32.store
@@ -5906,7 +5627,7 @@
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/bst/BST<u64>#set
   block $__inlined_func$~lib/util/number/utoa64$10
-   block $__inlined_func$assembly/indexer/bst/BST<u64>#seekGreater$19 (result i64)
+   block $__inlined_func$assembly/indexer/bst/BST<u64>#seekGreater$20 (result i64)
     i32.const 8
     call $~lib/arraybuffer/ArrayBuffer#constructor
     local.tee $0
@@ -5959,7 +5680,6 @@
       i32.ne
       if
        i32.const 2
-       i32.const 26
        call $~lib/rt/__newArray
        local.tee $4
        i32.load offset=4
@@ -6053,7 +5773,7 @@
        i64.or
        i64.const 32
        i64.rotr
-       br $__inlined_func$assembly/indexer/bst/BST<u64>#seekGreater$19
+       br $__inlined_func$assembly/indexer/bst/BST<u64>#seekGreater$20
       end
      end
      local.get $1
@@ -6068,7 +5788,7 @@
    local.tee $2
    i64.eqz
    if
-    i32.const 4544
+    i32.const 4416
     local.set $1
     br $__inlined_func$~lib/util/number/utoa64$10
    end
@@ -6220,7 +5940,7 @@
       i32.div_u
       i32.const 2
       i32.shl
-      i32.const 4556
+      i32.const 4428
       i32.add
       i64.load32_u
       local.get $4
@@ -6228,7 +5948,7 @@
       i32.rem_u
       i32.const 2
       i32.shl
-      i32.const 4556
+      i32.const 4428
       i32.add
       i64.load32_u
       i64.const 32
@@ -6251,7 +5971,7 @@
       i32.div_u
       i32.const 2
       i32.shl
-      i32.const 4556
+      i32.const 4428
       i32.add
       i64.load32_u
       local.get $3
@@ -6259,7 +5979,7 @@
       i32.rem_u
       i32.const 2
       i32.shl
-      i32.const 4556
+      i32.const 4428
       i32.add
       i64.load32_u
       i64.const 32
@@ -6677,9 +6397,9 @@
     local.get $3
     local.get $0
     local.get $2
-    i32.const 6128
+    i32.const 6000
     i32.load
-    call_indirect (type $4)
+    call_indirect (type $3)
     local.get $0
     i32.const 1
     i32.add
@@ -6712,7 +6432,7 @@
   i32.load16_u
   local.set $0
   loop $while-continue|0
-   block $__inlined_func$~lib/util/string/isSpace$465 (result i32)
+   block $__inlined_func$~lib/util/string/isSpace$466 (result i32)
     local.get $0
     i32.const 128
     i32.or
@@ -6727,7 +6447,7 @@
     local.get $0
     i32.const 5760
     i32.lt_u
-    br_if $__inlined_func$~lib/util/string/isSpace$465
+    br_if $__inlined_func$~lib/util/string/isSpace$466
     drop
     i32.const 1
     local.get $0
@@ -6735,7 +6455,7 @@
     i32.add
     i32.const 10
     i32.le_u
-    br_if $__inlined_func$~lib/util/string/isSpace$465
+    br_if $__inlined_func$~lib/util/string/isSpace$466
     drop
     block $break|0
      block $case6|0
@@ -6770,7 +6490,7 @@
       br $break|0
      end
      i32.const 1
-     br $__inlined_func$~lib/util/string/isSpace$465
+     br $__inlined_func$~lib/util/string/isSpace$466
     end
     i32.const 0
    end
@@ -6995,9 +6715,9 @@
     i32.const 1
     i32.shl
     local.set $8
-    i32.const 7376
+    i32.const 7248
     local.set $1
-    block $__inlined_func$~lib/string/String#substring$466
+    block $__inlined_func$~lib/string/String#substring$467
      local.get $6
      local.get $7
      local.get $6
@@ -7011,7 +6731,7 @@
      i32.sub
      local.tee $6
      i32.eqz
-     br_if $__inlined_func$~lib/string/String#substring$466
+     br_if $__inlined_func$~lib/string/String#substring$467
      local.get $0
      local.set $1
      local.get $8
@@ -7022,7 +6742,7 @@
      i32.shl
      i32.eq
      i32.and
-     br_if $__inlined_func$~lib/string/String#substring$466
+     br_if $__inlined_func$~lib/string/String#substring$467
      local.get $6
      i32.const 2
      call $~lib/rt/stub/__new
@@ -7049,7 +6769,7 @@
  )
  (func $assembly/index/test_indexBrc20
   (local $0 i32)
-  i32.const 6160
+  i32.const 6032
   call $assembly/index/decodeHex
   local.tee $0
   local.get $0
@@ -7064,8 +6784,8 @@
   call $assembly/blockdata/transaction/Input#inscription
   i32.eqz
   if
+   i32.const 7280
    i32.const 7408
-   i32.const 7536
    i32.const 176
    i32.const 4
    call $~lib/builtins/abort
@@ -7172,7 +6892,7 @@
   i32.ge_u
   if
    i32.const 3344
-   i32.const 8384
+   i32.const 8256
    i32.const 747
    i32.const 64
    call $~lib/builtins/abort
@@ -7245,7 +6965,7 @@
   i32.ge_u
   if
    i32.const 3344
-   i32.const 8384
+   i32.const 8256
    i32.const 167
    i32.const 45
    call $~lib/builtins/abort
@@ -7264,7 +6984,7 @@
   i32.ge_u
   if
    i32.const 3344
-   i32.const 8384
+   i32.const 8256
    i32.const 178
    i32.const 45
    call $~lib/builtins/abort
@@ -7286,7 +7006,7 @@
   i32.ge_u
   if
    i32.const 3344
-   i32.const 8384
+   i32.const 8256
    i32.const 736
    i32.const 64
    call $~lib/builtins/abort
@@ -7916,7 +7636,7 @@
   (local $5 i32)
   (local $6 i32)
   i32.const 29
-  i32.const 41
+  i32.const 40
   call $~lib/rt/stub/__new
   local.tee $3
   i32.const 0
@@ -7950,7 +7670,7 @@
   i32.store offset=4
   local.get $3
   i32.const 12
-  i32.const 42
+  i32.const 41
   call $~lib/rt/stub/__new
   i32.const 8
   i32.const 2
@@ -7958,7 +7678,7 @@
   i32.store offset=8
   local.get $3
   i32.const 12
-  i32.const 42
+  i32.const 41
   call $~lib/rt/stub/__new
   i32.const 64
   i32.const 2
@@ -7966,7 +7686,7 @@
   i32.store offset=12
   local.get $3
   i32.const 12
-  i32.const 43
+  i32.const 42
   call $~lib/rt/stub/__new
   i32.const 128
   i32.const 0
@@ -7988,7 +7708,7 @@
   i32.load offset=16
   local.set $1
   i32.const 12
-  i32.const 43
+  i32.const 42
   call $~lib/rt/stub/__new
   local.tee $4
   local.get $0
@@ -8009,8 +7729,8 @@
   local.get $3
   i32.load8_u offset=28
   if
+   i32.const 8320
    i32.const 8448
-   i32.const 8576
    i32.const 196
    i32.const 7
    call $~lib/builtins/abort
@@ -8140,7 +7860,7 @@
   local.set $0
   local.get $3
   i32.const 12
-  i32.const 43
+  i32.const 42
   call $~lib/rt/stub/__new
   local.get $0
   i32.const 0
@@ -8202,8 +7922,8 @@
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
-  block $__inlined_func$assembly/blockdata/transaction/Transaction#txid$25 (result i32)
-   i32.const 7600
+  block $__inlined_func$assembly/blockdata/transaction/Transaction#txid$26 (result i32)
+   i32.const 7472
    call $assembly/index/decodeHex
    local.tee $0
    local.get $0
@@ -8222,7 +7942,7 @@
    i32.gt_s
    if
     local.get $0
-    br $__inlined_func$assembly/blockdata/transaction/Transaction#txid$25
+    br $__inlined_func$assembly/blockdata/transaction/Transaction#txid$26
    end
    local.get $2
    i32.load8_u offset=8
@@ -8374,7 +8094,7 @@
  )
  (func $~start
   (local $0 i32)
-  i32.const 8652
+  i32.const 8524
   global.set $~lib/rt/stub/offset
   i32.const 0
   i32.const 5

@@ -24,13 +24,13 @@
 
 @external("env", "__host_len") declare function __host_len(): i32;
 
-import { toRLP, RLPItem } from "../utils/rlp";
 import { xxh32 } from "../utils/xxh32";
 import { sha256 } from "../utils/sha256";
 import { memcpy } from "../utils/memcpy";
 import { Box } from "../utils/box";
 import { console } from "../utils/logging";
 import { IndexPointer } from "./tables";
+import { metashrew } from "../proto/metashrew";
 const _updates = new Map<string, ArrayBuffer>();
 
 const _updateKeys = new Map<string, ArrayBuffer>();
@@ -58,25 +58,33 @@ export function get(k: ArrayBuffer): ArrayBuffer {
     result = new ArrayBuffer(__get_len(k));
     __get(k, result);
     _updates.set(h, result);
-    _updateKeys.set(h, result);
   } else result = _updates.get(h);
   return result;
 }
+
+function arrayBufferToArray(data: ArrayBuffer): Array<u8> {
+  const result = new Array<u8>(data.byteLength);
+  for (let i: usize = 0; i < <usize>result.length; i++) {
+    result[<i32>i] = load<u8>(changetype<usize>(data) + i);
+  }
+  return result;
+}
+
 export function _flush(): void {
   const hashKeys = _updateKeys.keys();
-  const rlpInput = new Array<RLPItem>();
+  const protobufInput = new Array<Array<u8>>();
   hashKeys.reduce(
-    (r: Array<RLPItem>, v: string, i: i32, ary: Array<string>) => {
-      r.push(RLPItem.fromArrayBuffer(_updateKeys.get(v)));
-      r.push(RLPItem.fromArrayBuffer(_updates.get(v)));
+    (r: Array<Array<u8>>, v: string, i: i32, ary: Array<string>) => {
+      r.push(arrayBufferToArray(_updateKeys.get(v)));
+      r.push(arrayBufferToArray(_updates.get(v)));
       return r;
     },
-    rlpInput,
+    protobufInput,
   );
-  const buffer = toRLP(RLPItem.fromList(rlpInput));
+  const message = new metashrew.KeyValueFlush();
+  message.list = protobufInput;
   _updateKeys.clear();
-  __flush(buffer);
-  __collect();
+  __flush(message.encode());
 }
 
 /**
