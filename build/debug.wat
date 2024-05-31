@@ -7089,90 +7089,21 @@
   call $~lib/array/Array<u8>#set:length_
   local.get $this
  )
- (func $~lib/array/Array<u8>#get:length_ (param $this i32) (result i32)
-  local.get $this
-  i32.load offset=12
- )
- (func $~lib/array/Array<u8>#get:length (param $this i32) (result i32)
-  local.get $this
-  call $~lib/array/Array<u8>#get:length_
-  return
- )
- (func $~lib/array/Array<u8>#get:dataStart (param $this i32) (result i32)
-  local.get $this
-  i32.load offset=4
- )
- (func $~lib/array/Array<u8>#__set (param $this i32) (param $index i32) (param $value i32)
-  local.get $index
-  local.get $this
-  call $~lib/array/Array<u8>#get:length_
-  i32.ge_u
-  if
-   local.get $index
-   i32.const 0
-   i32.lt_s
-   if
-    i32.const 2320
-    i32.const 2448
-    i32.const 130
-    i32.const 22
-    call $~lib/builtins/abort
-    unreachable
-   end
-   local.get $this
-   local.get $index
-   i32.const 1
-   i32.add
-   i32.const 0
-   i32.const 1
-   call $~lib/array/ensureCapacity
-   local.get $this
-   local.get $index
-   i32.const 1
-   i32.add
-   call $~lib/array/Array<u8>#set:length_
-  end
-  local.get $this
-  call $~lib/array/Array<u8>#get:dataStart
-  local.get $index
-  i32.const 0
-  i32.shl
-  i32.add
-  local.get $value
-  i32.store8
-  i32.const 0
-  drop
- )
  (func $assembly/indexer/index/arrayBufferToArray (param $data i32) (result i32)
   (local $result i32)
-  (local $i i32)
   i32.const 0
   local.get $data
   call $~lib/arraybuffer/ArrayBuffer#get:byteLength
   call $~lib/array/Array<u8>#constructor
   local.set $result
-  i32.const 0
-  local.set $i
-  loop $for-loop|0
-   local.get $i
-   local.get $result
-   call $~lib/array/Array<u8>#get:length
-   i32.lt_u
-   if
-    local.get $result
-    local.get $i
-    local.get $data
-    local.get $i
-    i32.add
-    i32.load8_u
-    call $~lib/array/Array<u8>#__set
-    local.get $i
-    i32.const 1
-    i32.add
-    local.set $i
-    br $for-loop|0
-   end
-  end
+  local.get $result
+  local.get $data
+  i32.store
+  local.get $result
+  i32.const 4
+  i32.add
+  local.get $data
+  i32.store
   local.get $result
   return
  )
@@ -7363,6 +7294,14 @@
   call $~lib/array/Array<~lib/array/Array<u8>>#get:length_
   return
  )
+ (func $~lib/array/Array<u8>#get:length_ (param $this i32) (result i32)
+  local.get $this
+  i32.load offset=12
+ )
+ (func $~lib/array/Array<u8>#get:dataStart (param $this i32) (result i32)
+  local.get $this
+  i32.load offset=4
+ )
  (func $~lib/array/Array<u8>#push (param $this i32) (param $value i32) (result i32)
   (local $oldLen i32)
   (local $len i32)
@@ -7465,6 +7404,11 @@
    unreachable
   end
   local.get $value
+  return
+ )
+ (func $~lib/array/Array<u8>#get:length (param $this i32) (result i32)
+  local.get $this
+  call $~lib/array/Array<u8>#get:length_
   return
  )
  (func $~lib/array/Array<u8>#__get (param $this i32) (param $index i32) (result i32)

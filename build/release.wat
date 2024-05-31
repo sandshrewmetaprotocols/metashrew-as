@@ -2825,11 +2825,11 @@
   local.set $1
   i32.const 0
   local.set $0
-  block $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
+  block $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
    local.get $1
    i32.const 0
    i32.le_s
-   br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
+   br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
    local.get $1
    i32.const 2
    i32.ge_s
@@ -2848,7 +2848,7 @@
     local.tee $1
     i32.const 1
     i32.le_s
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
     local.get $2
     i32.load offset=4
     local.get $1
@@ -2857,7 +2857,7 @@
     call $~lib/array/Array<assembly/blockdata/transaction/Input>#__get
     i32.load8_u offset=5
     i32.eqz
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
     local.get $2
     i32.load offset=4
     local.get $1
@@ -2879,7 +2879,7 @@
      i32.const 31
      i32.and
     end
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$797
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$792
     local.get $2
     i32.load offset=4
     local.get $1
@@ -3513,14 +3513,14 @@
     if (result i32)
      i32.const 0
     else
-     block $__inlined_func$~lib/string/String.__eq$799 (result i32)
+     block $__inlined_func$~lib/string/String.__eq$794 (result i32)
       i32.const 1
       local.get $5
       i32.load
       local.tee $2
       local.get $1
       i32.eq
-      br_if $__inlined_func$~lib/string/String.__eq$799
+      br_if $__inlined_func$~lib/string/String.__eq$794
       drop
       i32.const 0
       local.get $1
@@ -3528,7 +3528,7 @@
       local.get $2
       i32.eqz
       i32.or
-      br_if $__inlined_func$~lib/string/String.__eq$799
+      br_if $__inlined_func$~lib/string/String.__eq$794
       drop
       i32.const 0
       local.get $2
@@ -3545,7 +3545,7 @@
       i32.const 1
       i32.shr_u
       i32.ne
-      br_if $__inlined_func$~lib/string/String.__eq$799
+      br_if $__inlined_func$~lib/string/String.__eq$794
       drop
       local.get $1
       local.set $3
@@ -4295,68 +4295,18 @@
  )
  (func $assembly/indexer/index/arrayBufferToArray (param $0 i32) (result i32)
   (local $1 i32)
-  (local $2 i32)
-  (local $3 i32)
-  (local $4 i32)
   local.get $0
   i32.const 20
   i32.sub
   i32.load offset=16
   call $~lib/array/Array<u8>#constructor
-  local.set $2
-  loop $for-loop|0
-   local.get $1
-   local.get $2
-   i32.load offset=12
-   local.tee $4
-   i32.lt_u
-   if
-    local.get $0
-    local.get $1
-    i32.add
-    i32.load8_u
-    local.set $3
-    local.get $1
-    local.get $4
-    i32.ge_u
-    if
-     local.get $1
-     i32.const 0
-     i32.lt_s
-     if
-      i32.const 3344
-      i32.const 3472
-      i32.const 130
-      i32.const 22
-      call $~lib/builtins/abort
-      unreachable
-     end
-     local.get $2
-     local.get $1
-     i32.const 1
-     i32.add
-     local.tee $4
-     i32.const 0
-     i32.const 1
-     call $~lib/array/ensureCapacity
-     local.get $2
-     local.get $4
-     i32.store offset=12
-    end
-    local.get $2
-    i32.load offset=4
-    local.get $1
-    i32.add
-    local.get $3
-    i32.store8
-    local.get $1
-    i32.const 1
-    i32.add
-    local.set $1
-    br $for-loop|0
-   end
-  end
-  local.get $2
+  local.tee $1
+  local.get $0
+  i32.store
+  local.get $1
+  local.get $0
+  i32.store offset=4
+  local.get $1
  )
  (func $assembly/indexer/index/_flush~anonymous|0 (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (result i32)
   local.get $0
@@ -6432,7 +6382,7 @@
   i32.load16_u
   local.set $0
   loop $while-continue|0
-   block $__inlined_func$~lib/util/string/isSpace$466 (result i32)
+   block $__inlined_func$~lib/util/string/isSpace$463 (result i32)
     local.get $0
     i32.const 128
     i32.or
@@ -6447,7 +6397,7 @@
     local.get $0
     i32.const 5760
     i32.lt_u
-    br_if $__inlined_func$~lib/util/string/isSpace$466
+    br_if $__inlined_func$~lib/util/string/isSpace$463
     drop
     i32.const 1
     local.get $0
@@ -6455,7 +6405,7 @@
     i32.add
     i32.const 10
     i32.le_u
-    br_if $__inlined_func$~lib/util/string/isSpace$466
+    br_if $__inlined_func$~lib/util/string/isSpace$463
     drop
     block $break|0
      block $case6|0
@@ -6490,7 +6440,7 @@
       br $break|0
      end
      i32.const 1
-     br $__inlined_func$~lib/util/string/isSpace$466
+     br $__inlined_func$~lib/util/string/isSpace$463
     end
     i32.const 0
    end
@@ -6717,7 +6667,7 @@
     local.set $8
     i32.const 7248
     local.set $1
-    block $__inlined_func$~lib/string/String#substring$467
+    block $__inlined_func$~lib/string/String#substring$464
      local.get $6
      local.get $7
      local.get $6
@@ -6731,7 +6681,7 @@
      i32.sub
      local.tee $6
      i32.eqz
-     br_if $__inlined_func$~lib/string/String#substring$467
+     br_if $__inlined_func$~lib/string/String#substring$464
      local.get $0
      local.set $1
      local.get $8
@@ -6742,7 +6692,7 @@
      i32.shl
      i32.eq
      i32.and
-     br_if $__inlined_func$~lib/string/String#substring$467
+     br_if $__inlined_func$~lib/string/String#substring$464
      local.get $6
      i32.const 2
      call $~lib/rt/stub/__new

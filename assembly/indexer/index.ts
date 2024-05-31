@@ -64,9 +64,8 @@ export function get(k: ArrayBuffer): ArrayBuffer {
 
 function arrayBufferToArray(data: ArrayBuffer): Array<u8> {
   const result = new Array<u8>(data.byteLength);
-  for (let i: usize = 0; i < <usize>result.length; i++) {
-    result[<i32>i] = load<u8>(changetype<usize>(data) + i);
-  }
+  store<usize>(changetype<usize>(result), changetype<usize>(data));
+  store<usize>(changetype<usize>(result) + sizeof<usize>(), changetype<usize>(data));
   return result;
 }
 
