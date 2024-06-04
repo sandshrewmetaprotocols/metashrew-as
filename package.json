@@ -7,7 +7,7 @@
     "asbuild:debug": "asc assembly/index.ts --target debug --enable threads --config asconfig.json",
     "asbuild:release": "asc assembly/index.ts --target release --config asconfig.json",
     "build": "npm-run-all build:protoc asbuild:debug asbuild:release",
-    "build:protoc": "protoc --plugin=./node_modules/.bin/protoc-gen-as --as_out=assembly/proto --as_opt targetFileName=metashrew.ts proto/metashrew.proto",
+    "build:protoc": "protoc --plugin=./node_modules/.bin/protoc-gen-as --as_out=assembly/proto --proto_path=proto --as_opt targetFileName=metashrew.ts proto/metashrew.proto",
     "build:debug:preloader": "npm run asbuild:preloader --sharedMemory",
     "prettier:assemblyscript": "prettier --write ./assembly/**/*.ts",
     "prettier": "npm-run-all prettier:assemblyscript",
