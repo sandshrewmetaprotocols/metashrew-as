@@ -42,7 +42,7 @@ export class IndexPointer {
   selectValue<T>(key: T): IndexPointer {
     const keyBytes = new ArrayBuffer(sizeof<T>());
     store<T>(changetype<usize>(keyBytes), bswap<T>(key));
-    return this.select(keyBytes, log);
+    return this.select(keyBytes);
   }
   keyword(key: string): IndexPointer {
     return this.select(String.UTF8.encode(key));
