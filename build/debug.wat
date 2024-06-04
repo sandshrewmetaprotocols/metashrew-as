@@ -5088,6 +5088,7 @@
  (func $assembly/indexer/tables/IndexPointer#select (param $this i32) (param $key i32) (result i32)
   (local $2 i32)
   (local $3 i32)
+  (local $res i32)
   i32.const 2
   i32.const 2
   i32.const 26
@@ -5110,6 +5111,8 @@
   call $~lib/array/Array<assembly/utils/box/Box>#__set
   local.get $2
   call $assembly/utils/box/Box.concat
+  local.set $res
+  local.get $res
   call $assembly/indexer/tables/IndexPointer.wrap
   return
  )

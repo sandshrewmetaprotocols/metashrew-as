@@ -1,6 +1,7 @@
 import { _flush, input, get, set } from "./index";
 import { memcpy } from "../utils/memcpy";
 import { Box } from "../utils/box";
+import { console } from "../utils/logging";
 
 export class Node {
   public key: ArrayBuffer;
@@ -35,14 +36,13 @@ export class IndexPointer {
     return changetype<ArrayBuffer>(this);
   }
   select(key: ArrayBuffer): IndexPointer {
-    return IndexPointer.wrap(
-      Box.concat([Box.from(this.unwrap()), Box.from(key)]),
-    );
+    const res = Box.concat([Box.from(this.unwrap()), Box.from(key)]);
+    return IndexPointer.wrap(res);
   }
   selectValue<T>(key: T): IndexPointer {
     const keyBytes = new ArrayBuffer(sizeof<T>());
-    store<T>(changetype<usize>(keyBytes), bswap<u64>(key));
-    return this.select(keyBytes);
+    store<T>(changetype<usize>(keyBytes), bswap<T>(key));
+    return this.select(keyBytes, log);
   }
   keyword(key: string): IndexPointer {
     return this.select(String.UTF8.encode(key));
@@ -80,6 +80,7 @@ export class IndexPointer {
     for (let i: i32 = 0; i < result.length; i++) {
       result[i] = this.selectIndex(i).get();
     }
+    return result;
   }
   getListValues<T>(): Array<T> {
     const result = new Array<T>(<i32>this.length());
