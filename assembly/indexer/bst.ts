@@ -178,6 +178,11 @@ export class BST<K> {
   getMaskPointer(partialKey: ArrayBuffer): IndexPointer {
     return this.ptr.select(partialKey).keyword("/mask");
   }
+  getMask(partialKey: ArrayBuffer): ArrayBuffer {
+    const mask = this.getMaskPointer(partialKey).get();
+    if (mask.byteLength === 0) return new ArrayBuffer(32);
+    return mask;
+  }
   markPath(key: K): void {
     const keyBytes = new ArrayBuffer(sizeof<K>());
     store<K>(changetype<usize>(keyBytes), bswap<K>(key));
@@ -229,7 +234,7 @@ export class BST<K> {
       );
       store<u8>(
         changetype<usize>(newPartial) + <usize>partialKey.byteLength,
-        <u8>binarySearchU256(this.getMaskPointer(partialKey).get(), seekHigher),
+        <u8>binarySearchU256(this.getMask(partialKey), seekHigher),
       );
       partialKey = newPartial;
     }
