@@ -4,9 +4,9 @@
  (type $2 (func (param i32 i32) (result i32)))
  (type $3 (func (param i32 i32 i32)))
  (type $4 (func (param i32 i32 i32 i32) (result i32)))
- (type $5 (func (param i32 i32)))
- (type $6 (func (result i32)))
- (type $7 (func (param i32)))
+ (type $5 (func (result i32)))
+ (type $6 (func (param i32)))
+ (type $7 (func (param i32 i32)))
  (type $8 (func (param i32 i32 i32) (result i32)))
  (type $9 (func (param i32 i32 i32 i32)))
  (type $10 (func (param i64) (result i32)))
@@ -126,6 +126,8 @@
  (data $46.1 (i32.const 25000) "\02\00\00\00^\00\00\00S\00H\00A\002\005\006\00:\00 \00c\00a\00n\00\'\00t\00 \00u\00p\00d\00a\00t\00e\00 \00b\00e\00c\00a\00u\00s\00e\00 \00h\00a\00s\00h\00 \00w\00a\00s\00 \00f\00i\00n\00i\00s\00h\00e\00d\00.")
  (data $47 (i32.const 25116) "\\")
  (data $47.1 (i32.const 25128) "\02\00\00\00L\00\00\00~\00l\00i\00b\00/\00f\00a\00s\00t\00-\00s\00h\00a\002\005\006\00-\00a\00s\00/\00a\00s\00s\00e\00m\00b\00l\00y\00/\00s\00h\00a\002\005\006\00.\00t\00s")
+ (data $48 (i32.const 25212) "\1c")
+ (data $48.1 (i32.const 25224) "\02\00\00\00\08\00\00\00/\00b\00s\00t")
  (table $0 6 6 funcref)
  (elem $0 (i32.const 1) $assembly/utils/utils/concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/index/test_inscription~anonymous|0)
  (export "test_parseBlock" (func $assembly/index/test_parseBlock))
@@ -143,6 +145,7 @@
  (export "test_inscription" (func $assembly/index/test_inscription))
  (export "test_indexBrc20" (func $assembly/index/test_indexBrc20))
  (export "test_txid" (func $assembly/index/test_txid))
+ (export "test_fixedbst" (func $assembly/index/test_fixedbst))
  (export "memory" (memory $0))
  (start $~start)
  (func $~lib/rt/stub/__alloc (param $0 i32) (result i32)
@@ -2825,11 +2828,11 @@
   local.set $1
   i32.const 0
   local.set $0
-  block $__inlined_func$assembly/blockdata/witness/Witness#tapscript$802
+  block $__inlined_func$assembly/blockdata/witness/Witness#tapscript$825
    local.get $1
    i32.const 0
    i32.le_s
-   br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$802
+   br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$825
    local.get $1
    i32.const 2
    i32.ge_s
@@ -2848,7 +2851,7 @@
     local.tee $1
     i32.const 1
     i32.le_s
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$802
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$825
     local.get $2
     i32.load offset=4
     local.get $1
@@ -2857,7 +2860,7 @@
     call $~lib/array/Array<assembly/blockdata/transaction/Input>#__get
     i32.load8_u offset=5
     i32.eqz
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$802
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$825
     local.get $2
     i32.load offset=4
     local.get $1
@@ -2879,7 +2882,7 @@
      i32.const 31
      i32.and
     end
-    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$802
+    br_if $__inlined_func$assembly/blockdata/witness/Witness#tapscript$825
     local.get $2
     i32.load offset=4
     local.get $1
@@ -2899,7 +2902,7 @@
   end
   local.get $0
   if (result i32)
-   block $__inlined_func$assembly/blockdata/witness/Witness.isInscribed$30 (result i32)
+   block $__inlined_func$assembly/blockdata/witness/Witness.isInscribed$36 (result i32)
     local.get $0
     i32.load
     local.get $0
@@ -3004,7 +3007,7 @@
      i32.const 0
     end
     i32.eqz
-    br_if $__inlined_func$assembly/blockdata/witness/Witness.isInscribed$30
+    br_if $__inlined_func$assembly/blockdata/witness/Witness.isInscribed$36
     drop
     local.get $1
     call $assembly/utils/utils/parsePushOp
@@ -3513,14 +3516,14 @@
     if (result i32)
      i32.const 0
     else
-     block $__inlined_func$~lib/string/String.__eq$804 (result i32)
+     block $__inlined_func$~lib/string/String.__eq$827 (result i32)
       i32.const 1
       local.get $5
       i32.load
       local.tee $2
       local.get $1
       i32.eq
-      br_if $__inlined_func$~lib/string/String.__eq$804
+      br_if $__inlined_func$~lib/string/String.__eq$827
       drop
       i32.const 0
       local.get $1
@@ -3528,7 +3531,7 @@
       local.get $2
       i32.eqz
       i32.or
-      br_if $__inlined_func$~lib/string/String.__eq$804
+      br_if $__inlined_func$~lib/string/String.__eq$827
       drop
       i32.const 0
       local.get $2
@@ -3545,7 +3548,7 @@
       i32.const 1
       i32.shr_u
       i32.ne
-      br_if $__inlined_func$~lib/string/String.__eq$804
+      br_if $__inlined_func$~lib/string/String.__eq$827
       drop
       local.get $1
       local.set $3
@@ -3891,35 +3894,6 @@
   memory.copy
   local.get $1
  )
- (func $assembly/indexer/tables/IndexPointer#set (param $0 i32) (param $1 i32)
-  (local $2 i32)
-  local.get $0
-  local.get $0
-  i32.const 20
-  i32.sub
-  i32.load offset=16
-  call $assembly/utils/box/Box#constructor
-  local.tee $0
-  i32.load offset=4
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.tee $2
-  local.get $0
-  i32.load
-  local.get $0
-  i32.load offset=4
-  memory.copy
-  local.get $2
-  call $~lib/string/String.UTF8.decode
-  local.set $0
-  global.get $assembly/indexer/index/_updates
-  local.get $0
-  local.get $1
-  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
-  global.get $assembly/indexer/index/_updateKeys
-  local.get $0
-  local.get $2
-  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
- )
  (func $assembly/indexer/bst/BST<u64>#set (param $0 i32) (param $1 i64) (param $2 i32)
   (local $3 i32)
   (local $4 i64)
@@ -3964,7 +3938,7 @@
   if
    i32.const 8
    call $~lib/arraybuffer/ArrayBuffer#constructor
-   local.tee $6
+   local.tee $5
    local.get $4
    i64.const 16
    i64.shr_u
@@ -3980,18 +3954,18 @@
    i64.rotr
    i64.store
    loop $for-loop|0
-    local.get $5
+    local.get $6
     i32.const 8
     i32.lt_s
     if
-     local.get $5
+     local.get $6
      call $~lib/arraybuffer/ArrayBuffer#constructor
      local.set $3
-     local.get $5
+     local.get $6
      if
       local.get $3
-      local.get $6
       local.get $5
+      local.get $6
       memory.copy
      end
      local.get $0
@@ -4040,13 +4014,21 @@
       i32.or
       i32.store8
       local.get $8
+      call $~lib/string/String.UTF8.decode
+      local.set $9
+      global.get $assembly/indexer/index/_updates
+      local.get $9
       local.get $3
-      call $assembly/indexer/tables/IndexPointer#set
+      call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+      global.get $assembly/indexer/index/_updateKeys
+      local.get $9
+      local.get $8
+      call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
      end
-     local.get $5
+     local.get $6
      i32.const 1
      i32.add
-     local.set $5
+     local.set $6
      br $for-loop|0
     end
    end
@@ -4080,21 +4062,21 @@
    i64.rotr
    i64.store
    i32.const 7
-   local.set $5
+   local.set $6
    loop $for-loop|00
-    local.get $5
+    local.get $6
     i32.const 0
     i32.ge_s
     if
      block $for-break0
-      local.get $5
+      local.get $6
       call $~lib/arraybuffer/ArrayBuffer#constructor
       local.set $3
-      local.get $5
+      local.get $6
       if
        local.get $3
        local.get $8
-       local.get $5
+       local.get $6
        memory.copy
       end
       local.get $0
@@ -4112,11 +4094,11 @@
        call $~lib/arraybuffer/ArrayBuffer#constructor
        local.set $3
       end
-      local.get $5
+      local.get $6
       local.get $8
       i32.add
       i32.load8_u
-      local.tee $6
+      local.tee $5
       i32.const 3
       i32.shr_u
       local.get $3
@@ -4125,13 +4107,13 @@
       i32.load8_u
       i32.const 1
       i32.const 7
-      local.get $6
+      local.get $5
       i32.const 7
       i32.and
       i32.sub
       i32.const 7
       i32.and
-      local.tee $6
+      local.tee $5
       i32.shl
       i32.and
       if
@@ -4139,16 +4121,16 @@
        local.get $10
        i32.load8_u
        i32.const -2
-       local.get $6
+       local.get $5
        i32.rotl
        i32.and
        i32.store8
       end
-      block $__inlined_func$assembly/indexer/bst/isZeroU256$339 (result i32)
+      block $__inlined_func$assembly/indexer/bst/isZeroU256$338 (result i32)
        i32.const 0
-       local.set $6
+       local.set $5
        loop $for-loop|001
-        local.get $6
+        local.get $5
         i32.const 4
         i32.lt_s
         if
@@ -4159,32 +4141,50 @@
          i64.load
          i64.const 0
          i64.ne
-         br_if $__inlined_func$assembly/indexer/bst/isZeroU256$339
+         br_if $__inlined_func$assembly/indexer/bst/isZeroU256$338
          drop
-         local.get $6
+         local.get $5
          i32.const 1
          i32.add
-         local.set $6
+         local.set $5
          br $for-loop|001
         end
        end
        i32.const 1
       end
       if
-       local.get $9
        i32.const 0
        call $~lib/arraybuffer/ArrayBuffer#constructor
-       call $assembly/indexer/tables/IndexPointer#set
+       local.set $3
+       local.get $9
+       call $~lib/string/String.UTF8.decode
+       local.set $5
+       global.get $assembly/indexer/index/_updates
+       local.get $5
+       local.get $3
+       call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+       global.get $assembly/indexer/index/_updateKeys
+       local.get $5
+       local.get $9
+       call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
        br $for-break0
       else
        local.get $9
+       call $~lib/string/String.UTF8.decode
+       local.set $5
+       global.get $assembly/indexer/index/_updates
+       local.get $5
        local.get $3
-       call $assembly/indexer/tables/IndexPointer#set
+       call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+       global.get $assembly/indexer/index/_updateKeys
+       local.get $5
+       local.get $9
+       call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
       end
-      local.get $5
+      local.get $6
       i32.const 1
       i32.sub
-      local.set $5
+      local.set $6
       br $for-loop|00
      end
     end
@@ -4194,8 +4194,17 @@
   i32.load
   local.get $7
   call $assembly/indexer/tables/IndexPointer#select
+  local.tee $0
+  call $~lib/string/String.UTF8.decode
+  local.set $3
+  global.get $assembly/indexer/index/_updates
+  local.get $3
   local.get $2
-  call $assembly/indexer/tables/IndexPointer#set
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+  global.get $assembly/indexer/index/_updateKeys
+  local.get $3
+  local.get $0
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
  )
  (func $~lib/array/Array<~lib/array/Array<u8>>#constructor (result i32)
   (local $0 i32)
@@ -5080,13 +5089,13 @@
   i32.shr_u
   local.tee $1
   if (result i32)
-   block $__inlined_func$assembly/indexer/bst/binarySearchU8$4 (result i32)
+   block $__inlined_func$assembly/indexer/bst/binarySearchU8$3 (result i32)
     local.get $1
     i32.const 4
     i32.shr_u
     local.tee $0
     if
-     block $__inlined_func$assembly/indexer/bst/binarySearchU4$18 (result i32)
+     block $__inlined_func$assembly/indexer/bst/binarySearchU4$20 (result i32)
       local.get $0
       i32.const 2
       i32.shr_u
@@ -5096,7 +5105,7 @@
        i32.const 1
        i32.shr_u
        i32.eqz
-       br $__inlined_func$assembly/indexer/bst/binarySearchU4$18
+       br $__inlined_func$assembly/indexer/bst/binarySearchU4$20
       end
       i32.const 2
       i32.const 3
@@ -5107,9 +5116,9 @@
       i32.shr_u
       select
      end
-     br $__inlined_func$assembly/indexer/bst/binarySearchU8$4
+     br $__inlined_func$assembly/indexer/bst/binarySearchU8$3
     end
-    block $__inlined_func$assembly/indexer/bst/binarySearchU4$19 (result i32)
+    block $__inlined_func$assembly/indexer/bst/binarySearchU4$21 (result i32)
      local.get $1
      i32.const 15
      i32.and
@@ -5122,7 +5131,7 @@
       i32.const 1
       i32.shr_u
       i32.eqz
-      br $__inlined_func$assembly/indexer/bst/binarySearchU4$19
+      br $__inlined_func$assembly/indexer/bst/binarySearchU4$21
      end
      i32.const 2
      i32.const 3
@@ -5137,7 +5146,7 @@
     i32.add
    end
   else
-   block $__inlined_func$assembly/indexer/bst/binarySearchU8$5 (result i32)
+   block $__inlined_func$assembly/indexer/bst/binarySearchU8$4 (result i32)
     local.get $0
     i32.const 255
     i32.and
@@ -5150,7 +5159,7 @@
     i32.shr_u
     local.tee $0
     if
-     block $__inlined_func$assembly/indexer/bst/binarySearchU4$180 (result i32)
+     block $__inlined_func$assembly/indexer/bst/binarySearchU4$200 (result i32)
       local.get $0
       i32.const 2
       i32.shr_u
@@ -5160,7 +5169,7 @@
        i32.const 1
        i32.shr_u
        i32.eqz
-       br $__inlined_func$assembly/indexer/bst/binarySearchU4$180
+       br $__inlined_func$assembly/indexer/bst/binarySearchU4$200
       end
       i32.const 2
       i32.const 3
@@ -5171,9 +5180,9 @@
       i32.shr_u
       select
      end
-     br $__inlined_func$assembly/indexer/bst/binarySearchU8$5
+     br $__inlined_func$assembly/indexer/bst/binarySearchU8$4
     end
-    block $__inlined_func$assembly/indexer/bst/binarySearchU4$191 (result i32)
+    block $__inlined_func$assembly/indexer/bst/binarySearchU4$211 (result i32)
      local.get $1
      i32.const 2
      i32.shr_u
@@ -5183,7 +5192,7 @@
       i32.const 1
       i32.shr_u
       i32.eqz
-      br $__inlined_func$assembly/indexer/bst/binarySearchU4$191
+      br $__inlined_func$assembly/indexer/bst/binarySearchU4$211
      end
      i32.const 2
      i32.const 3
@@ -5792,7 +5801,7 @@
   i32.const 0
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/bst/BST<u64>#set
-  block $__inlined_func$assembly/indexer/bst/BST<u64>#seekGreater$20 (result i64)
+  block $__inlined_func$assembly/indexer/bst/BST<u64>#seekGreater$39 (result i64)
    i32.const 8
    call $~lib/arraybuffer/ArrayBuffer#constructor
    local.tee $0
@@ -5905,6 +5914,16 @@
         local.get $0
         call $assembly/indexer/bst/BST<u64>#getMaskPointer
         call $assembly/indexer/tables/IndexPointer#get
+        local.tee $0
+        i32.const 20
+        i32.sub
+        i32.load offset=16
+        if (result i32)
+         local.get $0
+        else
+         i32.const 32
+         call $~lib/arraybuffer/ArrayBuffer#constructor
+        end
         call $assembly/indexer/bst/binarySearchU256
         i32.store8
         local.get $1
@@ -5938,7 +5957,7 @@
       i64.or
       i64.const 32
       i64.rotr
-      br $__inlined_func$assembly/indexer/bst/BST<u64>#seekGreater$20
+      br $__inlined_func$assembly/indexer/bst/BST<u64>#seekGreater$39
      end
     end
     local.get $1
@@ -6742,7 +6761,7 @@
   if
    i32.const 7280
    i32.const 7408
-   i32.const 176
+   i32.const 177
    i32.const 4
    call $~lib/builtins/abort
    unreachable
@@ -7879,7 +7898,7 @@
   (local $3 i32)
   (local $4 i32)
   (local $5 i32)
-  block $__inlined_func$assembly/blockdata/transaction/Transaction#txid$26 (result i32)
+  block $__inlined_func$assembly/blockdata/transaction/Transaction#txid$28 (result i32)
    i32.const 7472
    call $assembly/index/decodeHex
    local.tee $1
@@ -7899,7 +7918,7 @@
    i32.gt_s
    if
     local.get $1
-    br $__inlined_func$assembly/blockdata/transaction/Transaction#txid$26
+    br $__inlined_func$assembly/blockdata/transaction/Transaction#txid$28
    end
    local.get $3
    i32.load8_u offset=8
@@ -8152,9 +8171,278 @@
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/utils/logging/__log
  )
+ (func $assembly/index/test_fixedbst
+  (local $0 i32)
+  (local $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  (local $7 i32)
+  i32.const 1
+  global.set $~argumentsLength
+  i32.const 25232
+  i32.const 0
+  call $~lib/string/String.UTF8.encode@varargs
+  local.set $0
+  i32.const 8
+  i32.const 43
+  call $~lib/rt/stub/__new
+  local.tee $5
+  i32.const 0
+  i32.store
+  local.get $5
+  i32.const 0
+  i32.store offset=4
+  local.get $5
+  local.get $0
+  i32.store
+  local.get $5
+  i32.const 36
+  i32.store offset=4
+  i32.const 36
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.set $4
+  i32.const 1
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.tee $3
+  i32.const 20
+  i32.sub
+  i32.load offset=16
+  if
+   loop $for-loop|0
+    local.get $1
+    local.get $5
+    i32.load offset=4
+    i32.lt_s
+    if
+     local.get $1
+     call $~lib/arraybuffer/ArrayBuffer#constructor
+     local.set $0
+     local.get $1
+     if
+      local.get $0
+      local.get $4
+      local.get $1
+      memory.copy
+     end
+     local.get $5
+     local.get $0
+     call $assembly/indexer/bst/BST<u64>#getMaskPointer
+     local.tee $2
+     call $assembly/indexer/tables/IndexPointer#get
+     local.tee $0
+     i32.const 20
+     i32.sub
+     i32.load offset=16
+     i32.eqz
+     if
+      i32.const 32
+      call $~lib/arraybuffer/ArrayBuffer#constructor
+      local.set $0
+     end
+     local.get $1
+     local.get $4
+     i32.add
+     i32.load8_u
+     local.tee $6
+     i32.const 3
+     i32.shr_u
+     local.get $0
+     i32.add
+     local.tee $7
+     i32.load8_u
+     i32.const 1
+     i32.const 7
+     local.get $6
+     i32.const 7
+     i32.and
+     i32.sub
+     i32.const 7
+     i32.and
+     i32.shl
+     local.tee $6
+     i32.and
+     i32.eqz
+     if
+      local.get $7
+      local.get $6
+      local.get $7
+      i32.load8_u
+      i32.or
+      i32.store8
+      local.get $2
+      call $~lib/string/String.UTF8.decode
+      local.set $6
+      global.get $assembly/indexer/index/_updates
+      local.get $6
+      local.get $0
+      call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+      global.get $assembly/indexer/index/_updateKeys
+      local.get $6
+      local.get $2
+      call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+     end
+     local.get $1
+     i32.const 1
+     i32.add
+     local.set $1
+     br $for-loop|0
+    end
+   end
+  else
+   local.get $5
+   i32.load offset=4
+   i32.const 1
+   i32.sub
+   local.set $2
+   loop $for-loop|00
+    local.get $2
+    i32.const 0
+    i32.ge_s
+    if
+     block $for-break0
+      local.get $2
+      call $~lib/arraybuffer/ArrayBuffer#constructor
+      local.set $0
+      local.get $2
+      if
+       local.get $0
+       local.get $4
+       local.get $2
+       memory.copy
+      end
+      local.get $5
+      local.get $0
+      call $assembly/indexer/bst/BST<u64>#getMaskPointer
+      local.tee $6
+      call $assembly/indexer/tables/IndexPointer#get
+      local.tee $0
+      i32.const 20
+      i32.sub
+      i32.load offset=16
+      i32.eqz
+      if
+       i32.const 32
+       call $~lib/arraybuffer/ArrayBuffer#constructor
+       local.set $0
+      end
+      local.get $2
+      local.get $4
+      i32.add
+      i32.load8_u
+      local.tee $1
+      i32.const 3
+      i32.shr_u
+      local.get $0
+      i32.add
+      local.tee $7
+      i32.load8_u
+      i32.const 1
+      i32.const 7
+      local.get $1
+      i32.const 7
+      i32.and
+      i32.sub
+      i32.const 7
+      i32.and
+      local.tee $1
+      i32.shl
+      i32.and
+      if
+       local.get $7
+       local.get $7
+       i32.load8_u
+       i32.const -2
+       local.get $1
+       i32.rotl
+       i32.and
+       i32.store8
+      end
+      block $__inlined_func$assembly/indexer/bst/isZeroU256$597 (result i32)
+       i32.const 0
+       local.set $1
+       loop $for-loop|001
+        local.get $1
+        i32.const 4
+        i32.lt_s
+        if
+         i32.const 0
+         local.get $0
+         i32.const -64
+         i32.sub
+         i64.load
+         i64.const 0
+         i64.ne
+         br_if $__inlined_func$assembly/indexer/bst/isZeroU256$597
+         drop
+         local.get $1
+         i32.const 1
+         i32.add
+         local.set $1
+         br $for-loop|001
+        end
+       end
+       i32.const 1
+      end
+      if
+       i32.const 0
+       call $~lib/arraybuffer/ArrayBuffer#constructor
+       local.set $0
+       local.get $6
+       call $~lib/string/String.UTF8.decode
+       local.set $1
+       global.get $assembly/indexer/index/_updates
+       local.get $1
+       local.get $0
+       call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+       global.get $assembly/indexer/index/_updateKeys
+       local.get $1
+       local.get $6
+       call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+       br $for-break0
+      else
+       local.get $6
+       call $~lib/string/String.UTF8.decode
+       local.set $1
+       global.get $assembly/indexer/index/_updates
+       local.get $1
+       local.get $0
+       call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+       global.get $assembly/indexer/index/_updateKeys
+       local.get $1
+       local.get $6
+       call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+      end
+      local.get $2
+      i32.const 1
+      i32.sub
+      local.set $2
+      br $for-loop|00
+     end
+    end
+   end
+  end
+  local.get $5
+  i32.load
+  local.get $4
+  call $assembly/indexer/tables/IndexPointer#select
+  local.tee $0
+  call $~lib/string/String.UTF8.decode
+  local.set $1
+  global.get $assembly/indexer/index/_updates
+  local.get $1
+  local.get $3
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+  global.get $assembly/indexer/index/_updateKeys
+  local.get $1
+  local.get $0
+  call $"~lib/map/Map<~lib/string/String,~lib/arraybuffer/ArrayBuffer>#set"
+ )
  (func $~start
   (local $0 i32)
-  i32.const 25212
+  i32.const 25244
   global.set $~lib/rt/stub/offset
   i32.const 0
   i32.const 5

@@ -52,7 +52,8 @@ describe("metashrew index", () => {
     "test_binarySearch3",
     "test_isOrdTag" ,
     "test_indexBrc20",
-    "test_txid"
+    "test_txid",
+    "test_fixedbst"
   ].forEach((v) => makeTest(v));
   it('should parse a tapscript without error', async () => {
     const indexer = new IndexerProgram(

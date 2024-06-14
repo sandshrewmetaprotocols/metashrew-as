@@ -1,6 +1,6 @@
 (module
- (type $0 (func (param i32) (result i32)))
- (type $1 (func (param i32 i32)))
+ (type $0 (func (param i32 i32)))
+ (type $1 (func (param i32) (result i32)))
  (type $2 (func (param i32 i32) (result i32)))
  (type $3 (func))
  (type $4 (func (param i32 i32 i32) (result i32)))
@@ -62,7 +62,7 @@
  (global $~lib/number/U8.MAX_VALUE i32 (i32.const 255))
  (global $~lib/builtins/u64.MAX_VALUE i64 (i64.const -1))
  (global $~lib/number/U64.MAX_VALUE i64 (i64.const -1))
- (global $~lib/memory/__heap_base i32 (i32.const 24188))
+ (global $~lib/memory/__heap_base i32 (i32.const 24220))
  (memory $0 1 32768)
  (data $0 (i32.const 12) "\1c\02\00\00\00\00\00\00\00\00\00\00\04\00\00\00\00\02\00\00000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff\00\00\00\00\00\00\00\00\00\00\00\00")
  (data $1 (i32.const 556) "<\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00(\00\00\00A\00l\00l\00o\00c\00a\00t\00i\00o\00n\00 \00t\00o\00o\00 \00l\00a\00r\00g\00e\00\00\00\00\00")
@@ -112,6 +112,7 @@
  (data $45 (i32.const 23900) "<\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00$\00\00\00~\00l\00i\00b\00/\00t\00y\00p\00e\00d\00a\00r\00r\00a\00y\00.\00t\00s\00\00\00\00\00\00\00\00\00")
  (data $46 (i32.const 23964) "|\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00^\00\00\00S\00H\00A\002\005\006\00:\00 \00c\00a\00n\00\'\00t\00 \00u\00p\00d\00a\00t\00e\00 \00b\00e\00c\00a\00u\00s\00e\00 \00h\00a\00s\00h\00 \00w\00a\00s\00 \00f\00i\00n\00i\00s\00h\00e\00d\00.\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
  (data $47 (i32.const 24092) "\\\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00L\00\00\00~\00l\00i\00b\00/\00f\00a\00s\00t\00-\00s\00h\00a\002\005\006\00-\00a\00s\00/\00a\00s\00s\00e\00m\00b\00l\00y\00/\00s\00h\00a\002\005\006\00.\00t\00s\00")
+ (data $48 (i32.const 24188) "\1c\00\00\00\00\00\00\00\00\00\00\00\02\00\00\00\08\00\00\00/\00b\00s\00t\00\00\00\00\00")
  (table $0 6 6 funcref)
  (elem $0 (i32.const 1) $assembly/utils/utils/concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|0 $assembly/utils/box/Box.concat~anonymous|1 $assembly/indexer/index/_flush~anonymous|0 $assembly/index/test_inscription~anonymous|0)
  (export "test_parseBlock" (func $assembly/index/test_parseBlock))
@@ -129,6 +130,7 @@
  (export "test_inscription" (func $assembly/index/test_inscription))
  (export "test_indexBrc20" (func $assembly/index/test_indexBrc20))
  (export "test_txid" (func $assembly/index/test_txid))
+ (export "test_fixedbst" (func $assembly/index/test_fixedbst))
  (export "memory" (memory $0))
  (start $~start)
  (func $~lib/rt/stub/maybeGrowMemory (param $newOffset i32)
@@ -6409,8 +6411,6 @@
  (func $assembly/indexer/tables/IndexPointer#set (param $this i32) (param $v i32)
   local.get $this
   call $assembly/indexer/tables/IndexPointer#unwrap
-  call $assembly/utils/box/Box.from
-  call $assembly/utils/box/Box#toArrayBuffer
   local.get $v
   call $assembly/indexer/index/set
  )
@@ -8492,6 +8492,26 @@
   local.get $data
   return
  )
+ (func $assembly/indexer/bst/BST<u64>#getMask (param $this i32) (param $partialKey i32) (result i32)
+  (local $mask i32)
+  local.get $this
+  local.get $partialKey
+  call $assembly/indexer/bst/BST<u64>#getMaskPointer
+  call $assembly/indexer/tables/IndexPointer#get
+  local.set $mask
+  local.get $mask
+  call $~lib/arraybuffer/ArrayBuffer#get:byteLength
+  i32.const 0
+  i32.eq
+  if
+   i32.const 0
+   i32.const 32
+   call $~lib/arraybuffer/ArrayBuffer#constructor
+   return
+  end
+  local.get $mask
+  return
+ )
  (func $assembly/indexer/bst/BST<u64>#_findBoundaryFromPartial (param $this i32) (param $keyBytes i32) (param $seekHigher i32) (result i64)
   (local $partialKey i32)
   (local $newPartial i32)
@@ -8522,8 +8542,7 @@
     i32.add
     local.get $this
     local.get $partialKey
-    call $assembly/indexer/bst/BST<u64>#getMaskPointer
-    call $assembly/indexer/tables/IndexPointer#get
+    call $assembly/indexer/bst/BST<u64>#getMask
     local.get $seekHigher
     call $assembly/indexer/bst/binarySearchU256
     i32.store8
@@ -10345,7 +10364,7 @@
   else
    i32.const 6256
    i32.const 6384
-   i32.const 176
+   i32.const 177
    i32.const 4
    call $~lib/builtins/abort
    unreachable
@@ -12465,6 +12484,272 @@
   i32.const 10
   call $~lib/number/U64#toString
   call $assembly/utils/logging/Console#log
+ )
+ (func $assembly/indexer/tables/IndexPointer.for (param $keyword i32) (result i32)
+  local.get $keyword
+  i32.const 0
+  i32.const 1
+  global.set $~argumentsLength
+  i32.const 0
+  call $~lib/string/String.UTF8.encode@varargs
+  call $assembly/indexer/tables/IndexPointer.wrap
+  return
+ )
+ (func $assembly/indexer/bst/FixedBST#set:ptr (param $this i32) (param $ptr i32)
+  local.get $this
+  local.get $ptr
+  i32.store
+ )
+ (func $assembly/indexer/bst/FixedBST#set:keySize (param $this i32) (param $keySize i32)
+  local.get $this
+  local.get $keySize
+  i32.store offset=4
+ )
+ (func $assembly/indexer/bst/FixedBST#constructor (param $this i32) (param $ptr i32) (param $keySize i32) (result i32)
+  local.get $this
+  i32.eqz
+  if
+   i32.const 8
+   i32.const 43
+   call $~lib/rt/stub/__new
+   local.set $this
+  end
+  local.get $this
+  i32.const 0
+  call $assembly/indexer/bst/FixedBST#set:ptr
+  local.get $this
+  i32.const 0
+  call $assembly/indexer/bst/FixedBST#set:keySize
+  local.get $this
+  local.get $ptr
+  call $assembly/indexer/bst/FixedBST#set:ptr
+  local.get $this
+  local.get $keySize
+  call $assembly/indexer/bst/FixedBST#set:keySize
+  local.get $this
+ )
+ (func $assembly/indexer/bst/FixedBST.at (param $key i32) (param $keySize i32) (result i32)
+  i32.const 0
+  local.get $key
+  local.get $keySize
+  call $assembly/indexer/bst/FixedBST#constructor
+  return
+ )
+ (func $assembly/indexer/bst/FixedBST#get:keySize (param $this i32) (result i32)
+  local.get $this
+  i32.load offset=4
+ )
+ (func $assembly/indexer/bst/FixedBST#get:ptr (param $this i32) (result i32)
+  local.get $this
+  i32.load
+ )
+ (func $assembly/indexer/bst/FixedBST#getMaskPointer (param $this i32) (param $partialKey i32) (result i32)
+  local.get $this
+  call $assembly/indexer/bst/FixedBST#get:ptr
+  local.get $partialKey
+  call $assembly/indexer/tables/IndexPointer#select
+  i32.const 2928
+  call $assembly/indexer/tables/IndexPointer#keyword
+  return
+ )
+ (func $assembly/indexer/bst/FixedBST#unmarkPath (param $this i32) (param $keyBytes i32)
+  (local $i i32)
+  (local $partialKey i32)
+  (local $ptr i32)
+  (local $mask i32)
+  (local $newMask i32)
+  (local $byte i32)
+  local.get $this
+  call $assembly/indexer/bst/FixedBST#get:keySize
+  i32.const 1
+  i32.sub
+  local.set $i
+  block $for-break0
+   loop $for-loop|0
+    local.get $i
+    i32.const 0
+    i32.ge_s
+    if
+     i32.const 0
+     local.get $i
+     call $~lib/arraybuffer/ArrayBuffer#constructor
+     local.set $partialKey
+     local.get $i
+     i32.const 0
+     i32.ne
+     if
+      local.get $partialKey
+      local.get $keyBytes
+      local.get $i
+      call $assembly/utils/memcpy/memcpy
+      drop
+     end
+     local.get $this
+     local.get $partialKey
+     call $assembly/indexer/bst/FixedBST#getMaskPointer
+     local.set $ptr
+     local.get $ptr
+     call $assembly/indexer/tables/IndexPointer#get
+     local.set $mask
+     local.get $mask
+     call $~lib/arraybuffer/ArrayBuffer#get:byteLength
+     i32.const 0
+     i32.eq
+     if (result i32)
+      i32.const 0
+      i32.const 32
+      call $~lib/arraybuffer/ArrayBuffer#constructor
+     else
+      local.get $mask
+     end
+     local.set $newMask
+     local.get $keyBytes
+     local.get $i
+     i32.add
+     i32.load8_u
+     local.set $byte
+     local.get $newMask
+     local.get $byte
+     call $assembly/indexer/bst/isSetU256
+     if
+      local.get $newMask
+      local.get $byte
+      call $assembly/indexer/bst/unsetBitU256
+     end
+     local.get $newMask
+     call $assembly/indexer/bst/isZeroU256
+     if
+      local.get $ptr
+      call $assembly/indexer/tables/IndexPointer#nullify
+      br $for-break0
+     else
+      local.get $ptr
+      local.get $newMask
+      call $assembly/indexer/tables/IndexPointer#set
+     end
+     local.get $i
+     i32.const 1
+     i32.sub
+     local.set $i
+     br $for-loop|0
+    end
+   end
+  end
+ )
+ (func $assembly/indexer/bst/FixedBST#markPath (param $this i32) (param $keyBytes i32)
+  (local $i i32)
+  (local $partialKey i32)
+  (local $ptr i32)
+  (local $mask i32)
+  (local $newMask i32)
+  (local $byte i32)
+  (local $isSet i32)
+  i32.const 0
+  local.set $i
+  loop $for-loop|0
+   local.get $i
+   local.get $this
+   call $assembly/indexer/bst/FixedBST#get:keySize
+   i32.lt_s
+   if
+    i32.const 0
+    local.get $i
+    call $~lib/arraybuffer/ArrayBuffer#constructor
+    local.set $partialKey
+    local.get $i
+    i32.const 0
+    i32.ne
+    if
+     local.get $partialKey
+     local.get $keyBytes
+     local.get $i
+     call $assembly/utils/memcpy/memcpy
+     drop
+    end
+    local.get $this
+    local.get $partialKey
+    call $assembly/indexer/bst/FixedBST#getMaskPointer
+    local.set $ptr
+    local.get $ptr
+    call $assembly/indexer/tables/IndexPointer#get
+    local.set $mask
+    local.get $mask
+    call $~lib/arraybuffer/ArrayBuffer#get:byteLength
+    i32.const 0
+    i32.eq
+    if (result i32)
+     i32.const 0
+     i32.const 32
+     call $~lib/arraybuffer/ArrayBuffer#constructor
+    else
+     local.get $mask
+    end
+    local.set $newMask
+    local.get $keyBytes
+    local.get $i
+    i32.add
+    i32.load8_u
+    local.set $byte
+    local.get $newMask
+    local.get $byte
+    call $assembly/indexer/bst/isSetU256
+    local.set $isSet
+    local.get $newMask
+    local.get $byte
+    call $assembly/indexer/bst/isSetU256
+    i32.eqz
+    if
+     local.get $newMask
+     local.get $byte
+     call $assembly/indexer/bst/setBitU256
+     local.get $ptr
+     local.get $newMask
+     call $assembly/indexer/tables/IndexPointer#set
+    end
+    local.get $i
+    i32.const 1
+    i32.add
+    local.set $i
+    br $for-loop|0
+   end
+  end
+ )
+ (func $assembly/indexer/bst/FixedBST#set (param $this i32) (param $keyBytes i32) (param $v i32)
+  local.get $v
+  call $~lib/arraybuffer/ArrayBuffer#get:byteLength
+  i32.const 0
+  i32.eq
+  if
+   local.get $this
+   local.get $keyBytes
+   call $assembly/indexer/bst/FixedBST#unmarkPath
+  else
+   local.get $this
+   local.get $keyBytes
+   call $assembly/indexer/bst/FixedBST#markPath
+  end
+  local.get $this
+  call $assembly/indexer/bst/FixedBST#get:ptr
+  local.get $keyBytes
+  call $assembly/indexer/tables/IndexPointer#select
+  local.get $v
+  call $assembly/indexer/tables/IndexPointer#set
+ )
+ (func $assembly/index/test_fixedbst
+  (local $bst i32)
+  i32.const 24208
+  call $assembly/indexer/tables/IndexPointer.for
+  i32.const 36
+  call $assembly/indexer/bst/FixedBST.at
+  local.set $bst
+  local.get $bst
+  i32.const 0
+  i32.const 36
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  i32.const 0
+  i32.const 1
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  call $assembly/indexer/bst/FixedBST#set
  )
  (func $~start
   call $start:assembly/index

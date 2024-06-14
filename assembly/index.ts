@@ -19,6 +19,7 @@ import { Transaction, Block, Inscription } from "./blockdata";
 import { encodeHexFromBuffer } from "./utils/hex";
 import {
   BST,
+  FixedBST,
   setBitU256,
   binarySearchU64,
   binarySearchU32,
@@ -181,4 +182,9 @@ export function test_txid(): void {
   console.log(Box.from(tx.txid()).toHexString());
   console.log(tx.outs.length.toString())
   console.log(tx.outs[17].value.toString())
+}
+
+export function test_fixedbst(): void {
+  const bst = FixedBST.at(IndexPointer.for('/bst'), 36);
+  bst.set(new ArrayBuffer(36), new ArrayBuffer(1));
 }

@@ -1,4 +1,4 @@
-import { _flush, input, get, set } from "./index";
+import { _flush, input, getImmutable, get, set } from "./index";
 import { memcpy } from "../utils/memcpy";
 import { Box } from "../utils/box";
 import { console } from "../utils/logging";
@@ -58,16 +58,30 @@ export class IndexPointer {
     );
     return load<T>(changetype<usize>(container));
   }
+  getImmutableValue<T>(): T {
+    const value = this.getImmutable();
+    if (value.byteLength === 0) return <T>0;
+    const container = new ArrayBuffer(sizeof<T>());
+    memcpy(
+      changetype<usize>(container),
+      changetype<usize>(value),
+      value.byteLength,
+    );
+    return load<T>(changetype<usize>(container));
+  }
   setValue<T>(v: T): void {
     const value = new ArrayBuffer(sizeof<T>());
     store<T>(changetype<usize>(value), v);
     this.set(value);
   }
   set(v: ArrayBuffer): void {
-    set(Box.from(this.unwrap()).toArrayBuffer(), v);
+    set(this.unwrap(), v);
   }
   get(): ArrayBuffer {
     return Box.from(get(this.unwrap())).toArrayBuffer();
+  }
+  getImmutable(): ArrayBuffer {
+    return getImmutable(this.unwrap());
   }
   lengthKey(): IndexPointer {
     return this.keyword("/length");
