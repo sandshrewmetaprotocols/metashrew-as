@@ -418,7 +418,7 @@ export class FixedBST {
   get(keyBytes: ArrayBuffer): ArrayBuffer {
     return this.ptr.select(keyBytes).get();
   }
-  nullify(keyBytes: K): void {
+  nullify(keyBytes: ArrayBuffer): void {
     this.ptr.select(keyBytes).set(new ArrayBuffer(0));
   }
 }
