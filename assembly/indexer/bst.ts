@@ -328,7 +328,6 @@ export class FixedBST {
       const mask = ptr.get();
       const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
       const byte = load<u8>(changetype<usize>(keyBytes) + i);
-      const isSet = isSetU256(newMask, byte);
       if (!isSetU256(newMask, byte)) {
         setBitU256(newMask, byte);
         ptr.set(newMask);
@@ -355,7 +354,10 @@ export class FixedBST {
       }
     }
   }
-  _findBoundaryFromPartial(keyBytes: ArrayBuffer, seekHigher: bool): K {
+  _findBoundaryFromPartial(
+    keyBytes: ArrayBuffer,
+    seekHigher: bool,
+  ): ArrayBuffer {
     let partialKey = keyBytes;
     while (<usize>partialKey.byteLength !== this.keySize) {
       const newPartial = new ArrayBuffer(partialKey.byteLength + 1);
@@ -407,7 +409,7 @@ export class FixedBST {
         }
       }
       partialKey = thisKey;
-    } while (partialKey.byteLength !== 0);
+    } while (partialKey.byteLength != 0);
     return changetype<ArrayBuffer>(0);
   }
   set(keyBytes: ArrayBuffer, v: ArrayBuffer): void {
