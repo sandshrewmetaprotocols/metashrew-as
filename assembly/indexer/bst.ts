@@ -151,7 +151,7 @@ export function isSetU256(mask: ArrayBuffer, position: i32): boolean {
 
 export function isZeroU256(mask: ArrayBuffer): boolean {
   for (var i = 0; i < 4; i++) {
-    if (load<u64>(changetype<usize>(mask) + sizeof<u64>() * 8) !== 0)
+    if (load<u64>(changetype<usize>(mask) + sizeof<u64>() * i) !== 0)
       return false;
   }
   return true;

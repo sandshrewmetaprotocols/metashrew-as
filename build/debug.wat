@@ -6370,7 +6370,7 @@
    if
     local.get $mask
     i32.const 8
-    i32.const 8
+    local.get $i
     i32.mul
     i32.add
     i64.load
@@ -8492,6 +8492,26 @@
   local.get $data
   return
  )
+ (func $assembly/indexer/bst/BST<u64>#getMask (param $this i32) (param $partialKey i32) (result i32)
+  (local $mask i32)
+  local.get $this
+  local.get $partialKey
+  call $assembly/indexer/bst/BST<u64>#getMaskPointer
+  call $assembly/indexer/tables/IndexPointer#get
+  local.set $mask
+  local.get $mask
+  call $~lib/arraybuffer/ArrayBuffer#get:byteLength
+  i32.const 0
+  i32.eq
+  if
+   i32.const 0
+   i32.const 32
+   call $~lib/arraybuffer/ArrayBuffer#constructor
+   return
+  end
+  local.get $mask
+  return
+ )
  (func $assembly/indexer/bst/BST<u64>#_findBoundaryFromPartial (param $this i32) (param $keyBytes i32) (param $seekHigher i32) (result i64)
   (local $partialKey i32)
   (local $newPartial i32)
@@ -8522,8 +8542,7 @@
     i32.add
     local.get $this
     local.get $partialKey
-    call $assembly/indexer/bst/BST<u64>#getMaskPointer
-    call $assembly/indexer/tables/IndexPointer#get
+    call $assembly/indexer/bst/BST<u64>#getMask
     local.get $seekHigher
     call $assembly/indexer/bst/binarySearchU256
     i32.store8
