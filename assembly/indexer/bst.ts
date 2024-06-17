@@ -300,3 +300,127 @@ export class BST<K> {
     this.ptr.select(keyBytes).set(new ArrayBuffer(0));
   }
 }
+
+export class FixedBST {
+  public ptr: IndexPointer;
+  public keySize: usize;
+  constructor(ptr: IndexPointer, keySize: usize) {
+    this.ptr = ptr;
+    this.keySize = keySize;
+  }
+  static at(key: IndexPointer, keySize: usize): FixedBST {
+    return new FixedBST(key, keySize);
+  }
+  getMaskPointer(partialKey: ArrayBuffer): IndexPointer {
+    return this.ptr.select(partialKey).keyword("/mask");
+  }
+  getMask(partialKey: ArrayBuffer): ArrayBuffer {
+    const mask = this.getMaskPointer(partialKey).get();
+    if (mask.byteLength === 0) return new ArrayBuffer(32);
+    return mask;
+  }
+  markPath(keyBytes: ArrayBuffer): void {
+    for (let i = 0; i < <i32>this.keySize; i++) {
+      const partialKey = new ArrayBuffer(i);
+      if (i !== 0)
+        memcpy(changetype<usize>(partialKey), changetype<usize>(keyBytes), i);
+      const ptr = this.getMaskPointer(partialKey);
+      const mask = ptr.get();
+      const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
+      const byte = load<u8>(changetype<usize>(keyBytes) + i);
+      if (!isSetU256(newMask, byte)) {
+        setBitU256(newMask, byte);
+        ptr.set(newMask);
+      }
+    }
+  }
+  unmarkPath(keyBytes: ArrayBuffer): void {
+    for (let i: i32 = <i32>this.keySize - 1; i >= 0; i--) {
+      const partialKey = new ArrayBuffer(i);
+      if (i !== 0)
+        memcpy(changetype<usize>(partialKey), changetype<usize>(keyBytes), i);
+      const ptr = this.getMaskPointer(partialKey);
+      const mask = ptr.get();
+      const newMask = mask.byteLength === 0 ? new ArrayBuffer(32) : mask;
+      const byte = load<u8>(changetype<usize>(keyBytes) + i);
+      if (isSetU256(newMask, byte)) {
+        unsetBitU256(newMask, byte);
+      }
+      if (isZeroU256(newMask)) {
+        ptr.nullify();
+        break;
+      } else {
+        ptr.set(newMask);
+      }
+    }
+  }
+  _findBoundaryFromPartial(
+    keyBytes: ArrayBuffer,
+    seekHigher: bool,
+  ): ArrayBuffer {
+    let partialKey = keyBytes;
+    while (<usize>partialKey.byteLength !== this.keySize) {
+      const newPartial = new ArrayBuffer(partialKey.byteLength + 1);
+      memcpy(
+        changetype<usize>(newPartial),
+        changetype<usize>(partialKey),
+        partialKey.byteLength,
+      );
+      store<u8>(
+        changetype<usize>(newPartial) + <usize>partialKey.byteLength,
+        <u8>binarySearchU256(this.getMask(partialKey), seekHigher),
+      );
+      partialKey = newPartial;
+    }
+    return partialKey;
+  }
+  seekLower(start: ArrayBuffer): ArrayBuffer {
+    let partialKey = start;
+    do {
+      const thisKey = Box.from(partialKey).shrinkBack(1).toArrayBuffer();
+      const mask = this.getMaskPointer(thisKey).get();
+      if (mask.byteLength !== 0) {
+        maskLowerThan(mask, byteAt(partialKey, thisKey.byteLength));
+        const symbol = binarySearchU256(mask, false);
+        if (symbol !== -1) {
+          return this._findBoundaryFromPartial(
+            Box.concat([Box.from(thisKey), Box.from(toBuffer<u8>(<u8>symbol))]),
+            false,
+          );
+        }
+      }
+      partialKey = thisKey;
+    } while (partialKey.byteLength !== 0);
+    return changetype<ArrayBuffer>(0);
+  }
+  seekGreater(start: ArrayBuffer): ArrayBuffer {
+    let partialKey = start;
+    do {
+      const thisKey = Box.from(partialKey).shrinkBack(1).toArrayBuffer();
+      const mask = this.getMaskPointer(thisKey).get();
+      if (mask.byteLength !== 0) {
+        maskGreaterThan(mask, byteAt(partialKey, thisKey.byteLength));
+        const symbol = binarySearchU256(mask, true);
+        if (symbol !== -1) {
+          return this._findBoundaryFromPartial(
+            Box.concat([Box.from(thisKey), Box.from(toBuffer<u8>(<u8>symbol))]),
+            true,
+          );
+        }
+      }
+      partialKey = thisKey;
+    } while (partialKey.byteLength != 0);
+    return changetype<ArrayBuffer>(0);
+  }
+  set(keyBytes: ArrayBuffer, v: ArrayBuffer): void {
+    if (v.byteLength === 0) this.unmarkPath(keyBytes);
+    else this.markPath(keyBytes);
+    this.ptr.select(keyBytes).set(v);
+  }
+  get(keyBytes: ArrayBuffer): ArrayBuffer {
+    return this.ptr.select(keyBytes).get();
+  }
+  nullify(keyBytes: ArrayBuffer): void {
+    this.ptr.select(keyBytes).set(new ArrayBuffer(0));
+  }
+}

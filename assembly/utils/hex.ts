@@ -47,3 +47,14 @@ export function encodeHex(start: usize, len: usize): string {
 export function encodeHexFromBuffer(data: ArrayBuffer): string {
   return encodeHex(changetype<usize>(data), data.byteLength);
 }
+
+export function decodeHex(hex: string): ArrayBuffer {
+  const result = new ArrayBuffer(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) {
+    store<u8>(
+      changetype<usize>(result) + i / 2,
+      <u8>parseInt(hex.substring(i, i + 2), 16),
+    );
+  }
+  return result;
+}
