@@ -100,7 +100,7 @@ export function test_seekGreater(): void {
   bst.set(bswap<u64>(3), String.UTF8.encode("test2"));
   bst.set(bswap<u64>(4), String.UTF8.encode("test4"));
  */
-  console.log(bst.seekGreater((0x03 << 16) | 0x04).toString(10));
+  console.log(bst.seekGreater(0).toString(10));
   _flush();
 }
 
@@ -194,9 +194,11 @@ export function test_txid(): void {
       ),
     ),
   );
+  /*
   console.log(Box.from(tx.txid()).toHexString());
   console.log(tx.outs.length.toString());
   console.log(tx.outs[17].value.toString());
+ */
 }
 
 export function test_fixedbst(): void {
@@ -213,22 +215,22 @@ export function test_fixedbst(): void {
   bst.set(op2, new ArrayBuffer(1));
   let start = new ArrayBuffer(36);
   const res = bst.seekGreater(start);
-  console.log(Box.from(res).toHexString());
+  //console.log(Box.from(res).toHexString());
 
   const uint = parsePrimitive<u32>(Box.from(res).sliceFrom(32));
   const start2 = Box.concat([
     Box.from(res).shrinkBack(4),
     Box.from(primitiveToBuffer(uint + 1)),
   ]);
-  console.log(Box.from(start2).toHexString());
+  //console.log(Box.from(start2).toHexString());
   const res2 = bst.seekGreater(start2);
-  console.log(Box.from(res2).toHexString());
+  //console.log(Box.from(res2).toHexString());
   const uint2 = parsePrimitive<u32>(Box.from(res2).sliceFrom(32));
   const start3 = Box.concat([
     Box.from(res2).shrinkBack(4),
     Box.from(primitiveToBuffer(uint + 1)),
   ]);
   const res3 = bst.seekGreater(start3);
-  console.log(changetype<usize>(res3).toString());
+  //console.log(changetype<usize>(res3).toString());
   _flush();
 }
