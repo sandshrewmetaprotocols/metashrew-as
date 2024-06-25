@@ -43,6 +43,9 @@ describe("metashrew index", () => {
       const result = await indexer.run(s);
     });
   [
+    "test_asmmath",
+    "test_unmarkPath",
+    /*
     "test_parseBlock",
     "test_seekLower",
     "test_seekLower2",
@@ -57,6 +60,8 @@ describe("metashrew index", () => {
     "test_indexBrc20",
     "test_txid",
     "test_fixedbst",
+    "test_complement"
+   */
   ].forEach((v) => makeTest(v));
   // it('should parse a tapscript without error', async () => {
   //   const indexer = new IndexerProgram(

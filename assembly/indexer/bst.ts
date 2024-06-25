@@ -123,7 +123,7 @@ export function setBitU256(mask: ArrayBuffer, position: i32): void {
   const existingByte: u8 = load<u8>(
     changetype<usize>(mask) + <usize>bytePosition,
   );
-  const newBit: u8 = <u8>(1 << (7 - <u8>bitPosition));
+  const newBit: u8 = <u8>(1 << (<u8>7 - <u8>bitPosition));
   store<u8>(
     changetype<usize>(mask) + <usize>bytePosition,
     existingByte | newBit,
@@ -134,7 +134,7 @@ export function unsetBitU256(mask: ArrayBuffer, position: i32): void {
   const bytePosition = position / 8;
   const bitPosition = position % 8;
   const existingByte = load<u8>(changetype<usize>(mask) + <usize>bytePosition);
-  const bitMask = ~(<u8>(1 << (7 - <u8>bitPosition)));
+  const bitMask = ~(<u8>(1 << (<u8>7 - <u8>bitPosition)));
   store<u8>(
     changetype<usize>(mask) + <usize>bytePosition,
     existingByte & bitMask,
@@ -165,6 +165,11 @@ export function toBuffer<T>(v: T): ArrayBuffer {
   const data = new ArrayBuffer(sizeof<T>());
   store<T>(changetype<usize>(data), bswap<T>(v));
   return data;
+}
+
+function coerceToZero(v: i32): u8 {
+  if (v === -1) return <u8>0;
+  return <u8>v;
 }
 
 export class BST<K> {
@@ -217,9 +222,9 @@ export class BST<K> {
       }
       if (isZeroU256(newMask)) {
         ptr.nullify();
-        break;
       } else {
         ptr.set(newMask);
+	break;
       }
     }
   }
@@ -232,9 +237,12 @@ export class BST<K> {
         changetype<usize>(partialKey),
         partialKey.byteLength,
       );
+      const mask = this.getMask(partialKey);
+      const symbol = binarySearchU256(mask.byteLength === 0 ? new ArrayBuffer(32) : mask, seekHigher);
+      if (symbol === -1) break;
       store<u8>(
         changetype<usize>(newPartial) + <usize>partialKey.byteLength,
-        <u8>binarySearchU256(this.getMask(partialKey), seekHigher),
+        <u8>symbol
       );
       partialKey = newPartial;
     }
@@ -292,15 +300,17 @@ export class BST<K> {
     const key = bswap<K>(k);
     const keyBytes = new ArrayBuffer(sizeof<K>());
     store<K>(changetype<usize>(keyBytes), key);
-    return this.ptr.select(keyBytes).get();
+    return Box.from(this.ptr.select(keyBytes).get()).toArrayBuffer();
   }
   nullify(k: K): void {
     const key = bswap<K>(k);
     const keyBytes = new ArrayBuffer(sizeof<K>());
+    store<K>(changetype<usize>(keyBytes), key);
     this.ptr.select(keyBytes).set(new ArrayBuffer(0));
   }
 }
 
+/*
 export class FixedBST {
   public ptr: IndexPointer;
   public keySize: usize;
@@ -368,7 +378,7 @@ export class FixedBST {
       );
       store<u8>(
         changetype<usize>(newPartial) + <usize>partialKey.byteLength,
-        <u8>binarySearchU256(this.getMask(partialKey), seekHigher),
+        <u8>coerceToZero(binarySearchU256(this.getMask(partialKey), seekHigher)),
       );
       partialKey = newPartial;
     }
@@ -424,3 +434,4 @@ export class FixedBST {
     this.ptr.select(keyBytes).set(new ArrayBuffer(0));
   }
 }
+*/
