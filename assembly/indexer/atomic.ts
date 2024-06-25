@@ -1,0 +1,64 @@
+import { IndexPointer } from "./tables";
+
+export class AtomicTransaction {
+  temp: Map<ArrayBuffer, ArrayBuffer>;
+  saved: Map<ArrayBuffer, ArrayBuffer>;
+
+  constructor() {
+    this.temp = new Map<ArrayBuffer, ArrayBuffer>();
+    this.saved = new Map<ArrayBuffer, ArrayBuffer>();
+  }
+
+  checkpoint(): void {
+    const keys = this.temp.keys();
+    for (let i = 0; i < keys.length; i++) {
+      this.saved.set(keys[i], this.temp.get(keys[i]));
+    }
+  }
+
+  commit(): void {
+    const keys = this.saved.keys();
+    for (let i = 0; i < keys.length; i++) {
+      IndexPointer.wrap(keys[i]).set(this.saved.get(keys[i]));
+    }
+
+    this.saved.clear();
+  }
+
+  rollback(): void {
+    this.temp.clear();
+  }
+
+  set(key: ArrayBuffer, value: ArrayBuffer): void {
+    this.temp.set(key, value);
+  }
+
+  get(key: ArrayBuffer): ArrayBuffer {
+    if (this.temp.has(key)) {
+      return this.temp.get(key);
+    }
+    return changetype<ArrayBuffer>(0);
+  }
+
+  setValue<T>(key: T, value: ArrayBuffer): void {
+    const container = new ArrayBuffer(sizeof<T>());
+    store<T>(changetype<usize>(container), bswap<T>(key));
+    this.set(container, value);
+  }
+
+  getValue<T>(key: T): ArrayBuffer {
+    const container = new ArrayBuffer(sizeof<T>());
+    store<T>(changetype<usize>(container), bswap<T>(key));
+    return this.get(container);
+  }
+
+  setKeyword(key: string, value: ArrayBuffer): void {
+    const container = String.UTF8.encode(key);
+    this.set(container, value);
+  }
+
+  getKeyword(key: string): ArrayBuffer {
+    const container = String.UTF8.encode(key);
+    return this.get(container);
+  }
+}
