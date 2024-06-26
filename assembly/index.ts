@@ -83,6 +83,7 @@ export function test_unmarkPath(): void {
   bst.set(0x5d4c39ec5b5126c2, String.UTF8.encode("test")); 
   bst.set(0x5d4c39ec5b5126c3, String.UTF8.encode("test")); 
   bst.set(0x5d4c39ff00000000, String.UTF8.encode("test")); 
+  bst.set(0x5d4c39ff00ff0000, String.UTF8.encode("test")); 
   bst.set(0x8c8534514a8fb502, String.UTF8.encode("test"));
   bst.set(0x9df8622e7b073043, String.UTF8.encode("test"));
   bst.set(0x465e3f16b2e25dc8, new ArrayBuffer(0));
@@ -92,6 +93,7 @@ export function test_unmarkPath(): void {
   console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c1).toString(16));
   console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c2).toString(16));
   console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c3).toString(16));
+  console.log('0x' + bst.seekGreater(0x5d4c39ff00000000).toString(16));
   bst.set(0x5d4c39ec5b5126c3, new ArrayBuffer(0));
   console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c2).toString(16));
   bst.set(0x5d4c39ec5b5126c0, new ArrayBuffer(0));
