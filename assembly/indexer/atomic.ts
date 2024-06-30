@@ -78,4 +78,18 @@ export class AtomicTransaction {
     }
     this.nullify(ptr.lengthKey().unwrap());
   }
+  extendIndexPointerList(ptr: IndexPointer): ArrayBuffer {
+    let length: u32;
+    const lengthKey = ptr.lengthKey();
+    if (this.temp.has(lengthKey.unwrap())) {
+      length = this.getValue<u32>(lengthKey.unwrap());
+    } else {
+      length = lengthKey.getValue<u32>();
+    }
+    this.setValue<u32>(lengthKey.unwrap(), length + 1);
+    return ptr.selectIndex(length).unwrap();
+  }
+  appendIndexPointerList(ptr: IndexPointer, value: ArrayBuffer): void {
+    this.set(this.extendIndexPointerList(ptr), value);
+  }
 }
