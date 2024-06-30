@@ -66,4 +66,10 @@ export class AtomicTransaction {
     const container = String.UTF8.encode(key);
     return this.get(container);
   }
+  nullify(key: ArrayBuffer): void {
+    this.set(key, new ArrayBuffer(0));
+  }
+  rollbackKey(key: ArrayBuffer): void {
+    if (this.temp.has(key)) this.temp.delete(key);
+  }
 }
