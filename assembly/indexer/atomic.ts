@@ -40,16 +40,21 @@ export class AtomicTransaction {
     return changetype<ArrayBuffer>(0);
   }
 
-  setValue<T>(key: T, value: ArrayBuffer): void {
+  setValue<T>(key: ArrayBuffer, value: T): void {
     const container = new ArrayBuffer(sizeof<T>());
-    store<T>(changetype<usize>(container), bswap<T>(key));
-    this.set(container, value);
+    store<T>(changetype<usize>(container), bswap<T>(value));
+    this.set(key, container);
   }
 
-  getValue<T>(key: T): ArrayBuffer {
-    const container = new ArrayBuffer(sizeof<T>());
-    store<T>(changetype<usize>(container), bswap<T>(key));
-    return this.get(container);
+  getValue<T>(key: ArrayBuffer): T {
+    const value = this.get(key);
+    let container: T = changetype<T>(0);
+    memory.copy(
+      changetype<usize>(container),
+      changetype<usize>(value),
+      sizeof<T>(),
+    );
+    return container;
   }
 
   setKeyword(key: string, value: ArrayBuffer): void {
