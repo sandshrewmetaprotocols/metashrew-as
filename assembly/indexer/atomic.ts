@@ -72,4 +72,10 @@ export class AtomicTransaction {
   rollbackKey(key: ArrayBuffer): void {
     if (this.temp.has(key)) this.temp.delete(key);
   }
+  nullifyIndexPointerList(ptr: IndexPointer): void {
+    for (let i = 0; i < ptr.length(); i++) {
+      this.nullify(ptr.selectIndex(i).unwrap());
+    }
+    this.nullify(ptr.lengthKey().unwrap());
+  }
 }
