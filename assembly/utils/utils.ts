@@ -2,7 +2,19 @@ import { Box } from "./box";
 import { toPointer, nullptr, Pointer } from "./pointer";
 import { memcpy } from "./memcpy";
 import { console } from "./logging";
+import { u128 } from "as-bignum/assembly";
 
+export function padLeft(v: string, n: i32): string {
+  let result = "";
+  for (let i: i32 = 0; i < n - v.length; i++) {
+    result += "0";
+  }
+  return result + v;
+}
+
+export function u128ToHex(v: u128): string {
+  return padLeft(v.hi.toString(16), 16) + padLeft(v.lo.toString(16), 16);
+}
 export function reverse(data: ArrayBuffer): ArrayBuffer {
   const result = new ArrayBuffer(data.byteLength);
   for (let i: i32 = 0; i < result.byteLength; i++) {

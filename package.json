@@ -20,6 +20,7 @@
     "@types/jest": "^29.5.12",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.6",
+    "as-bignum": "^0.3.1",
     "as-wasi": "^0.6.0",
     "assemblyscript": "^0.27.22",
     "assemblyscript-prettier": "^3.0.1",

@@ -29,8 +29,11 @@ import {
   maskGreaterThan,
   maskLowerThan,
 } from "./indexer/bst";
+import { BSTU128 } from "./indexer/widebst";
+import { u128ToHex } from "./utils/utils";
 import { IndexPointer } from "./indexer/tables";
 import { Input } from "./blockdata/transaction";
+import { u128 } from "as-bignum/assembly";
 
 export function test_parseBlock(): void {
   const data = input();
@@ -51,6 +54,17 @@ export function test_parseWitness(): void {
   const height = parsePrimitive<u32>(box);
   const tx = new Transaction(box);
   tx.ins[1].inscription();
+}
+
+export function test_BSTU128(): void {
+  const bst = BSTU128.at(IndexPointer.for("/test"));
+  u128.from(0x100);
+  bst.set(u128.from(0x100), String.UTF8.encode("test"));
+  bst.set(u128.from(0x140), String.UTF8.encode("test"));
+  bst.set(u128.from(0x104), String.UTF8.encode("test"));
+  console.log(u128ToHex(bst.seekGreater(u128.from(0x103))));
+  bst.set(u128.from(0x104), new ArrayBuffer(0));
+  console.log(u128ToHex(bst.seekGreater(u128.from(0x103))));
 }
 
 export function test_seekLower(): void {
