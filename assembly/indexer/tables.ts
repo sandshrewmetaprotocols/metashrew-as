@@ -84,7 +84,7 @@ export class IndexPointer {
     return getImmutable(this.unwrap());
   }
   lengthKey(): IndexPointer {
-    return this.keyword("/length");
+    return this.selectValue<u32>(0xffffffff);
   }
   length(): u32 {
     return this.lengthKey().getValue<u32>();
@@ -110,7 +110,7 @@ export class IndexPointer {
     return this.selectIndex(length);
   }
   selectIndex(index: u32): IndexPointer {
-    return this.keyword("/" + index.toString(10));
+    return this.selectValue<u32>(index);
   }
   nullify(): void {
     this.set(new ArrayBuffer(0));
