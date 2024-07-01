@@ -19,21 +19,19 @@ export class Node {
 }
 
 
-@final
-@unmanaged
 export class IndexPointer {
-  [key: number]: number;
+  public key: ArrayBuffer;
   constructor(keyPrefix: ArrayBuffer) {
-    return IndexPointer.wrap(keyPrefix);
+    this.key = Box.from(keyPrefix).toArrayBuffer();
   }
   static wrap(pointer: ArrayBuffer): IndexPointer {
-    return changetype<IndexPointer>(pointer);
+    return new IndexPointer(pointer);
   }
   static for(keyword: string): IndexPointer {
     return IndexPointer.wrap(String.UTF8.encode(keyword));
   }
   unwrap(): ArrayBuffer {
-    return changetype<ArrayBuffer>(this);
+    return Box.from(this.key).toArrayBuffer();
   }
   select(key: ArrayBuffer): IndexPointer {
     const res = Box.concat([Box.from(this.unwrap()), Box.from(key)]);
