@@ -44,7 +44,7 @@ export function input(): ArrayBuffer {
   return data;
 }
 function hash(k: ArrayBuffer): string {
-  return String.UTF8.decode(k);
+  return Box.from(k).toHexString();
 }
 export function set(k: ArrayBuffer, v: ArrayBuffer): void {
   const h = hash(k);

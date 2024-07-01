@@ -5275,6 +5275,54 @@
   call $assembly/indexer/tables/IndexPointer#keyword
   return
  )
+ (func $assembly/utils/hex/encodeHexUTF8 (param $start i32) (param $len i32) (result i32)
+  (local $result i32)
+  (local $i i32)
+  i32.const 0
+  i32.const 2
+  local.get $len
+  i32.const 2
+  i32.mul
+  i32.add
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.set $result
+  local.get $result
+  i32.const 30768
+  i32.store16
+  i32.const 0
+  local.set $i
+  loop $for-loop|0
+   local.get $i
+   local.get $len
+   i32.lt_u
+   if
+    i32.const 2
+    local.get $result
+    i32.add
+    local.get $i
+    i32.const 2
+    i32.mul
+    i32.add
+    global.get $assembly/utils/hex/hexLookupTable
+    i32.const 2
+    local.get $start
+    local.get $i
+    i32.add
+    i32.load8_u
+    i32.mul
+    i32.add
+    i32.load16_u
+    i32.store16
+    local.get $i
+    i32.const 1
+    i32.add
+    local.set $i
+    br $for-loop|0
+   end
+  end
+  local.get $result
+  return
+ )
  (func $~lib/string/String.UTF8.decodeUnsafe (param $buf i32) (param $len i32) (param $nullTerminated i32) (result i32)
   (local $bufOff i32)
   (local $bufEnd i32)
@@ -5496,10 +5544,26 @@
   call $~lib/string/String.UTF8.decodeUnsafe
   return
  )
- (func $assembly/indexer/index/hash (param $k i32) (result i32)
-  local.get $k
+ (func $assembly/utils/hex/encodeHex (param $start i32) (param $len i32) (result i32)
+  local.get $start
+  local.get $len
+  call $assembly/utils/hex/encodeHexUTF8
   i32.const 0
   call $~lib/string/String.UTF8.decode
+  return
+ )
+ (func $assembly/utils/box/Box#toHexString (param $this i32) (result i32)
+  local.get $this
+  call $assembly/utils/box/Box#get:start
+  local.get $this
+  call $assembly/utils/box/Box#get:len
+  call $assembly/utils/hex/encodeHex
+  return
+ )
+ (func $assembly/indexer/index/hash (param $k i32) (result i32)
+  local.get $k
+  call $assembly/utils/box/Box.from
+  call $assembly/utils/box/Box#toHexString
   return
  )
  (func $~lib/util/hash/HASH<~lib/string/String> (param $key i32) (result i32)
@@ -10064,70 +10128,6 @@
   call $~lib/string/String.UTF8.encode@varargs
   call $assembly/indexer/bst/BST<u64>#set
   call $assembly/indexer/index/_flush
- )
- (func $assembly/utils/hex/encodeHexUTF8 (param $start i32) (param $len i32) (result i32)
-  (local $result i32)
-  (local $i i32)
-  i32.const 0
-  i32.const 2
-  local.get $len
-  i32.const 2
-  i32.mul
-  i32.add
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $result
-  local.get $result
-  i32.const 30768
-  i32.store16
-  i32.const 0
-  local.set $i
-  loop $for-loop|0
-   local.get $i
-   local.get $len
-   i32.lt_u
-   if
-    i32.const 2
-    local.get $result
-    i32.add
-    local.get $i
-    i32.const 2
-    i32.mul
-    i32.add
-    global.get $assembly/utils/hex/hexLookupTable
-    i32.const 2
-    local.get $start
-    local.get $i
-    i32.add
-    i32.load8_u
-    i32.mul
-    i32.add
-    i32.load16_u
-    i32.store16
-    local.get $i
-    i32.const 1
-    i32.add
-    local.set $i
-    br $for-loop|0
-   end
-  end
-  local.get $result
-  return
- )
- (func $assembly/utils/hex/encodeHex (param $start i32) (param $len i32) (result i32)
-  local.get $start
-  local.get $len
-  call $assembly/utils/hex/encodeHexUTF8
-  i32.const 0
-  call $~lib/string/String.UTF8.decode
-  return
- )
- (func $assembly/utils/box/Box#toHexString (param $this i32) (result i32)
-  local.get $this
-  call $assembly/utils/box/Box#get:start
-  local.get $this
-  call $assembly/utils/box/Box#get:len
-  call $assembly/utils/hex/encodeHex
-  return
  )
  (func $assembly/index/test_asmmath
   (local $mask i32)
