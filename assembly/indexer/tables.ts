@@ -78,7 +78,7 @@ export class IndexPointer {
     set(this.unwrap(), v);
   }
   get(): ArrayBuffer {
-    return Box.from(get(this.unwrap())).toArrayBuffer();
+    return get(this.unwrap());
   }
   getImmutable(): ArrayBuffer {
     return getImmutable(this.unwrap());

@@ -31,9 +31,31 @@ import { Box } from "../utils/box";
 import { console } from "../utils/logging";
 import { IndexPointer } from "./tables";
 import { metashrew } from "../proto/metashrew";
-const _updates = new Map<string, ArrayBuffer>();
 
-const _updateKeys = new Map<string, ArrayBuffer>();
+@final
+@unmanaged
+class CacheEntry {
+  public length: usize;
+  public value: ArrayBuffer;
+  constructor(length: usize, value: ArrayBuffer) {
+    this.length = length;
+    const copy = new ArrayBuffer(<i32>length);
+    memory.copy(changetype<usize>(copy), changetype<usize>(value), length);
+    this.value = copy;
+  }
+  toArrayBuffer(): ArrayBuffer {
+    const result = new ArrayBuffer(<i32>this.length);
+    const cached = this.value;
+    memory.copy(changetype<usize>(result), changetype<usize>(cached), this.length);
+    return result;
+  } 
+  static from(v: ArrayBuffer): CacheEntry {
+    return new CacheEntry(<usize>v.byteLength, v);
+  }
+}
+const _updates = new Map<string, CacheEntry>();
+
+const _updateKeys = new Map<string, CacheEntry>();
 
 const BUFFER_SIZE = <u32>0x100000;
 let _filled: u32 = 0;
@@ -44,22 +66,28 @@ export function input(): ArrayBuffer {
   return data;
 }
 function hash(k: ArrayBuffer): string {
-  return String.UTF8.decode(k);
+  return Box.from(k).toHexString();
 }
+
+
 export function set(k: ArrayBuffer, v: ArrayBuffer): void {
   const h = hash(k);
-  _updates.set(h, v);
-  _updateKeys.set(h, k);
+  const entry = CacheEntry.from(v);
+  const key = CacheEntry.from(k);
+  _updates.set(h, entry);
+  _updateKeys.set(h, key);
 }
 export function get(k: ArrayBuffer): ArrayBuffer {
   const h = hash(k);
-  let result = changetype<ArrayBuffer>(0);
   if (!_updates.has(h)) {
-    result = new ArrayBuffer(__get_len(k));
+    const len = __get_len(k);
+    const result = new ArrayBuffer(len);
     __get(k, result);
-    _updates.set(h, result);
-  } else result = _updates.get(h);
-  return result;
+    const entry = CacheEntry.from(result);
+    _updates.set(h, entry);
+    return entry.toArrayBuffer();
+  } 
+  return _updates.get(h).toArrayBuffer();
 }
 
 export function getImmutable(k: ArrayBuffer): ArrayBuffer {
@@ -80,8 +108,8 @@ export function _flush(): void {
   const protobufInput = new Array<Array<u8>>();
   hashKeys.reduce(
     (r: Array<Array<u8>>, v: string, i: i32, ary: Array<string>) => {
-      r.push(arrayBufferToArray(_updateKeys.get(v)));
-      r.push(arrayBufferToArray(_updates.get(v)));
+      r.push(arrayBufferToArray(_updateKeys.get(v).toArrayBuffer()));
+      r.push(arrayBufferToArray(_updates.get(v).toArrayBuffer()));
       return r;
     },
     protobufInput,
