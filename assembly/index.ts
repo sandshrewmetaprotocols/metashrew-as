@@ -1,5 +1,6 @@
 import { Box } from "./utils/box";
 import { memcpy } from "./utils/memcpy";
+import { rtid } from "./utils/rtid";
 import {
   isOrdTag,
   concat,
@@ -283,6 +284,10 @@ export function test_fixedbst(): void {
   _flush();
 }
 */
+
+export function test_idof(): void {
+  console.log(rtid(new ArrayBuffer(0)).toString(10));
+}
 
 export function test_complement(): void {
   let v: i32 = -1;

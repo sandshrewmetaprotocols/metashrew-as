@@ -43,10 +43,11 @@ describe("metashrew index", () => {
       const result = await indexer.run(s);
     });
   [
+    "test_idof"
+    /*
     "test_asmmath",
     "test_unmarkPath",
     "test_BSTU128",
-    /*
     "test_parseBlock",
     "test_seekLower",
     "test_seekLower2",

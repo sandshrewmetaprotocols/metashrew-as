@@ -21,7 +21,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.6",
     "as-wasi": "^0.6.0",
-    "assemblyscript": "^0.27.22",
+    "assemblyscript": "^0.27.29",
     "assemblyscript-prettier": "^3.0.1",
     "fs-extra": "^11.2.0",
     "metashrew-test": "https://github.com/sandshrewmetaprotocols/metashrew-test",
@@ -35,8 +35,8 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "fast-sha256-as": "https://github.com/sandshrewmetaprotocols/fast-sha256-as",
     "as-bignum": "^0.3.1",
+    "fast-sha256-as": "https://github.com/sandshrewmetaprotocols/fast-sha256-as",
     "lodash": "^4.17.21"
   }
 }

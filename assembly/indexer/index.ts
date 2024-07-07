@@ -31,6 +31,7 @@ import { Box } from "../utils/box";
 import { console } from "../utils/logging";
 import { IndexPointer } from "./tables";
 import { metashrew } from "../proto/metashrew";
+import { Map } from "../utils/map";
 const _updates = new Map<string, ArrayBuffer>();
 
 const _updateKeys = new Map<string, ArrayBuffer>();
