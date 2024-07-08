@@ -1,12 +1,17 @@
 import { IndexPointer } from "./tables";
+import { hash } from "./index";
 
 export class AtomicTransaction {
-  temp: Map<ArrayBuffer, ArrayBuffer>;
-  saved: Map<ArrayBuffer, ArrayBuffer>;
+  temp: Map<string, ArrayBuffer>;
+  tempKeys: Map<string, ArrayBuffer>;
+  saved: Map<string, ArrayBuffer>;
+  savedKeys: Map<string, ArrayBuffer>;
 
   constructor() {
-    this.temp = new Map<ArrayBuffer, ArrayBuffer>();
-    this.saved = new Map<ArrayBuffer, ArrayBuffer>();
+    this.temp = new Map<string, ArrayBuffer>();
+    this.tempKeys = new Map<string, ArrayBuffer>();
+    this.saved = new Map<string, ArrayBuffer>();
+    this.savedKeys = new Map<string, ArrayBuffer>();
   }
 
   checkpoint(): void {
@@ -19,7 +24,9 @@ export class AtomicTransaction {
   commit(): void {
     const keys = this.saved.keys();
     for (let i = 0; i < keys.length; i++) {
-      IndexPointer.wrap(keys[i]).set(this.saved.get(keys[i]));
+      IndexPointer.wrap(this.savedKeys.get(keys[i])).set(
+        this.saved.get(keys[i]),
+      );
     }
 
     this.saved.clear();
@@ -29,18 +36,21 @@ export class AtomicTransaction {
     this.temp.clear();
   }
 
-  set(key: ArrayBuffer, value: ArrayBuffer): void {
+  set(_key: ArrayBuffer, value: ArrayBuffer): void {
+    const key = hash(_key);
     this.temp.set(key, value);
+    this.tempKeys.set(key, _key);
   }
 
-  get(key: ArrayBuffer): ArrayBuffer {
+  get(_key: ArrayBuffer): ArrayBuffer {
+    const key = hash(_key);
     if (this.temp.has(key)) {
       return this.temp.get(key);
     }
     return changetype<ArrayBuffer>(0);
   }
 
-  setValue<T>(key: ArrayBuffer, value: T): void {
+  setValue<T extends number>(key: ArrayBuffer, value: T): void {
     const container = new ArrayBuffer(sizeof<T>());
     store<T>(changetype<usize>(container), bswap<T>(value));
     this.set(key, container);
@@ -69,8 +79,15 @@ export class AtomicTransaction {
   nullify(key: ArrayBuffer): void {
     this.set(key, new ArrayBuffer(0));
   }
-  rollbackKey(key: ArrayBuffer): void {
-    if (this.temp.has(key)) this.temp.delete(key);
+  rollbackKey(_key: ArrayBuffer): void {
+    const key = hash(_key);
+    if (this.temp.has(key)) {
+      this.temp.delete(key);
+      this.tempKeys.delete(key);
+    }
+  }
+  has(key: ArrayBuffer) {
+    return this.temp.has(hash(key));
   }
   nullifyIndexPointerList(ptr: IndexPointer): void {
     for (let i = 0; i < ptr.length(); i++) {
@@ -81,7 +98,7 @@ export class AtomicTransaction {
   extendIndexPointerList(ptr: IndexPointer): ArrayBuffer {
     let length: u32;
     const lengthKey = ptr.lengthKey();
-    if (this.temp.has(lengthKey.unwrap())) {
+    if (this.has(lengthKey.unwrap())) {
       length = this.getValue<u32>(lengthKey.unwrap());
     } else {
       length = lengthKey.getValue<u32>();

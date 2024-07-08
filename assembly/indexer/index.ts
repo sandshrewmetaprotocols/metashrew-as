@@ -43,7 +43,7 @@ export function input(): ArrayBuffer {
   __load_input(data);
   return data;
 }
-function hash(k: ArrayBuffer): string {
+export function hash(k: ArrayBuffer): string {
   return Box.from(k).toHexString();
 }
 export function set(k: ArrayBuffer, v: ArrayBuffer): void {
