@@ -86,7 +86,7 @@ export class AtomicTransaction {
       this.tempKeys.delete(key);
     }
   }
-  has(key: ArrayBuffer) {
+  has(key: ArrayBuffer): bool {
     return this.temp.has(hash(key));
   }
   nullifyIndexPointerList(ptr: IndexPointer): void {
