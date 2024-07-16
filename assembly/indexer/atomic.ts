@@ -41,7 +41,6 @@ export class AtomicTransaction {
 
   set(_key: ArrayBuffer, value: ArrayBuffer): void {
     const key = hash(_key);
-    console.log("set called on key: " + key);
     this.temp.set(key, value);
     this.tempKeys.set(key, _key);
   }
