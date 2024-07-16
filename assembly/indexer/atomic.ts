@@ -1,5 +1,6 @@
 import { IndexPointer } from "./tables";
 import { hash } from "./index";
+import { console } from "../utils/logging";
 
 export class AtomicTransaction {
   temp: Map<string, ArrayBuffer>;
@@ -18,11 +19,13 @@ export class AtomicTransaction {
     const keys = this.temp.keys();
     for (let i = 0; i < keys.length; i++) {
       this.saved.set(keys[i], this.temp.get(keys[i]));
+      this.savedKeys.set(keys[i], this.tempKeys.get(keys[i]));
     }
   }
 
   commit(): void {
-    const keys = this.saved.keys();
+    const keys = this.savedKeys.keys();
+    console.log(keys.length.toString());
     for (let i = 0; i < keys.length; i++) {
       IndexPointer.wrap(this.savedKeys.get(keys[i])).set(
         this.saved.get(keys[i]),
@@ -38,6 +41,7 @@ export class AtomicTransaction {
 
   set(_key: ArrayBuffer, value: ArrayBuffer): void {
     const key = hash(_key);
+    console.log("set called on key: " + key);
     this.temp.set(key, value);
     this.tempKeys.set(key, _key);
   }
