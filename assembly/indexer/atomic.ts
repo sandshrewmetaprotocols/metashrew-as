@@ -56,7 +56,7 @@ export class AtomicTransaction {
 
   setValue<T extends number>(key: ArrayBuffer, value: T): void {
     const container = new ArrayBuffer(sizeof<T>());
-    store<T>(changetype<usize>(container), bswap<T>(value));
+    store<T>(changetype<usize>(container), value);
     this.set(key, container);
   }
 
