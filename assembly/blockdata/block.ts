@@ -31,7 +31,16 @@ export class Header {
     let tail = data.start;
     this.bytes = toPointer(head).toBox(tail - head);
   }
-
+  inspect(): string {
+    return "Header {\n" +
+      "  version: " + this.version.toString(10) + ",\n" +
+      "  prevBlock: " + this.prevBlock.toHexString() + ",\n" +
+      "  merkleRoot: " + this.merkleRoot.toHexString() + ",\n" +
+      "  time: " + this.time.toString(10) + ",\n" +
+      "  bits: " + this.bits.toString(2) + ",\n" +
+      "  nonce: " + this.nonce.toString(16) + "\n" +
+    "}";
+  }
   toLeBytes(): ArrayBuffer {
     let vers = primitiveToBuffer<i32>(this.version);
     let prevBlock = this.prevBlock.toArrayBuffer();
