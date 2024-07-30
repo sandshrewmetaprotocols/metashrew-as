@@ -6,7 +6,7 @@ The indexer standard library. Sources in this repository can be imported into in
 
 This library will be included by default in projects scaffolded with metashrew-cli, guides for which are available here:
 
-[https://github.com/sandshrewmetaprotocols/metashrew-cli](https://github.com/sandshrewmetaprotocols/metashrew-cli))
+[https://github.com/sandshrewmetaprotocols/metashrew-cli](https://github.com/sandshrewmetaprotocols/metashrew-cli)
 
 For projects not scaffolded with metashrew-cli, installation of this library is done with npm or yarn as one would for a typical JavaScript package.
 
