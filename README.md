@@ -194,6 +194,196 @@ export function _start(): void {
 }
 ```
 
+##### IndexPointer#lengthKey(): IndexPointer
+
+List operation:
+
+Appends `"/length"` to the end of the key and returns a new IndexPointer. Useful for doing operations on the value representing the length of a list, to be used with `append` or `appendValue`.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+import { console } from "metashrew-as/assembly/utils/logging";
+
+export function _start(): void {
+  const length = IndexPointer.for("/txid/list").lengthKey().getValue<u32>();
+  console.log(length.toString(10));
+}
+```
+
+##### IndexPointer#length(): u32
+
+List operation:
+
+Calls `IndexPointer#lengthKey()` then `IndexPointer#getValue<u32>()` on the key it returns. Ultimately will produce the length of the list stored at the desired key.
+
+```js
+// same program as above, in effect
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+import { console } from "metashrew-as/assembly/utils/logging";
+
+export function _start(): void {
+  const length = IndexPointer.for("/txid/list").length();
+  console.log(length.toString(10));
+}
+```
+
+
+##### IndexPointer#getList(): Array<ArrayBuffer>
+
+List operation:
+
+Gets the list of values at the desired key. First it fetches the length of the list then called `IndexPointer#selectIndex(v: u32)` for each key, then gets the ArrayBuffer stored at that key.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+import { console } from "metashrew-as/assembly/utils/logging";
+
+export function _start(): void {
+  const values = IndexPointer.for("/txid/list").getList();
+  values.forEach((v: ArrayBuffer, i: i32, ary: Array<ArrayBuffer>) => {
+    console.log(Box.from(v).toHexString());
+  });
+}
+```
+
+##### IndexPointer#getListValues<T>(): Array<T>
+
+List operation:
+
+Gets the list of values at the desired key then converts to type `T`, which must be a primitive type.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+import { console } from "metashrew-as/assembly/utils/logging";
+
+export function _start(): void {
+  const values = IndexPointer.for("/txid/values").getListValues<u64>();
+  values.forEach((v: u64, i: i32, ary: Array<u64>) => {
+    console.log(v.toString(10));
+  });
+}
+```
+
+##### IndexPointer#extend(): IndexPointer
+
+List operation:
+
+Increases the length of the list by 1. Returns the IndexPointer at the newly created slot in the list.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+import { console } from "metashrew-as/assembly/utils/logging";
+
+export function _start(): void {
+  const pointer = IndexPointer.for("/txid/values");
+  pointer.extend().setValue<u64>(1);
+}
+```
+
+##### IndexPointer#selectIndex(index: u32): IndexPointer
+
+List operation:
+
+Selects the value in a list at `index`. Returns the IndexPointer at that slot.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+import { console } from "metashrew-as/assembly/utils/logging";
+
+export function _start(): void {
+  const pointer = IndexPointer.for("/txid/values");
+  const first = IndexPointer.for("/txid/values").selectIndex(0);
+  console.log(first.getValue<u64>().toString(10));
+}
+```
+
+##### IndexPointer#nullify(): void
+
+Deletes the value at the key represented by the IndexPointer.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+
+export function _start(): void {
+  const pointer = IndexPointer.for("/some-key");
+  pointer.nullify() // deletes the value at "/some-key"
+}
+```
+
+##### IndexPointer#pop(): ArrayBuffer
+
+List operation:
+
+Pops the last value off of the list at the IndexPointer.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+
+export function _start(): void {
+  const pointer = IndexPointer.for("/some-list");
+  pointer.appendValue<u64>(10);
+  pointer.appendValue<u64>(5);
+  pointer.appendValue<u64>(2);
+  const length = pointer.length(); // 3
+  const last = pointer.pop(); // 0x0200000000000000
+  console.log(pointer.length().toString(10)) // logs "2"
+}
+```
+
+##### IndexPointer#popValue<T>(): T
+
+List operation:
+
+Pops the last value off of the list and converts it to type `T`, where `T` is a primitive.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+
+export function _start(): void {
+  const pointer = IndexPointer.for("/some-list");
+  pointer.appendValue<u64>(10);
+  pointer.appendValue<u64>(5);
+  pointer.appendValue<u64>(15);
+  const length = pointer.length(); // 3
+  const last = pointer.popValue<u64>(); // 15
+  console.log(last.toString(10)) // logs "15"
+}
+```
+
+##### IndexPointer#append(v: ArrayBuffer): void
+
+List operation:
+
+Appends an ArrayBuffer to the list of values at the key represented by the IndexPointer.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+
+export function _start(): void {
+  const pointer = IndexPointer.for("/some-list");
+  pointer.append(String.UTF8.encode("some value"));
+  pointer.append(String.UTF8.encode("other value"));
+  console.log(String.UTF8.decode(pointer.pop())) // logs "other value";
+}
+```
+
+##### IndexPointer#appendValue<T>(v: T): void
+
+List operation:
+
+Appends a value of type `T` to the list of values at the key represented by the IndexPointer.
+
+```js
+import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
+
+export function _start(): void {
+  const pointer = IndexPointer.for("/some-list");
+  pointer.appendValue<u64>(10);
+  pointer.appendValue<u64>(20);
+  console.log(pointer.popValue<u64>().toString(10));
+}
+```
+
 
 ### assembly/indexer
 
