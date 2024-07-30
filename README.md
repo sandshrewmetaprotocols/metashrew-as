@@ -60,7 +60,7 @@ import { IndexPointer } from "metashrew-as/assembly/indexer/tables";
 import { _flush } from "metashrew-as/assembly/indexer";
 
 export function _start(): void {
-  const pointer = IndexPointer.wrap(primitiveToBuffer(<u32>0x0101010101)); // creates an IndexPointer to 0x01010101
+  const pointer = IndexPointer.wrap(primitiveToBuffer(<u32>0x01010101)); // creates an IndexPointer to 0x01010101
   pointer.set(primitiveToBuffer<u32>(0x20202020)); // sets 0x01010101 -> 0x20202020
   _flush();
 }
