@@ -14,7 +14,9 @@ For projects not scaffolded with metashrew-cli, installation of this library is 
 yarn add https://github.com/sandshrewmetaprotocols/metashrew-as
 ```
 
-## Getting and setting key-value pairs
+## Usage
+
+### Getting and setting key-value pairs
 
 ### assembly/indexer/tables
 
