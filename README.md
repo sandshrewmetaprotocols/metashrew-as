@@ -476,6 +476,25 @@ abstract class BST {
   nullify(k: K): void;
 ```
 
+### assembly/indexer/widebst.ts
+
+#### BSTU128
+
+```js
+abstract class BSTU128 {
+  static at(key: IndexPointer): BSTU128;
+  getMaskPointer(partialKey: ArrayBuffer): IndexPointer;
+  getMask(partialKey: ArrayBuffer): ArrayBuffer;
+  markPath(key: u128): void;
+  unmarkPath(key: u128): void;
+  _findBoundaryFromPartial(keyBytes: ArrayBuffer, seekHigher: bool): u128;
+  seekLower(start: u128): u128;
+  seekGreater(start: u128): u128;
+  set(key: u128, v: ArrayBuffer): void;
+  get(key: u128): ArrayBuffer;
+  nullify(key: u128): void;
+```
+
 ## Logging
 
 ### assembly/utils/logging
