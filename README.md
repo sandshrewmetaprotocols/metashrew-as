@@ -478,7 +478,7 @@ export function maskLowerThan(v: ArrayBuffer, position: u8): void {
     store<u64>(changetype<usize>(v) + i * sizeof<u64>(), bswap<u64>(ary[i]));
   }
 }
-```js
+```
 
 #### **maskGreaterThan**
 
@@ -501,7 +501,7 @@ export function maskGreaterThan(v: ArrayBuffer, position: u8): void {
     store<u64>(changetype<usize>(v) + i * sizeof<u64>(), bswap<u64>(ary[i]));
   }
 }
-```js
+```
 
 #### **binarySearchU256**
 
@@ -522,7 +522,7 @@ export function binarySearchU256(v: ArrayBuffer, forHighest: bool): i32 {
     );
   }
 }
-```js
+```
 
 #### **binarySearchU128**
 
@@ -534,7 +534,7 @@ export function binarySearchU128(high: u64, low: u64, forHighest: bool): i32 {
     return sizeof<u64>() * 8 + binarySearchU64(low, forHighest);
   }
 }
-```js
+```
 
 #### **binarySearchU64**
 
@@ -546,7 +546,7 @@ export function binarySearchU64(word: u64, forHighest: bool): i32 {
     return binarySearchU32(high, forHighest);
   return sizeof<u32>() * 8 + binarySearchU32(low, forHighest);
 }
-```js
+```
 
 #### **binarySearchU32**
 
@@ -560,7 +560,7 @@ export function binarySearchU32(word: u32, forHighest: bool): i32 {
     return sizeof<u16>() * 8 + binarySearchU16(low, forHighest);
   }
 }
-```js
+```
 
 #### **binarySearchU16**
 
@@ -574,7 +574,7 @@ export function binarySearchU16(word: u16, forHighest: bool): i32 {
     return sizeof<u8>() * 8 + binarySearchU8(low, forHighest);
   }
 }
-```js
+```
 
 #### **binarySearchU8**
 
@@ -587,7 +587,7 @@ export function binarySearchU8(word: u8, forHighest: bool): i32 {
   }
   return 4 + binarySearchU4(low, forHighest);
 }
-```js
+```
 
 #### **binarySearchU4**
 ```js
@@ -599,7 +599,7 @@ export function binarySearchU4(word: u8, forHighest: bool): i32 {
   }
   return 2 + binarySearchU2(low, forHighest);
 }
-```js
+```
 
 #### **binarySearchU2**
 ```js
@@ -608,7 +608,7 @@ export function binarySearchU2(word: u8, forHighest: bool): i32 {
   const low = word & 0x01;
   return (forHighest || low === 0) && high !== 0 ? 0 : 1;
 }
-```js
+```
 
 #### **setBitU256**
 ```js
@@ -624,7 +624,7 @@ export function setBitU256(mask: ArrayBuffer, position: i32): void {
     existingByte | newBit,
   );
 }
-```js
+```
 
 #### **unsetBitU256**
 ```js
@@ -638,7 +638,7 @@ export function unsetBitU256(mask: ArrayBuffer, position: i32): void {
     existingByte & bitMask,
   );
 }
-```js
+```
 
 #### **isSetU256**
 ```js
@@ -649,7 +649,7 @@ export function isSetU256(mask: ArrayBuffer, position: i32): boolean {
   const bitMask = <u8>(1 << (7 - <u8>bitPosition));
   return (bitMask & existingByte) !== 0;
 }
-```js
+```
 
 #### **isZeroU256**
 ```js
@@ -660,14 +660,14 @@ export function isZeroU256(mask: ArrayBuffer): boolean {
   }
   return true;
 }
-```js
+```
 
 #### **byteAt**
 ```js
 export function byteAt<T>(v: ArrayBuffer, byte: T): u8 {
   return load<u8>(changetype<usize>(v) + <usize>byte);
 }
-```js
+```
 
 #### **toBuffer**
 ```js
@@ -676,7 +676,7 @@ export function toBuffer<T>(v: T): ArrayBuffer {
   store<T>(changetype<usize>(data), bswap<T>(v));
   return data;
 }
-```js
+```
 
 #### **coerceToZero**
 ```js
@@ -684,7 +684,7 @@ function coerceToZero(v: i32): u8 {
   if (v === -1) return <u8>0;
   return <u8>v;
 }
-```js
+```
 
 #### **BST**
 
@@ -701,7 +701,7 @@ abstract class BST {
   set(k: K, v: ArrayBuffer): void;
   get(k: K): ArrayBuffer;
   nullify(k: K): void;
-```js
+```
 
 ## Logging
 
