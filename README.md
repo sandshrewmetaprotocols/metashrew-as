@@ -569,6 +569,20 @@ abstract class RCBox extends Box {
   static fromTyped<T>(v: T): RCBox;
 ```
 
+###assembly/utils/network.ts
+
+```js
+abstract class Network {
+  messagePrefix: string;
+  bech32: string;
+  bip32: Bip32;
+  pubKeyHash: number;
+  scriptHash: number;
+  wif: number;
+```
+
+
+
 ### Logging
 
 #### assembly/utils/logging
