@@ -476,7 +476,7 @@ abstract class BST {
   nullify(k: K): void;
 ```
 
-### assembly/indexer/widebst.ts
+### assembly/indexer/widebst
 
 #### BSTU128
 
@@ -495,9 +495,10 @@ abstract class BSTU128 {
   nullify(key: u128): void;
 ```
 
-### assembly/indexer/atomic.ts
+### assembly/indexer/atomic
 
 #### Atomic
+
 ```js
 abstract class AtomicTransaction {
   checkpoint(): void;
@@ -518,7 +519,7 @@ abstract class AtomicTransaction {
 ```
 ## Utils
 
-### assembly/utils/b32.ts
+### assembly/utils/b32
 
 #### bech32m
 
@@ -536,9 +537,9 @@ export function bech32(prefix: ArrayBuffer, words: Array<u8>): ArrayBuffer {
 }
 ````
 
-### assembly/utils/box.ts
+### assembly/utils/box
 
-#### Box Class
+#### Box
 
 ```js
 abstract class Box {
@@ -561,15 +562,7 @@ abstract class Box {
   static fromTyped<T>(v: T): Box;
 ```
 
-#### RCBox
-
-```js
-abstract class RCBox extends Box {
-  static from(v: ArrayBuffer): RCBox;
-  static fromTyped<T>(v: T): RCBox;
-```
-
-###assembly/utils/network.ts
+### assembly/utils/network
 
 ```js
 abstract class Network {
@@ -581,7 +574,7 @@ abstract class Network {
   wif: number;
 ```
 
-### assembly/utils/sha256.ts
+### assembly/utils/sha256
 
 ```js
 function sha256d(data: ArrayBuffer): ArrayBuffer
