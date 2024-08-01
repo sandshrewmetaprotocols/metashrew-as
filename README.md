@@ -516,11 +516,62 @@ abstract class AtomicTransaction {
   extendIndexPointerList(ptr: IndexPointer): ArrayBuffer;
   appendIndexPointerList(ptr: IndexPointer, value: ArrayBuffer): void
 ```
+## Utils
 
+### assembly/utils/b32.ts
 
-## Logging
+#### bech32m
 
-### assembly/utils/logging
+```js
+export function bech32m(prefix: ArrayBuffer, words: Array<u8>): ArrayBuffer {
+  return encode(prefix, words, ENCODING_CONST_BECH32M);
+}
+```
+
+#### bech32
+
+```js
+export function bech32(prefix: ArrayBuffer, words: Array<u8>): ArrayBuffer {
+  return encode(prefix, words, ENCODING_CONST_BECH32);
+}
+````
+
+### assembly/utils/box.ts
+
+#### Box Class
+
+```js
+abstract class Box {
+  toHexString(): string;
+  toHexUTF8(): ArrayBuffer;
+  static concat(data: Array<Box>): ArrayBuffer;
+  shift(): Box;
+  sliceFrom(start: usize): Box;
+  sliceTo(ptr: usize): Box;
+  shrinkFront(distance: usize): Box;
+  growFront(distance: usize): Box;
+  shrinkBack(distance: usize): Box;
+  growBack(distance: usize): Box;
+  setLength(len: usize): Box;
+  toArrayBuffer(): ArrayBuffer;
+  isEmpty(): boolean;
+  static from(data: ArrayBuffer): Box;
+  static copy(data: ArrayBuffer): Box;
+  static freeCopy(v: Box): void;
+  static fromTyped<T>(v: T): Box;
+```
+
+#### RCBox
+
+```js
+abstract class RCBox extends Box {
+  static from(v: ArrayBuffer): RCBox;
+  static fromTyped<T>(v: T): RCBox;
+```
+
+### Logging
+
+#### assembly/utils/logging
 
 ```js
 import { console } from "metashrew-as/assembly/utils/logging";
