@@ -495,28 +495,6 @@ abstract class BSTU128 {
   nullify(key: u128): void;
 ```
 
-### assembly/indexer/atomic
-
-#### Atomic
-
-```js
-abstract class AtomicTransaction {
-  checkpoint(): void;
-  commit(): void;
-  rollback(): void;
-  set(_key: ArrayBuffer, value: ArrayBuffer): void;
-  get(_key: ArrayBuffer): ArrayBuffer;
-  setValue<T extends number>(key: ArrayBuffer, value: T): void;
-  getValue<T>(key: ArrayBuffer): T;
-  setKeyword(key: string, value: ArrayBuffer): void;
-  getKeyword(key: string): ArrayBuffer;
-  nullify(key: ArrayBuffer): void;
-  rollbackKey(_key: ArrayBuffer): void;
-  has(key: ArrayBuffer): bool;
-  nullifyIndexPointerList(ptr: IndexPointer): void;
-  extendIndexPointerList(ptr: IndexPointer): ArrayBuffer;
-  appendIndexPointerList(ptr: IndexPointer, value: ArrayBuffer): void
-```
 ## Utils
 
 ### assembly/utils/b32
