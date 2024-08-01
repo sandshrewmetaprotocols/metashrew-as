@@ -581,7 +581,11 @@ abstract class Network {
   wif: number;
 ```
 
+### assembly/utils/sha256.ts
 
+```js
+function sha256d(data: ArrayBuffer): ArrayBuffer
+```
 
 ### Logging
 
