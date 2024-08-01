@@ -459,6 +459,7 @@ export function _start(): void {
 
 ### assembly/indexer/bst
 
+Binary Search Tree (BST) functions by inserts keys starting at the index pointer. BST efficiently supports operations like seekGreater and seekLower, which allow for searching the keyspace both up and down to find nearest neighbors.
 
 #### BST
 
