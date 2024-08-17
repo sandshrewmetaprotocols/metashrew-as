@@ -28,7 +28,7 @@ export class AtomicTransaction {
     console.log(keys.length.toString());
     for (let i = 0; i < keys.length; i++) {
       IndexPointer.wrap(this.savedKeys.get(keys[i])).set(
-        this.saved.get(keys[i]),
+        this.saved.get(keys[i])
       );
     }
 
@@ -61,13 +61,13 @@ export class AtomicTransaction {
 
   getValue<T>(key: ArrayBuffer): T {
     const value = this.get(key);
-    let container: T = changetype<T>(0);
+    const container: ArrayBuffer = new ArrayBuffer(sizeof<T>());
     memory.copy(
       changetype<usize>(container),
       changetype<usize>(value),
-      sizeof<T>(),
+      sizeof<T>()
     );
-    return container;
+    return load<T>(changetype<usize>(container));
   }
 
   setKeyword(key: string, value: ArrayBuffer): void {
