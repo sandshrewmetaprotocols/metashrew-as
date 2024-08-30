@@ -1,5 +1,6 @@
 import { console } from "../utils/logging";
 import { Box } from "../utils/box";
+import { Version } from "./version";
 import {
   parsePrimitive,
   parseBytes,
@@ -9,20 +10,23 @@ import {
 } from "../utils/utils";
 import { nullptr, Pointer, toPointer } from "../utils/pointer";
 import { Transaction } from "./transaction";
+import { AuxPow } from "./auxpow";
 import { sha256d } from "../utils/sha256";
 import { encodeHexFromBuffer } from "../utils/hex";
 
 export class Header {
-  public version: i32;
+  public version: Version;
   public prevBlock: Box;
   public merkleRoot: Box;
   public time: u32;
   public bits: u32;
   public nonce: u32;
   public bytes: Box;
+  public auxpow: AuxPow;
   constructor(data: Box) {
     let head = data.start;
-    this.version = parsePrimitive<i32>(data);
+    this.auxpow = nullptr<AuxPow>();
+    this.version = new Version(parsePrimitive<u32>(data));
     this.prevBlock = parseBytes(data, 32);
     this.merkleRoot = parseBytes(data, 32);
     this.time = parsePrimitive<u32>(data);
@@ -30,10 +34,11 @@ export class Header {
     this.nonce = parsePrimitive<u32>(data);
     let tail = data.start;
     this.bytes = toPointer(head).toBox(tail - head);
+    if (this.version.isAuxPow() && data.len !== 0) this.auxpow = new AuxPow(data);
   }
   inspect(): string {
     return "Header {\n" +
-      "  version: " + this.version.toString(10) + ",\n" +
+      "  version: " + this.version.unwrap().toString(10) + ",\n" +
       "  prevBlock: " + this.prevBlock.toHexString() + ",\n" +
       "  merkleRoot: " + this.merkleRoot.toHexString() + ",\n" +
       "  time: " + this.time.toString(10) + ",\n" +
@@ -42,7 +47,7 @@ export class Header {
     "}";
   }
   toLeBytes(): ArrayBuffer {
-    let vers = primitiveToBuffer<i32>(this.version);
+    let vers = primitiveToBuffer<i32>(this.version.unwrap());
     let prevBlock = this.prevBlock.toArrayBuffer();
     let merkleRoot = this.merkleRoot.toArrayBuffer();
     let time = primitiveToBuffer<u32>(this.time);
