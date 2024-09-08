@@ -68,7 +68,7 @@ export function getImmutable(k: ArrayBuffer): ArrayBuffer {
   return result;
 }
 
-function arrayBufferToArray(data: ArrayBuffer): Array<u8> {
+export function arrayBufferToArray(data: ArrayBuffer): Array<u8> {
   const result = new Array<u8>(data.byteLength);
   store<usize>(changetype<usize>(result), changetype<usize>(data));
   store<usize>(

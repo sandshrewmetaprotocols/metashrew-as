@@ -46,6 +46,7 @@ describe("metashrew index", () => {
     "test_asmmath",
     "test_unmarkPath",
     "test_BSTU128",
+    "test_b32decode"
     /*
     "test_parseBlock",
     "test_seekLower",

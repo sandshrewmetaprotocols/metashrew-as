@@ -1,10 +1,12 @@
 "use strict";
 import { memcpy } from "./memcpy";
+import { Box } from "./box";
+import { arrayBufferToArray } from "../indexer/index";
 
 const ENCODING_CONST_BECH32: u32 = 1;
 const ENCODING_CONST_BECH32M: u32 = 0x2bc830a3;
 
-// const LIMIT: i32 = 90;
+// const limit: i32 = 90;
 const ONE = String.UTF8.encode("1");
 const ALPHABET_MAP: StaticArray<u8> = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -103,18 +105,18 @@ function convert(
   return result;
 }
 
-export function toWords(bytes: ArrayBuffer): Array<u8> {
+export function toWords(bytes: ArrayBuffer): ArrayBuffer {
   let data = Uint8Array.wrap(bytes);
-  return convert(data, 8, 5, true);
+  return fromDataStart(convert(data, 8, 5, true));
 }
 
 export function encode(
   prefix: ArrayBuffer,
   words: Array<u8>,
   encoding: u32,
-  LIMIT: i32 = 90,
+  limit: i32 = 90,
 ): ArrayBuffer {
-  if (prefix.byteLength + 7 + words.length > LIMIT)
+  if (prefix.byteLength + 7 + words.length > limit)
     throw new Error("Exceeds length limit");
 
   let chk = prefixChk(prefix);
@@ -149,10 +151,79 @@ export function encode(
   return result;
 }
 
-export function bech32m(prefix: ArrayBuffer, words: Array<u8>): ArrayBuffer {
-  return encode(prefix, words, ENCODING_CONST_BECH32M);
+export class Decoded {
+  public prefix: ArrayBuffer;
+  public words: ArrayBuffer;
+  constructor(prefix: ArrayBuffer, words: ArrayBuffer) {
+    this.prefix = prefix;
+    this.words = words;
+  }
+  static from(prefix: ArrayBuffer, words: ArrayBuffer):  Decoded {
+    return new Decoded(prefix, words);
+  }
 }
 
-export function bech32(prefix: ArrayBuffer, words: Array<u8>): ArrayBuffer {
-  return encode(prefix, words, ENCODING_CONST_BECH32);
+const DEFAULT_LIMIT: u32 = 90;
+
+function __decodeDefault(str: string): Decoded {
+  return __decode(str, DEFAULT_LIMIT);
+}
+
+function __decode(str: string, limit: u32): Decoded {
+    if (str.length < 8) return changetype<Decoded>(0);
+    if (str.length > <i32>limit) return changetype<Decoded>(0);
+
+    // don't allow mixed case
+    const lowered = str.toLowerCase();
+    const uppered = str.toUpperCase();
+    if (str !== lowered && str !== uppered) return changetype<Decoded>(0);
+    str = lowered;
+
+    const split = str.lastIndexOf('1');
+    if (split === -1) return changetype<Decoded>(0);
+    if (split === 0) return changetype<Decoded>(0);
+
+    const buffer = String.UTF8.encode(str);
+    const prefix = Box.from(buffer).setLength(split).toArrayBuffer();
+    const wordChars = Box.from(buffer).shrinkFront(split +1).toArrayBuffer();
+    if (wordChars.byteLength < 6) return changetype<Decoded>(0);
+
+    let chk = prefixChk(prefix);
+
+    const words = new Array<u8>(0);
+    for (let i = 0; i < wordChars.byteLength; ++i) {
+      const c = load<u8>(changetype<usize>(wordChars) + <usize>i);
+      const v = lookupByte(c);
+      chk = polymodStep(chk) ^ v;
+
+      // not in the checksum?
+      if (i + 6 >= wordChars.byteLength) continue;
+      words.push(v);
+    }
+
+//    if (chk !== ENCODING_CONST) return changetype<Decoded>(0);
+    return Decoded.from(prefix, fromDataStart(words));
+  }
+
+
+export function fromDataStart<T>(v:  T): ArrayBuffer {
+  return Box.from(changetype<ArrayBuffer>(v.dataStart)).setLength(v.length).toArrayBuffer();
+}
+export function fromWords(words: ArrayBuffer): ArrayBuffer {
+  const converted = convert(Uint8Array.wrap(words), 5, 8, false);
+  return converted.buffer;
+}
+
+  export function b32decode(str: string): Decoded {
+    return __decodeDefault(str);
+  }
+
+
+
+export function bech32m(prefix: ArrayBuffer, words: ArrayBuffer): ArrayBuffer {
+  return encode(prefix, arrayBufferToArray(words), ENCODING_CONST_BECH32M);
+}
+
+export function bech32(prefix: ArrayBuffer, words: ArrayBuffer): ArrayBuffer {
+  return encode(prefix, arrayBufferToArray(words), ENCODING_CONST_BECH32);
 }

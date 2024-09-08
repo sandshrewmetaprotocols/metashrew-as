@@ -31,9 +31,21 @@ import {
 } from "./indexer/bst";
 import { BSTU128 } from "./indexer/widebst";
 import { u128ToHex } from "./utils/utils";
+import { sha256 } from "fast-sha256-as/assembly/sha256";
 import { IndexPointer } from "./indexer/tables";
 import { Input } from "./blockdata/transaction";
 import { u128 } from "as-bignum/assembly";
+import { fromWords, b32decode, bech32, bech32m, toWords } from "./utils/b32";
+
+export function test_b32decode(): void {
+  const val = sha256(new ArrayBuffer(2));
+  console.log(Box.from(val).toHexString());
+  const words = toWords(val);
+  const b = bech32(String.UTF8.encode("bc"), words);
+  console.log(String.UTF8.decode(b));
+  const decoded = b32decode(String.UTF8.decode(b)).words;
+  console.log(Box.from(fromWords(decoded)).toHexString());
+}
 
 export function test_parseBlock(): void {
   const data = input();
