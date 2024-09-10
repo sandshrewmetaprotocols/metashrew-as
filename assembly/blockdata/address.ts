@@ -5,6 +5,7 @@ import { concat } from "../utils/utils";
 import { sha256 } from "../utils/sha256";
 import { Script } from "../utils/yabsp";
 import { Box } from "../utils/box";
+import { arrayBufferToArray } from "../indexer";
 
 export class Address {
   /**
@@ -44,7 +45,7 @@ export class Address {
     data: ArrayBuffer,
     version: u8,
   ): ArrayBuffer {
-    let words = toWords(data);
+    let words = arrayBufferToArray(toWords(data));
     words.unshift(version);
 
     if (version === 0) {
