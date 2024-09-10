@@ -7,6 +7,10 @@ import { Script } from "../utils/yabsp";
 import { Box } from "../utils/box";
 import { arrayBufferToArray } from "../indexer";
 
+export function arrayToArrayBuffer(v: Array<u8>): ArrayBuffer {
+  return new Box(v.dataStart, v.length).toArrayBuffer();
+}
+
 export class Address {
   /**
    * Returns the address from a given script
@@ -49,9 +53,9 @@ export class Address {
     words.unshift(version);
 
     if (version === 0) {
-      return bech32(prefix, words);
+      return bech32(prefix, arrayToArrayBuffer(words));
     } else {
-      return bech32m(prefix, words);
+      return bech32m(prefix, arrayToArrayBuffer(words));
     }
   }
 
