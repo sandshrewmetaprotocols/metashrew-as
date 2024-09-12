@@ -83,10 +83,7 @@ export class Input {
   previousOutput(): OutPoint {
     let txid = toPointer(this.hash.start).toBox(<usize>32);
     // let bytes = toPointer(this.hash.start).toBox(<usize>36);
-    return OutPoint.from(
-      reverse(txid.toArrayBuffer()),
-      this.index
-    );
+    return OutPoint.from(reverse(txid.toArrayBuffer()), this.index);
   }
 
   inscription(): Inscription | null {
@@ -117,7 +114,7 @@ export class Output {
    */
   intoAddress(): ArrayBuffer | null {
     let scr = Script.from(this.script);
-    return Address.from(scr);
+    return Address.fromOutputScript(scr);
   }
 }
 
