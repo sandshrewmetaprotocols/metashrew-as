@@ -37,7 +37,7 @@ export class Address {
       scriptView[24] === 0xac
     ) {
       const version = network === Network.MAINNET ? 0x00 : 0x6f;
-      return this.toBase58Check(version, scriptView.slice(3, 23));
+      return this.toBase58Check(version as u8, scriptView.slice(3, 23));
     }
 
     // P2SH
@@ -48,7 +48,7 @@ export class Address {
       scriptView[22] === 0x87
     ) {
       const version = network === Network.MAINNET ? 0x05 : 0xc4;
-      return this.toBase58Check(version, scriptView.slice(2, 22));
+      return this.toBase58Check(version as u8, scriptView.slice(2, 22));
     }
 
     // P2WPKH
@@ -58,7 +58,7 @@ export class Address {
       scriptView[1] === 0x14
     ) {
       const hrp = this.getHrpForNetwork(network);
-      return this.toBech32(hrp, 0, scriptView.slice(2));
+      return this.toBech32(hrp, 0 as u8, scriptView.slice(2));
     }
 
     // P2WSH
@@ -68,7 +68,7 @@ export class Address {
       scriptView[1] === 0x20
     ) {
       const hrp = this.getHrpForNetwork(network);
-      return this.toBech32(hrp, 0, scriptView.slice(2));
+      return this.toBech32(hrp, 0 as u8, scriptView.slice(2));
     }
 
     // P2TR
@@ -78,7 +78,7 @@ export class Address {
       scriptView[1] === 0x20
     ) {
       const hrp = this.getHrpForNetwork(network);
-      return this.toBech32m(hrp, 1, scriptView.slice(2));
+      return this.toBech32m(hrp, 1 as u8, scriptView.slice(2));
     }
 
     return null;
@@ -109,7 +109,7 @@ export class Address {
     version: u8,
     payload: Uint8Array,
   ): ArrayBuffer {
-    let words = arrayBufferToArray(toWords(payload));
+    let words = arrayBufferToArray(toWords(payload.buffer));
     words.unshift(version);
 
     return bech32(String.UTF8.encode(prefix), arrayToArrayBuffer(words));
@@ -127,7 +127,7 @@ export class Address {
     version: u8,
     payload: Uint8Array,
   ): ArrayBuffer {
-    let words = arrayBufferToArray(toWords(payload));
+    let words = arrayBufferToArray(toWords(payload.buffer));
     words.unshift(version);
 
     return bech32m(String.UTF8.encode(prefix), arrayToArrayBuffer(words));
@@ -177,7 +177,7 @@ export class Address {
     versionedPayload[0] = version;
     versionedPayload.set(payload, 1);
 
-    const checksumBuffer = sha256(sha256(versionedPayload));
+    const checksumBuffer = sha256(sha256(versionedPayload.buffer));
     const checksumView = Uint8Array.wrap(checksumBuffer);
     const checksum = checksumView.slice(0, 4);
 
