@@ -23,7 +23,7 @@ export class Address {
 
   static fromOutputScript(
     script: Script,
-    network: Network = Network.REGTEST,
+    network: Network = Network.MAINNET,
   ): ArrayBuffer | null {
     const scriptView = Uint8Array.wrap(script.data.toArrayBuffer());
 
