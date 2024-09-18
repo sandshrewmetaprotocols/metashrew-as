@@ -12,9 +12,9 @@ export namespace network {
       this.bech32Prefix = String.UTF8.encode(bech32Prefix);
     }
     clone(): Network {
-      return Network.fromTriple(this.p2pkkhPrefix, this.p2shPrefix, this.bech32Prefix);
+      return Network.fromTriple(this.p2pkhPrefix, this.p2shPrefix, String.UTF8.decode(this.bech32Prefix));
     }
-    static fromTriple(p2pkhByte: u8, p2shByte: u8, bech32Prefix): Network {
+    static fromTriple(p2pkhByte: u8, p2shByte: u8, bech32Prefix: string): Network {
       return new Network(p2pkhByte, p2shByte, bech32Prefix);
     }
     static get MAINNET(): Network {
