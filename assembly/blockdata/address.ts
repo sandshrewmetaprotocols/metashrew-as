@@ -6,6 +6,7 @@ import { sha256 } from "../utils/sha256";
 import { Script } from "../utils/yabsp";
 import { Box } from "../utils/box";
 import { arrayBufferToArray } from "../indexer";
+import { network } from "./network";
 
 export function arrayToArrayBuffer(v: Array<u8>): ArrayBuffer {
   return new Box(v.dataStart, v.length).toArrayBuffer();
@@ -18,20 +19,21 @@ export class Address {
    * @returns {ArrayBuffer | null} - The address or null if the script is not a valid address
    */
   static from(script: Script): ArrayBuffer | null {
+    const _network: network.Network = network.getNetwork();
     if (script.is_p2pkh()) {
       let bytes: Box = script.data.sliceFrom(3).setLength(20);
       let prefix = new Uint8Array(1);
-      prefix[0] = 0x00;
+      prefix[0] = _network.p2pkhPrefix;
       return Address.toBase58Check(prefix.buffer, bytes.toArrayBuffer());
     } else if (script.is_p2sh()) {
       let bytes: Box = script.data.sliceFrom(2).setLength(20);
       let prefix = new Uint8Array(1);
-      prefix[0] = 0x05;
+      prefix[0] = _network.p2shPrefix;
       return Address.toBase58Check(prefix.buffer, bytes.toArrayBuffer());
     } else if (script.is_witness_program()) {
       let bytes = script.data.sliceFrom(2).toArrayBuffer();
       let version = load<u8>(script.witness_version) === 0x00 ? 0x00 : 0x01;
-      return Address.toBech32(String.UTF8.encode("bc"), bytes, <u8>version);
+      return Address.toBech32(_network.bech32Prefix, bytes, <u8>version);
     } else {
       return null;
     }
