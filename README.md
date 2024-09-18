@@ -572,6 +572,26 @@ export function _start(): void {
 }
 ```
 
+### Network
+
+#### network
+
+The `network` namespace is exported from `metashrew-as/assembly/blockdata/network` and exposes the following API:
+
+```js
+
+namespace network {
+  interface Network {
+    static fromTriple(p2pkhPrefix: u8, p2shPrefix: u8, bech32Prefix: string): Network;
+    static get MAINNET(): Network;
+    static get REGTEST(): Network;
+  }
+  setNetwork(network: Network): void;
+  getNetwork(): Network;
+}
+```
+
+
 ## Author
 
 Sandshrew Inc
