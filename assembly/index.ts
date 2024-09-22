@@ -37,6 +37,16 @@ import { Input } from "./blockdata/transaction";
 import { u128 } from "as-bignum/assembly";
 import { fromWords, b32decode, bech32, bech32m, toWords } from "./utils/b32";
 
+export function logArrayBuffer(arr: ArrayBuffer): void {
+  const tempArray = Uint8Array.wrap(arr);
+  console.log("Got arraybuffer of size " + tempArray.length.toString());
+  tempArray.forEach((val, i) => {
+    console.log(
+      `byte[${i}] = 0x${val.toString(16).padStart(2, "0")} (${String.fromCharCode(val)})`,
+    );
+  });
+}
+
 export function test_b32decode(): void {
   const val = sha256(new ArrayBuffer(2));
   console.log(Box.from(val).toHexString());
@@ -217,10 +227,19 @@ export function test_inscription(): void {
   const data = input();
   const box = Box.from(data);
   const height = parsePrimitive<u32>(box);
-  const tx = new Transaction(box);
-  tx.ins.forEach((v: Input, i: i32, ary: Array<Input>) => {
-    v.inscription();
-  });
+  const block = new Block(box);
+  // const tx = new Transaction(box);
+  for (let i = 0; i < block.transactions.length; i++) {
+    let t = block.transactions[i];
+    for (let j = 0; j < t.ins.length; j++) {
+      let v = t.ins[j];
+      let inscription = v.inscription();
+      if (inscription != null) {
+        console.log("inscription from tx " + i.toString() + " input " + j.toString());
+        logArrayBuffer(inscription.toArrayBuffer());
+      }
+    }
+  }
 }
 
 export function decodeHex(hex: string): ArrayBuffer {
