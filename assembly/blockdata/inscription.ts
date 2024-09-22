@@ -1,7 +1,17 @@
 import { Box } from "../utils/box";
 import { toPointer, nullptr, Pointer } from "../utils/pointer";
-import { isPushOp, isOrdTag, parsePushOp, decodeTag, fromPushBox, concat, parsePrimitive, parseBytes } from "../utils/utils";
+import {
+  isPushOp,
+  isOrdTag,
+  parsePushOp,
+  decodeTag,
+  fromPushBox,
+  concat,
+  parsePrimitive,
+  parseBytes,
+} from "../utils/utils";
 import { console } from "../utils/logging";
+import { logArrayBuffer } from "..";
 
 export class Field {
   public tag: u32;
@@ -16,7 +26,7 @@ export function parseEnvelope(view: Box): Box {
   let head = view.start;
   let len = view.len;
 
-  while (head < (view.start + view.len) - 1) {
+  while (head < view.start + view.len - 1) {
     if (load<u8>(head) == 0x00 && load<u8>(head + 1) == 0x63) {
       head += 2;
       len -= 2;
@@ -38,17 +48,17 @@ export function parseEnvelope(view: Box): Box {
   while (subview.len > 0) {
     if (load<u8>(subview.start) == 0x68) {
       // console.log("errror finding closing tag")
-      let distance = <i32>(subview.start) - <i32>head;
+      let distance = <i32>subview.start - <i32>head;
       // console.log("pointer distance " + distance.toString())
       let envelopeBox = toPointer(head).toBox(distance);
       return envelopeBox;
     }
     parsePushOp(subview);
   }
-  
+
   // console.log("error after parsing envelope")
-  // return pointer to zero as fail case 
-  return nullptr<Box>(); 
+  // return pointer to zero as fail case
+  return nullptr<Box>();
 }
 
 export class Inscription {
@@ -65,44 +75,41 @@ export class Inscription {
     let inscBox: Box = parseEnvelope(view);
     this.bytes = inscBox.sliceFrom(0);
 
-    
     // console.log("inscription Box" + inscBox.toHexString());
-    
-    
+
     let ordTag = parsePushOp(inscBox);
     if (!isOrdTag(ordTag)) {
       throw Error("invalid inscription");
     }
-    let tag: usize;
     let content = new Array<ArrayBuffer>();
     for (
       let i = parsePushOp(inscBox);
       inscBox.len > 0;
       i = parsePushOp(inscBox)
     ) {
-      if (decodeTag(i) >= 0x01 && decodeTag(i) <= 0x0b) {
-        tag = decodeTag(i);
-	const data = parsePushOp(inscBox);
+      const decodedTag = decodeTag(i);
+      // console.log(`got decoded tag ${decodedTag} and len is ${inscBox.len}`);
+      if (decodedTag >= 0x01 && decodedTag <= 0x0b) {
         this.fields.push(
-          new Field(<u32>tag, fromPushBox(parsePushOp(inscBox))),
+          new Field(<u32>decodedTag, fromPushBox(parsePushOp(inscBox))),
         );
-      } else if (decodeTag(i) == 0x00) {
+      } else if (decodedTag == 0x00) {
         break;
       }
     }
-    
+
     // console.log("parsed Inscription Box " + inscBox.toHexString())
-    
+
     // handle content body pushes if data remains
     if (inscBox != nullptr<Box>()) {
       // console.log("error handling content body")
       while (inscBox.len > 0) {
         let i = parsePushOp(inscBox);
-        // console.log("content body" + i.toHexString());;
+        // console.log("content body" + i.toHexString());
         content.push(fromPushBox(i));
       }
     }
-    
+
     // console.log("error after handling content body");
 
     // fill out content body

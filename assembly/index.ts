@@ -114,28 +114,28 @@ export function test_unmarkPath(): void {
   const bst = BST.at<u64>(IndexPointer.for("/test"));
   bst.set(0x465e3f16b2e25dc8, String.UTF8.encode("test"));
   bst.set(0x41e6cbaf98f67b50, String.UTF8.encode("test"));
-  bst.set(0x5d4c39ec5b5126c0, String.UTF8.encode("test")); 
-  bst.set(0x5d4c39ec5b5126c1, String.UTF8.encode("test")); 
-  bst.set(0x5d4c39ec5b5126c2, String.UTF8.encode("test")); 
-  bst.set(0x5d4c39ec5b5126c3, String.UTF8.encode("test")); 
-  bst.set(0x5d4c39ff00000000, String.UTF8.encode("test")); 
-  bst.set(0x5d4c39ff00ff0000, String.UTF8.encode("test")); 
+  bst.set(0x5d4c39ec5b5126c0, String.UTF8.encode("test"));
+  bst.set(0x5d4c39ec5b5126c1, String.UTF8.encode("test"));
+  bst.set(0x5d4c39ec5b5126c2, String.UTF8.encode("test"));
+  bst.set(0x5d4c39ec5b5126c3, String.UTF8.encode("test"));
+  bst.set(0x5d4c39ff00000000, String.UTF8.encode("test"));
+  bst.set(0x5d4c39ff00ff0000, String.UTF8.encode("test"));
   bst.set(0x8c8534514a8fb502, String.UTF8.encode("test"));
   bst.set(0x9df8622e7b073043, String.UTF8.encode("test"));
   bst.set(0x465e3f16b2e25dc8, new ArrayBuffer(0));
   bst.set(0x5d4c39ec5b5126c1, new ArrayBuffer(0));
-  console.log('0x' + bst.seekGreater(0x41e6cbaf98f67b50).toString(16));
-  console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c0).toString(16));
-  console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c1).toString(16));
-  console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c2).toString(16));
-  console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c3).toString(16));
-  console.log('0x' + bst.seekGreater(0x5d4c39ff00000000).toString(16));
+  console.log("0x" + bst.seekGreater(0x41e6cbaf98f67b50).toString(16));
+  console.log("0x" + bst.seekGreater(0x5d4c39ec5b5126c0).toString(16));
+  console.log("0x" + bst.seekGreater(0x5d4c39ec5b5126c1).toString(16));
+  console.log("0x" + bst.seekGreater(0x5d4c39ec5b5126c2).toString(16));
+  console.log("0x" + bst.seekGreater(0x5d4c39ec5b5126c3).toString(16));
+  console.log("0x" + bst.seekGreater(0x5d4c39ff00000000).toString(16));
   bst.set(0x5d4c39ec5b5126c3, new ArrayBuffer(0));
-  console.log('0x' + bst.seekGreater(0x5d4c39ec5b5126c2).toString(16));
+  console.log("0x" + bst.seekGreater(0x5d4c39ec5b5126c2).toString(16));
   bst.set(0x5d4c39ec5b5126c0, new ArrayBuffer(0));
   bst.set(0x5d4c39ec5b5126c2, new ArrayBuffer(0));
   bst.set(0x5d4c39ec5b5126c1, new ArrayBuffer(0));
-  console.log('0x' + bst.seekGreater(0x465e3f16b2e25dc8).toString(16));
+  console.log("0x" + bst.seekGreater(0x465e3f16b2e25dc8).toString(16));
 }
 
 export function test_seekLower2(): void {
@@ -235,8 +235,15 @@ export function test_inscription(): void {
       let v = t.ins[j];
       let inscription = v.inscription();
       if (inscription != null) {
-        console.log("inscription from tx " + i.toString() + " input " + j.toString());
+        console.log(
+          "inscription from tx " + i.toString() + " input " + j.toString(),
+        );
         logArrayBuffer(inscription.toArrayBuffer());
+        let inscription_body = inscription.body();
+        if (inscription_body !== null) {
+          console.log("Inscription body is: ");
+          logArrayBuffer(inscription_body);
+        }
       }
     }
   }
